@@ -31,6 +31,9 @@ interface CatalogDao {
     )
     fun observeDeals(limit: Int): Flow<List<ProductEntity>>
 
+    @Query("SELECT * FROM products WHERE source = :source ORDER BY COALESCE(releaseDateMillis, 0) DESC, title ASC LIMIT :limit")
+    fun observeBySourceNewestFirst(source: String, limit: Int): Flow<List<ProductEntity>>
+
     @Query("SELECT * FROM products WHERE rating IS NOT NULL ORDER BY rating DESC, COALESCE(ratingCount, 0) DESC LIMIT :limit")
     fun observeTopRated(limit: Int): Flow<List<ProductEntity>>
 

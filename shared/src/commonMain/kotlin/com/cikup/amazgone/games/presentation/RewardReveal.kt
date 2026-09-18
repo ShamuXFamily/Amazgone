@@ -1,5 +1,6 @@
 package com.cikup.amazgone.games.presentation
 
+import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.game_plus_xp
 import amazgone.shared.generated.resources.game_reward_saved
@@ -34,7 +35,7 @@ fun RewardReveal(reward: Reward, xp: Long, modifier: Modifier = Modifier) {
     val reduceMotion = LocalReduceMotion.current
     val scale = remember(reward) { Animatable(if (reduceMotion) 1f else START_SCALE) }
     LaunchedEffect(reward) { if (!reduceMotion) scale.animateTo(1f, MotionTokens.bouncy()) }
-    ElevatedCard(modifier.fillMaxWidth().graphicsLayer { scaleX = scale.value; scaleY = scale.value }) {
+    ElevatedCard(modifier.fillMaxWidth().graphicsLayer { scaleX = scale.value; scaleY = scale.value }, colors = appCardColors()) {
         Column(
             Modifier.fillMaxWidth().padding(AmazgoneDimens.spaceLg),
             horizontalAlignment = Alignment.CenterHorizontally,

@@ -52,6 +52,9 @@ class FakeCatalogRepository(initial: List<Product> = emptyList()) : CatalogRepos
     override fun observeTopRated(limit: Int) =
         products.map { all -> all.sortedByDescending { it.rating ?: 0.0 }.take(limit) }
 
+    override fun observeNewArrivals(limit: Int) =
+        products.map { all -> all.filter { it.source == CatalogSourceId.AMAZGONE }.sortedByDescending { it.details.releaseDateMillis ?: 0 }.take(limit) }
+
     override fun observeCategories(): Flow<List<Category>> =
         products.map { all -> all.groupingBy { it.categorySlug }.eachCount().map { (k, v) -> Category(k, v) } }
 

@@ -4,6 +4,8 @@ A **fake Amazon-style shop with a game layer**, built with Kotlin Multiplatform 
 There is **no real money**: everything is paid in virtual coins that players earn by playing mini-games.
 
 - 🛍️ Real-looking catalog: ~200 products from [DummyJSON](https://dummyjson.com/docs/products) + live PC-game deals from [CheapShark](https://apidocs.cheapshark.com/)
+  + hand-curated **New arrivals** (e.g. iPhone 18 Pro, iPhone Duo) from a public Firestore `catalog` collection
+- 🌗 Light / Dark / System theme switch (Account → Appearance)
 - 🔎 Offline full-text search (Room FTS4) with filters/sorting, topped up by remote search when online
 - 🛒 Cart, wishlist, 3-step checkout with **hold-to-pay**, order history with sync status
 - 🎰 Daily **spin wheel**, **scratch cards**, hourly **lightning deals**, coupons
@@ -79,6 +81,7 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 ## Tools
 
 - `tools/seed/build_seed.py` — regenerates the bundled offline catalog (`composeResources/files/seed`: raw API JSON + thumbnails)
+- `tools/catalog/push_catalog.py` — uploads curated products (same JSON as `files/seed/new_arrivals.json`) to Firestore `catalog/{id}` using your own `gcloud` login; clients can only read that collection. Product images are CC BY-SA (Wikimedia Commons) and are credited on the detail page.
 - `tools/theme/generate_colors.py` — regenerates the M3 light/dark palettes from the brand seeds (navy `#131921`, orange `#FF9900`)
 
 ## Known limitations

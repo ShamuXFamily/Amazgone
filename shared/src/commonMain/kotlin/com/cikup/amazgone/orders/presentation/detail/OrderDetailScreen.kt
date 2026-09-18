@@ -1,5 +1,6 @@
 package com.cikup.amazgone.orders.presentation.detail
 
+import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.checkout_discount
 import amazgone.shared.generated.resources.checkout_ship_to
@@ -94,7 +95,7 @@ private fun OrderDetailContent(order: Order, padding: PaddingValues, onIntent: (
             item { Text(stringResource(Res.string.order_rejected_reason, reason), color = MaterialTheme.colorScheme.error) }
         }
         item {
-            ElevatedCard(Modifier.staggeredEnter(2)) {
+            ElevatedCard(Modifier.staggeredEnter(2), colors = appCardColors()) {
                 order.items.forEach { item ->
                     ListItem(
                         leadingContent = {
@@ -110,7 +111,7 @@ private fun OrderDetailContent(order: Order, padding: PaddingValues, onIntent: (
         }
         item { Totals(order, Modifier.staggeredEnter(3)) }
         item {
-            ElevatedCard(Modifier.fillMaxWidth().staggeredEnter(4)) {
+            ElevatedCard(Modifier.fillMaxWidth().staggeredEnter(4), colors = appCardColors()) {
                 Column(Modifier.padding(AmazgoneDimens.spaceLg)) {
                     Text(stringResource(Res.string.checkout_ship_to), style = MaterialTheme.typography.titleMedium)
                     with(order.address) {
@@ -163,7 +164,7 @@ private fun TimelineRow(label: StringResource, done: Boolean, isLast: Boolean, n
 
 @Composable
 private fun Totals(order: Order, modifier: Modifier = Modifier) {
-    ElevatedCard(modifier.fillMaxWidth()) {
+    ElevatedCard(modifier.fillMaxWidth(), colors = appCardColors()) {
         Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
             Amount(Res.string.checkout_subtotal, order.subtotalCoins)
             if (order.discountCoins > 0) Amount(Res.string.checkout_discount, -order.discountCoins)

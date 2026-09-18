@@ -30,6 +30,8 @@ fun Product.toEntity() = ProductEntity(
     metacriticScore = details.metacriticScore,
     ratingLabel = details.ratingLabel,
     releaseDateMillis = details.releaseDateMillis,
+    highlights = details.highlights,
+    imageCredit = details.imageCredit,
     updatedAt = updatedAt,
 )
 
@@ -58,6 +60,8 @@ fun ProductEntity.toDomain() = Product(
         metacriticScore = metacriticScore,
         ratingLabel = ratingLabel,
         releaseDateMillis = releaseDateMillis,
+        highlights = highlights,
+        imageCredit = imageCredit,
     ),
     updatedAt = updatedAt,
 )

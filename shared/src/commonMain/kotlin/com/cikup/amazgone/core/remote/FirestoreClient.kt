@@ -57,19 +57,23 @@ class FirestoreClient(
         null
     }
 
-    /** Lists a collection (all pages). */
-    suspend fun list(collectionPath: String, pageSize: Int = PAGE_SIZE): List<FirestoreDocument> {
+    /**
+     * Lists a collection (all pages). [authenticated] = false reads a public collection (rules allow
+     * `read: if true`) without a signed-in user, identified only by the API key.
+     */
+    suspend fun list(collectionPath: String, pageSize: Int = PAGE_SIZE, authenticated: Boolean = true): List<FirestoreDocument> {
         val documents = mutableListOf<FirestoreDocument>()
         var pageToken: String? = null
         do {
-            val page = authorized { token ->
+            val request: suspend (String?) -> JsonObject = { token ->
                 client.get("$baseUrl/${documentName(collectionPath)}") {
-                    bearerAuth(token)
+                    if (token != null) bearerAuth(token) else parameter("key", config.apiKey)
                     appIdentity(config)
                     parameter("pageSize", pageSize)
                     pageToken?.let { parameter("pageToken", it) }
                 }.body<JsonObject>()
             }
+            val page = if (authenticated) authorized { request(it) } else mapErrors { request(null) }
             page["documents"]?.jsonArray?.mapTo(documents) { it.jsonObject.toDocument() }
             pageToken = (page["nextPageToken"] as? JsonPrimitive)?.content
         } while (pageToken != null)

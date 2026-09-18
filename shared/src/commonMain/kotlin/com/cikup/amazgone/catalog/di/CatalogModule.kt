@@ -3,6 +3,7 @@ package com.cikup.amazgone.catalog.di
 import amazgone.shared.generated.resources.Res
 import com.cikup.amazgone.catalog.data.remote.CatalogSource
 import com.cikup.amazgone.catalog.data.remote.CheapSharkSource
+import com.cikup.amazgone.catalog.data.remote.CuratedCatalogSource
 import com.cikup.amazgone.catalog.data.remote.DummyJsonSource
 import com.cikup.amazgone.catalog.data.repository.CatalogRepositoryImpl
 import com.cikup.amazgone.catalog.data.sync.CatalogSyncer
@@ -30,10 +31,11 @@ val catalogModule = module {
     single { get<AppDatabase>().catalogDao() }
     single(named("dummyjson")) { DummyJsonSource(get(), get()) } bind CatalogSource::class
     single(named("cheapshark")) { CheapSharkSource(get(), get()) } bind CatalogSource::class
+    single(named("curated")) { CuratedCatalogSource(get(), get()) } bind CatalogSource::class
     single { CatalogRepositoryImpl(get(), getAll(), get(), get()) } binds arrayOf(CatalogRepository::class)
     single { CatalogSyncer(getAll(), get(), get(), get(), get()) } bind RemotePuller::class
     single(named("seed-catalog")) {
-        SeedCatalogImporter(get()) { Res.readBytes(SeedCatalogImporter.SEED_PATH) }
+        SeedCatalogImporter(get()) { path -> Res.readBytes(path) }
     } bind StartupTask::class
 
     factoryOf(::ObserveHomeFeedUseCase)

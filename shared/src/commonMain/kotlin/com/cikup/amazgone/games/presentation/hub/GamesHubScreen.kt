@@ -1,5 +1,6 @@
 package com.cikup.amazgone.games.presentation.hub
 
+import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.account_achievements
 import amazgone.shared.generated.resources.account_leaderboard
@@ -189,7 +190,7 @@ private const val CHIP_ALPHA = 0.18f
 @Composable
 private fun DealPreview(state: GamesHubState, modifier: Modifier, onClick: () -> Unit) {
     val deal = state.deal ?: return
-    ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
+    ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth(), colors = appCardColors()) {
         Row(Modifier.padding(AmazgoneDimens.spaceLg), horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceLg), verticalAlignment = Alignment.CenterVertically) {
             ProductImage(deal.product.thumbnailUrl, deal.product.id, Modifier.size(AmazgoneDimens.iconXl).clip(MaterialTheme.shapes.medium))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceXs)) {
@@ -207,7 +208,7 @@ private fun DealPreview(state: GamesHubState, modifier: Modifier, onClick: () ->
 
 @Composable
 private fun SmallTile(icon: ImageVector, label: StringResource, modifier: Modifier, onClick: () -> Unit) {
-    ElevatedCard(onClick = onClick, modifier = modifier) {
+    ElevatedCard(onClick = onClick, modifier = modifier, colors = appCardColors()) {
         Column(Modifier.fillMaxWidth().padding(AmazgoneDimens.spaceLg), horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.tertiary, modifier = Modifier.size(AmazgoneDimens.iconLg))
             Text(stringResource(label), style = MaterialTheme.typography.titleSmall)

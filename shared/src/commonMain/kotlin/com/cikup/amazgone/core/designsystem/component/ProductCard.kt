@@ -36,6 +36,7 @@ fun ProductCard(
 ) {
     val interaction = remember { MutableInteractionSource() }
     ElevatedCard(
+        colors = appCardColors(),
         onClick = onClick,
         interactionSource = interaction,
         modifier = modifier.pressScale(interaction),

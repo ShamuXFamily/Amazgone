@@ -34,7 +34,14 @@ class HomeViewModel(
             .flatMapLatest { observeHomeFeed(it) }
             .observe { feed ->
                 setState {
-                    copy(isLoading = false, deals = feed.deals, topRated = feed.topRated, categories = feed.categories, products = feed.products)
+                    copy(
+                        isLoading = false,
+                        deals = feed.deals,
+                        topRated = feed.topRated,
+                        newArrivals = feed.newArrivals,
+                        categories = feed.categories,
+                        products = feed.products,
+                    )
                 }
             }
         val ticks = ticker().shareIn(vmScope, SharingStarted.WhileSubscribed(), replay = 1)

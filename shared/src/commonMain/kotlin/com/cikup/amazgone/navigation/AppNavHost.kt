@@ -100,6 +100,7 @@ private fun NavGraphBuilder.shopGraph(nav: NavHostController) {
                 onOpenProduct = nav::openProduct,
                 onCheckout = { nav.navigate(Route.Checkout) },
                 onBrowse = { nav.navigateToTopLevel(TopLevelDestination.HOME) },
+                onPlayGames = { nav.navigateToTopLevel(TopLevelDestination.GAMES) },
             )
         }
     }

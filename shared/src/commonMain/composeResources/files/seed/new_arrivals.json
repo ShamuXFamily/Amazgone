@@ -1,0 +1,119 @@
+{
+  "products": [
+    {
+      "id": "iphone-duo",
+      "title": "iPhone Duo 256GB",
+      "brand": "Apple",
+      "category": "smartphones",
+      "description": "Apple's first foldable iPhone. It opens like a book to a 7.6-inch inner screen, and the outer screen keeps the same aspect ratio, so apps look the same folded or open.",
+      "priceUsd": 1999,
+      "stock": 40,
+      "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Iphone_Duo_Vector_%28portrait%29.svg/1280px-Iphone_Duo_Vector_%28portrait%29.svg.png"],
+      "imageCredit": "Illustration: Rafael Fernandez (TheGoldenBox) · CC BY-SA 4.0 · Wikimedia Commons",
+      "highlights": [
+        "A20 Pro chip",
+        "7.6\" inner display with nano-texture + 5.4\" outer display",
+        "Dual 48MP rear cameras (Fusion Main with 2x, Ultra Wide)",
+        "Up to 31 hrs video (inner) / 44 hrs (outer)",
+        "IP68 · Star White or Night Sky"
+      ],
+      "releaseDate": "2026-10-23",
+      "shipping": "Pre-order · ships from 23 Oct",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "tags": ["iphone", "apple", "foldable", "new"]
+    },
+    {
+      "id": "iphone-18-pro",
+      "title": "iPhone 18 Pro 256GB",
+      "brand": "Apple",
+      "category": "smartphones",
+      "description": "Apple's smaller 2026 Pro phone. The main camera has a variable aperture for more control over depth of field, and the Dynamic Island is smaller.",
+      "priceUsd": 1199,
+      "stock": 25,
+      "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/IPhone_18_Pro_Vector.svg/1280px-IPhone_18_Pro_Vector.svg.png"],
+      "imageCredit": "Illustration: Rafael Fernandez (TheGoldenBox) · CC BY-SA 4.0 · Wikimedia Commons",
+      "highlights": [
+        "A20 Pro chip (2nm)",
+        "6.3\" ProMotion display",
+        "48MP Fusion Main camera, variable aperture f/1.48–f/4",
+        "Up to 36 hrs video playback",
+        "Black, Silver, Glacier or Burgundy"
+      ],
+      "releaseDate": "2026-09-18",
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "tags": ["iphone", "apple", "new"]
+    },
+    {
+      "id": "iphone-18-pro-max",
+      "title": "iPhone 18 Pro Max 256GB",
+      "brand": "Apple",
+      "category": "smartphones",
+      "description": "The larger iPhone 18 Pro, with the same variable-aperture camera and A20 Pro chip and the longest battery life of any iPhone so far.",
+      "priceUsd": 1299,
+      "stock": 18,
+      "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/IPhone_18_Pro_Max_%28burgundy_model%29_-_1.jpg/1280px-IPhone_18_Pro_Max_%28burgundy_model%29_-_1.jpg"],
+      "imageCredit": "Photo: Kyu3a · CC BY-SA 4.0 · Wikimedia Commons",
+      "highlights": [
+        "A20 Pro chip (2nm)",
+        "6.9\" ProMotion display",
+        "48MP Fusion Main camera, variable aperture",
+        "Up to 45 hrs video playback",
+        "About 50% charge in 15 minutes (wired)"
+      ],
+      "releaseDate": "2026-09-18",
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "tags": ["iphone", "apple", "new"]
+    },
+    {
+      "id": "galaxy-s26-ultra",
+      "title": "Samsung Galaxy S26 Ultra 256GB",
+      "brand": "Samsung",
+      "category": "smartphones",
+      "description": "Samsung's top 2026 flagship phone, with a built-in S Pen, a privacy display and a four-camera zoom system.",
+      "priceUsd": 1299.99,
+      "stock": 30,
+      "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Galaxy_S26_Ultra_-_1.jpg/1280px-Galaxy_S26_Ultra_-_1.jpg"],
+      "imageCredit": "Photo: Kyu3a · CC BY-SA 4.0 · Wikimedia Commons",
+      "highlights": [
+        "Snapdragon 8 Elite Gen 5 for Galaxy",
+        "6.9\" 120Hz AMOLED",
+        "200MP main + 50MP 5x periscope camera",
+        "5,000 mAh battery, 60W wired charging",
+        "Built-in S Pen"
+      ],
+      "releaseDate": "2026-03-11",
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "tags": ["samsung", "galaxy", "android", "new"]
+    },
+    {
+      "id": "pixel-11-pro",
+      "title": "Google Pixel 11 Pro 256GB",
+      "brand": "Google",
+      "category": "smartphones",
+      "description": "Google's compact 2026 Pro phone. It runs on the new Tensor G6 chip and has a brighter, more scratch-resistant screen.",
+      "priceUsd": 1099,
+      "stock": 35,
+      "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Pixel_11_Pro_back_%28Canyon%29.svg/1280px-Pixel_11_Pro_back_%28Canyon%29.svg.png"],
+      "imageCredit": "Illustration: DM115Wiki · CC BY-SA 4.0 · Wikimedia Commons",
+      "highlights": [
+        "Google Tensor G6",
+        "6.3\" LTPO OLED, up to 3,600 nits",
+        "50MP main camera (new sensor)",
+        "4,850 mAh battery",
+        "Canyon, Fog, Olive or Obsidian"
+      ],
+      "releaseDate": "2026-08-20",
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "tags": ["pixel", "google", "android", "new"]
+    }
+  ]
+}

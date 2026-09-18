@@ -52,6 +52,7 @@ private const val SKELETON_COUNT = 6
 private const val ORIGIN_DEALS = "deals"
 private const val ORIGIN_FLASH = "flash"
 private const val ORIGIN_TOP = "top"
+private const val ORIGIN_NEW = "new"
 private const val ORIGIN_GRID = "grid"
 
 @Composable
@@ -105,6 +106,11 @@ fun HomeScreen(state: HomeState, onIntent: (HomeIntent) -> Unit) {
 private fun LazyGridScope.feed(state: HomeState, onIntent: (HomeIntent) -> Unit) {
     if (state.deals.isNotEmpty()) {
         fullWidth("deals") { DealsCarousel(state.deals, onOpen = { onIntent(HomeIntent.OpenProduct(it, ORIGIN_DEALS)) }) }
+    }
+    if (state.newArrivals.isNotEmpty() && state.selectedCategory == null) {
+        fullWidth("new-arrivals") {
+            NewArrivalsRow(state.newArrivals, state.now, ORIGIN_NEW, onOpen = { onIntent(HomeIntent.OpenProduct(it, ORIGIN_NEW)) })
+        }
     }
     state.flashSale?.takeIf { it.deals.isNotEmpty() }?.let { sale ->
         fullWidth("flash-title") {

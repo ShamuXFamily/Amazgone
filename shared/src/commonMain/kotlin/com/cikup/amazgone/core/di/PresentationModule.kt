@@ -19,12 +19,14 @@ import com.cikup.amazgone.progress.presentation.AchievementsViewModel
 import com.cikup.amazgone.progress.presentation.LeaderboardViewModel
 import com.cikup.amazgone.catalog.presentation.categories.CategoriesViewModel
 import com.cikup.amazgone.catalog.presentation.flash.FlashSaleViewModel
+import com.cikup.amazgone.settings.presentation.ThemeViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val presentationModule = module {
     viewModelOf(::ShellViewModel)
+    viewModelOf(::ThemeViewModel)
     viewModelOf(::HomeViewModel)
     viewModel { params -> SearchViewModel(params.getOrNull(), get(), get(), get()) }
     viewModelOf(::FlashSaleViewModel)

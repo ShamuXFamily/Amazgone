@@ -127,7 +127,9 @@ private fun DetailContent(
             )
         }
         item(key = "info") { InfoCard(product, state, onIntent) }
+        if (product.details.highlights.isNotEmpty()) item(key = "highlights") { Highlights(product) }
         item(key = "facts") { KeyFacts(product) }
+        if (product.details.imageCredit != null) item(key = "credit") { ImageCredit(product) }
         item(key = "reviews-title") { SectionHeader(stringResource(Res.string.detail_reviews)) }
         if (state.reviews.isEmpty() && product.rating == null) {
             item(key = "no-reviews") { NoReviews() }

@@ -5,6 +5,7 @@ data class HomeFeed(
     val topRated: List<Product>,
     val categories: List<Category>,
     val products: List<Product>,
+    val newArrivals: List<Product> = emptyList(),
 ) {
     val isEmpty: Boolean get() = products.isEmpty() && deals.isEmpty()
 }

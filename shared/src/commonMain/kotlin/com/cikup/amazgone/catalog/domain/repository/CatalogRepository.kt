@@ -10,6 +10,8 @@ interface CatalogRepository {
     fun observeProducts(categorySlug: String?): Flow<List<Product>>
     fun observeDeals(limit: Int): Flow<List<Product>>
     fun observeTopRated(limit: Int): Flow<List<Product>>
+    /** Curated launches, newest release first. */
+    fun observeNewArrivals(limit: Int): Flow<List<Product>>
     fun observeCategories(): Flow<List<Category>>
     fun observeProduct(productId: String): Flow<ProductWithReviews?>
     fun observeSimilar(productId: String, categorySlug: String, limit: Int): Flow<List<Product>>

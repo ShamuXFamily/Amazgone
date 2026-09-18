@@ -4,6 +4,8 @@ package com.cikup.amazgone.catalog.domain.model
 enum class CatalogSourceId(val key: String) {
     DUMMY_JSON("dummyjson"),
     CHEAP_SHARK("cheapshark"),
+    /** Hand-curated new arrivals (Firestore `catalog` collection + bundled starter set). */
+    AMAZGONE("amazgone"),
     ;
 
     fun productId(rawId: String): String = "$key:$rawId"
@@ -50,6 +52,10 @@ data class ProductDetails(
     val metacriticScore: Int? = null,
     val ratingLabel: String? = null,
     val releaseDateMillis: Long? = null,
+    /** Short "About this item" bullet points. */
+    val highlights: List<String> = emptyList(),
+    /** Attribution required by the image licence (e.g. CC BY-SA), shown under the gallery. */
+    val imageCredit: String? = null,
 )
 
 data class Review(

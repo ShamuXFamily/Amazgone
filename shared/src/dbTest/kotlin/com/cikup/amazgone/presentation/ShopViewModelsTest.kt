@@ -18,6 +18,8 @@ import com.cikup.amazgone.catalog.presentation.search.SearchViewModel
 import com.cikup.amazgone.testing.TestGraph
 import com.cikup.amazgone.testing.eventually
 import com.cikup.amazgone.testing.product
+import com.cikup.amazgone.wallet.domain.model.WalletRules
+import com.cikup.amazgone.wishlist.domain.usecase.ObserveWishlistIdsUseCase
 import com.cikup.amazgone.wishlist.presentation.WishlistViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -125,5 +127,35 @@ class ShopViewModelsTest {
         vm.state.eventually { it.summary.isEmpty }
         vm.onIntent(CartIntent.Undo(undo.entry))
         vm.state.eventually { it.summary.itemCount == 3 }
+    }
+
+    @Test
+    fun cartShowsWalletBalanceAgainstTotal() = runTest {
+        graph.grantGuestWallet()
+        seed()
+        graph.get<AddToCartUseCase>()(phone.id)
+        val vm = graph.get<CartViewModel>()
+        val state = vm.state.eventually { it.summary.itemCount == 1 && it.balanceCoins == WalletRules.STARTER_COINS }
+        assertEquals(WalletRules.STARTER_COINS, state.balanceCoins)
+        assertEquals(0L, state.shortfallCoins)
+
+        vm.onIntent(CartIntent.ChangeQuantity(phone.id, 6)) // 6,000 > 5,000 starter coins
+        assertEquals(1_000L, vm.state.eventually { it.summary.itemCount == 6 }.shortfallCoins)
+
+        vm.onIntent(CartIntent.PlayForCoins)
+        assertEquals<CartEffect>(CartEffect.NavigateToGames, vm.effects.first())
+    }
+
+    @Test
+    fun saveForLaterMovesLineToWishlist() = runTest {
+        seed()
+        graph.get<AddToCartUseCase>()(lamp.id)
+        val vm = graph.get<CartViewModel>()
+        vm.state.eventually { it.summary.itemCount == 1 }
+
+        vm.onIntent(CartIntent.SaveForLater(lamp.id))
+        assertEquals<CartEffect>(CartEffect.SavedForLater(lamp.title), vm.effects.first())
+        vm.state.eventually { it.summary.isEmpty }
+        assertEquals(setOf(lamp.id), graph.get<ObserveWishlistIdsUseCase>()().first())
     }
 }

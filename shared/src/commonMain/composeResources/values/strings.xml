@@ -313,4 +313,37 @@
     <string name="detail_reviews_count">%1$d reviews</string>
     <string name="detail_out_of_five">out of 5</string>
     <string name="detail_verified">Verified purchase</string>
+
+    <!-- Settings -->
+    <string name="settings_appearance">Appearance</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+
+    <!-- Cart v2 -->
+    <plurals name="cart_items_count">
+        <item quantity="one">%1$d item</item>
+        <item quantity="other">%1$d items</item>
+    </plurals>
+    <string name="cart_wallet_title">Coin wallet</string>
+    <string name="cart_wallet_enough">You have enough coins for this order</string>
+    <string name="cart_wallet_short">You need %1$s more coins</string>
+    <string name="cart_wallet_after">%1$s left after this order</string>
+    <string name="cart_play_for_coins">Play for coins</string>
+    <string name="cart_save_for_later">Save for later</string>
+    <string name="cart_delete">Delete</string>
+    <string name="cart_saved_for_later">Saved %1$s to your wishlist</string>
+    <string name="cart_summary_title">Order summary</string>
+    <string name="cart_summary_items">Items (%1$d)</string>
+    <string name="cart_summary_savings">Savings</string>
+    <string name="cart_summary_coupon_hint">Have a coupon? Apply it at checkout.</string>
+    <string name="cart_total">Total</string>
+    <string name="cart_each">%1$s each</string>
+
+    <!-- New arrivals -->
+    <string name="home_new_arrivals">New arrivals</string>
+    <string name="badge_new">NEW</string>
+    <string name="badge_preorder">PRE-ORDER</string>
+    <string name="detail_highlights">About this item</string>
+    <string name="detail_not_affiliated">Demo shop · not affiliated with the brand</string>
 </resources>

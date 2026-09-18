@@ -105,6 +105,8 @@ data class ExtendedColors(
     val onCta: Color,
     /** Positive status (in stock, verified purchase). */
     val success: Color,
+    /** Backdrop for product photos (shot on white): stays white in dark mode too, like big shops do. */
+    val imageStage: Color,
     /** Soft pastel tiles behind quick actions. */
     val tileTints: List<Color>,
 )
@@ -116,6 +118,7 @@ internal val LightExtendedColors = ExtendedColors(
     cta = Color(0xFFFF6B2C),
     onCta = Color(0xFFFFFFFF),
     success = Color(0xFF1E8E4F),
+    imageStage = Color(0xFFFFFFFF),
     tileTints = listOf(Color(0xFFE8F1FF), Color(0xFFFFEFE6), Color(0xFFE9F8EF), Color(0xFFF3ECFF), Color(0xFFFFF6DB)),
 )
 

@@ -33,6 +33,8 @@ data class ProductEntity(
     val metacriticScore: Int?,
     val ratingLabel: String?,
     val releaseDateMillis: Long?,
+    val highlights: List<String>,
+    val imageCredit: String?,
     val updatedAt: Long,
 )
 

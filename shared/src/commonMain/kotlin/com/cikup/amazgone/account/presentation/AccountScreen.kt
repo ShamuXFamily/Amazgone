@@ -1,5 +1,6 @@
 package com.cikup.amazgone.account.presentation
 
+import com.cikup.amazgone.settings.presentation.ThemePickerRoute
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.account_cancel
 import amazgone.shared.generated.resources.account_sign_out_anyway
@@ -45,11 +46,15 @@ fun AccountRoute(onNavigate: (AccountDestination) -> Unit, viewModel: AccountVie
             }
         }
     }
-    AccountScreen(state, viewModel::onIntent)
+    AccountScreen(state, viewModel::onIntent, appearance = { ThemePickerRoute() })
 }
 
 @Composable
-fun AccountScreen(state: AccountState, onIntent: (AccountIntent) -> Unit) {
+fun AccountScreen(
+    state: AccountState,
+    onIntent: (AccountIntent) -> Unit,
+    appearance: @Composable () -> Unit = {},
+) {
     Scaffold(containerColor = MaterialTheme.colorScheme.background) { padding ->
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(bottom = padding.calculateBottomPadding()),
@@ -70,6 +75,7 @@ fun AccountScreen(state: AccountState, onIntent: (AccountIntent) -> Unit) {
             item(key = "roulette") { RouletteBanner(onIntent, Modifier.staggeredEnter(1)) }
             if (state.session == null) guestContent(state, onIntent)
             item(key = "menu") { MenuList(onIntent) }
+            item(key = "appearance") { appearance() }
             if (state.session != null) signedInFooter(state, onIntent)
         }
         StatusBarScrim(MaterialTheme.colorScheme.background)

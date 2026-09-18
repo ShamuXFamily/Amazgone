@@ -12,6 +12,7 @@ data class HomeState(
     val isLoading: Boolean = true,
     val deals: List<Product> = emptyList(),
     val topRated: List<Product> = emptyList(),
+    val newArrivals: List<Product> = emptyList(),
     val categories: List<Category> = emptyList(),
     val products: List<Product> = emptyList(),
     val selectedCategory: String? = null,

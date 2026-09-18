@@ -1,5 +1,6 @@
 package com.cikup.amazgone.account.presentation
 
+import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.account_achievements
 import amazgone.shared.generated.resources.account_guest_body
@@ -77,7 +78,7 @@ fun LazyListScope.signedInHeader(state: AccountState) {
 
 fun LazyListScope.signedInFooter(state: AccountState, onIntent: (AccountIntent) -> Unit) {
     item(key = "sync") {
-        ElevatedCard {
+        ElevatedCard(colors = appCardColors()) {
             ListItem(
                 headlineContent = { Text(syncStatusLabel(state.syncStatus)) },
                 trailingContent = {
@@ -87,7 +88,7 @@ fun LazyListScope.signedInFooter(state: AccountState, onIntent: (AccountIntent) 
         }
     }
     item(key = "signout") {
-        ElevatedCard {
+        ElevatedCard(colors = appCardColors()) {
             MenuRow(Icons.AutoMirrored.Outlined.Logout, Res.string.account_sign_out, showChevron = false) { onIntent(AccountIntent.SignOut) }
         }
     }

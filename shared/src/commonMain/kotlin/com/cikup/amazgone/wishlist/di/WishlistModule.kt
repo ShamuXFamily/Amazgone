@@ -11,6 +11,7 @@ import com.cikup.amazgone.wishlist.domain.repository.WishlistRepository
 import com.cikup.amazgone.wishlist.domain.usecase.ObserveIsSavedUseCase
 import com.cikup.amazgone.wishlist.domain.usecase.ObserveWishlistIdsUseCase
 import com.cikup.amazgone.wishlist.domain.usecase.ObserveWishlistUseCase
+import com.cikup.amazgone.wishlist.domain.usecase.SaveToWishlistUseCase
 import com.cikup.amazgone.wishlist.domain.usecase.ToggleWishlistUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -24,6 +25,7 @@ val wishlistModule = module {
     singleOf(::WishlistSetHandler) bind OutboxHandler::class
     singleOf(::WishlistPuller) bind RemotePuller::class
     factoryOf(::ToggleWishlistUseCase)
+    factoryOf(::SaveToWishlistUseCase)
     factoryOf(::ObserveWishlistUseCase)
     factoryOf(::ObserveIsSavedUseCase)
     factoryOf(::ObserveWishlistIdsUseCase)

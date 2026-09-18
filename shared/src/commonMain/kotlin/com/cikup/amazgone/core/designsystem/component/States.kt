@@ -88,7 +88,7 @@ fun SectionHeader(title: String, modifier: Modifier = Modifier, actionLabel: Str
 /** Skeleton shaped like [ProductCard] while the catalog loads. */
 @Composable
 fun ProductCardSkeleton(modifier: Modifier = Modifier) {
-    ElevatedCard(modifier) {
+    ElevatedCard(modifier, colors = appCardColors()) {
         Box(Modifier.fillMaxWidth().aspectRatio(1f).shimmer())
         Column(Modifier.padding(AmazgoneDimens.spaceMd), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
             SkeletonLine(fraction = 1f)

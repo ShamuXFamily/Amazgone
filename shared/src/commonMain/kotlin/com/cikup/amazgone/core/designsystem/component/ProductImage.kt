@@ -83,6 +83,7 @@ private fun bundledThumbnailPath(productId: String): String? {
     val extension = when (source) {
         CatalogSourceId.DUMMY_JSON -> "webp"
         CatalogSourceId.CHEAP_SHARK -> "jpg"
+        CatalogSourceId.AMAZGONE -> "webp"
     }
     return "files/seed/thumbs/${source.key}_$rawId.$extension"
 }

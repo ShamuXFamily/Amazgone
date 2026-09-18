@@ -1,5 +1,6 @@
 package com.cikup.amazgone.orders.presentation.list
 
+import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.order_items_count
 import amazgone.shared.generated.resources.order_placed_on
@@ -83,7 +84,7 @@ fun OrdersScreen(state: OrdersState, onIntent: (OrdersIntent) -> Unit) {
 
 @Composable
 private fun OrderCard(order: Order, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
+    ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth(), colors = appCardColors()) {
         Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Text(stringResource(Res.string.order_placed_on, order.id.take(SHORT_ID).uppercase()), style = MaterialTheme.typography.titleSmall)

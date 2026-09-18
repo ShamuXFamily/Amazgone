@@ -1,5 +1,6 @@
 package com.cikup.amazgone.catalog.presentation.home
 
+import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.home_category_all
 import amazgone.shared.generated.resources.home_search_hint
@@ -133,6 +134,7 @@ private fun PagerState.offsetFor(page: Int): Float = (currentPage - page) + curr
 @Composable
 private fun DealPage(product: Product, pageOffset: () -> Float, onClick: () -> Unit) {
     ElevatedCard(
+        colors = appCardColors(),
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()

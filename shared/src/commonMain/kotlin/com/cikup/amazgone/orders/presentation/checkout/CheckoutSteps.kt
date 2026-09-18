@@ -1,5 +1,6 @@
 package com.cikup.amazgone.orders.presentation.checkout
 
+import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.checkout_after_purchase
 import amazgone.shared.generated.resources.checkout_balance
@@ -103,7 +104,7 @@ fun PaymentStep(state: CheckoutState, onIntent: (CheckoutIntent) -> Unit) {
         Modifier.verticalScroll(rememberScrollState()).padding(AmazgoneDimens.spaceLg),
         verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceLg),
     ) {
-        ElevatedCard(Modifier.fillMaxWidth().staggeredEnter(0)) {
+        ElevatedCard(Modifier.fillMaxWidth().staggeredEnter(0), colors = appCardColors()) {
             Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
                 Text(stringResource(Res.string.checkout_pay_with_coins), style = MaterialTheme.typography.titleMedium)
                 LabeledAmount(Res.string.checkout_balance, state.balance)
@@ -112,7 +113,7 @@ fun PaymentStep(state: CheckoutState, onIntent: (CheckoutIntent) -> Unit) {
             }
         }
         Text(stringResource(Res.string.checkout_coupons), style = MaterialTheme.typography.titleMedium, modifier = Modifier.staggeredEnter(1))
-        ElevatedCard(Modifier.fillMaxWidth().staggeredEnter(2)) {
+        ElevatedCard(Modifier.fillMaxWidth().staggeredEnter(2), colors = appCardColors()) {
             CouponRow(null, state.selectedCouponCode == null) { onIntent(CheckoutIntent.SelectCoupon(null)) }
             state.coupons.forEach { coupon ->
                 HorizontalDivider()
@@ -150,7 +151,7 @@ fun ReviewStep(state: CheckoutState) {
         Modifier.verticalScroll(rememberScrollState()).padding(AmazgoneDimens.spaceLg),
         verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceLg),
     ) {
-        ElevatedCard(Modifier.fillMaxWidth().staggeredEnter(0)) {
+        ElevatedCard(Modifier.fillMaxWidth().staggeredEnter(0), colors = appCardColors()) {
             Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceXs)) {
                 Text(stringResource(Res.string.checkout_ship_to), style = MaterialTheme.typography.titleMedium)
                 with(state.address) {
@@ -160,7 +161,7 @@ fun ReviewStep(state: CheckoutState) {
                 }
             }
         }
-        ElevatedCard(Modifier.fillMaxWidth().staggeredEnter(1)) {
+        ElevatedCard(Modifier.fillMaxWidth().staggeredEnter(1), colors = appCardColors()) {
             Text(
                 stringResource(Res.string.checkout_items),
                 style = MaterialTheme.typography.titleMedium,
@@ -184,7 +185,7 @@ fun ReviewStep(state: CheckoutState) {
 
 @Composable
 private fun Totals(state: CheckoutState, modifier: Modifier = Modifier) {
-    ElevatedCard(modifier.fillMaxWidth()) {
+    ElevatedCard(modifier.fillMaxWidth(), colors = appCardColors()) {
         Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
             LabeledAmount(Res.string.checkout_subtotal, state.summary.subtotalCoins)
             if (state.summary.couponDiscountCoins > 0) {

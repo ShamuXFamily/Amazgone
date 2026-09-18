@@ -5,6 +5,7 @@ import com.cikup.amazgone.catalog.data.local.toDomain
 import com.cikup.amazgone.catalog.data.local.toEntity
 import com.cikup.amazgone.catalog.data.mapper.CatalogBatch
 import com.cikup.amazgone.catalog.data.remote.CatalogSource
+import com.cikup.amazgone.catalog.domain.model.CatalogSourceId
 import com.cikup.amazgone.catalog.domain.model.Category
 import com.cikup.amazgone.catalog.domain.model.Product
 import com.cikup.amazgone.catalog.domain.model.ProductWithReviews
@@ -29,6 +30,9 @@ class CatalogRepositoryImpl(
     override fun observeDeals(limit: Int) = dao.observeDeals(limit).map { rows -> rows.map { it.toDomain() } }
 
     override fun observeTopRated(limit: Int) = dao.observeTopRated(limit).map { rows -> rows.map { it.toDomain() } }
+
+    override fun observeNewArrivals(limit: Int) =
+        dao.observeBySourceNewestFirst(CatalogSourceId.AMAZGONE.key, limit).map { rows -> rows.map { it.toDomain() } }
 
     override fun observeCategories(): Flow<List<Category>> =
         dao.observeCategories().map { rows -> rows.map { it.toDomain() } }
@@ -74,6 +78,12 @@ class CatalogRepositoryImpl(
                 )
             }
         }
+    }
+
+    /** Bundled starter data must never overwrite a fresher copy that already came from the server. */
+    suspend fun saveMissing(batch: CatalogBatch) {
+        val known = dao.byIds(batch.products.map { it.id }).map { it.id }.toSet()
+        save(CatalogBatch(batch.products.filterNot { it.id in known }, batch.reviews.filterNot { it.productId in known }))
     }
 
     suspend fun isEmpty(): Boolean = dao.count() == 0

@@ -2,33 +2,30 @@ package com.cikup.amazgone.cart.presentation
 
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.cart_browse
-import amazgone.shared.generated.resources.cart_checkout
 import amazgone.shared.generated.resources.cart_empty_body
 import amazgone.shared.generated.resources.cart_empty_title
 import amazgone.shared.generated.resources.cart_item_removed
-import amazgone.shared.generated.resources.cart_savings
-import amazgone.shared.generated.resources.cart_subtotal
+import amazgone.shared.generated.resources.cart_items_count
+import amazgone.shared.generated.resources.cart_saved_for_later
 import amazgone.shared.generated.resources.cart_title
 import amazgone.shared.generated.resources.cart_undo
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.RemoveShoppingCart
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.TopAppBarDefaults
-import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -38,6 +35,7 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -45,12 +43,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.cikup.amazgone.cart.domain.model.CartSummary
-import com.cikup.amazgone.core.designsystem.component.CoinAmount
 import com.cikup.amazgone.core.designsystem.component.MessageState
-import com.cikup.amazgone.core.designsystem.motion.pressScale
+import com.cikup.amazgone.core.designsystem.motion.MotionTokens
+import com.cikup.amazgone.core.designsystem.motion.staggeredEnter
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
+import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
 import org.jetbrains.compose.resources.getString
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -59,6 +58,7 @@ fun CartRoute(
     onOpenProduct: (productId: String, origin: String) -> Unit,
     onCheckout: () -> Unit,
     onBrowse: () -> Unit,
+    onPlayGames: () -> Unit,
     viewModel: CartViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -76,6 +76,8 @@ fun CartRoute(
                 is CartEffect.NavigateToProduct -> onOpenProduct(effect.productId, effect.origin)
                 CartEffect.NavigateToCheckout -> onCheckout()
                 CartEffect.NavigateHome -> onBrowse()
+                CartEffect.NavigateToGames -> onPlayGames()
+                is CartEffect.SavedForLater -> snackbar.showSnackbar(getString(Res.string.cart_saved_for_later, effect.title))
             }
         }
     }
@@ -87,15 +89,14 @@ fun CartRoute(
 fun CartScreen(state: CartState, onIntent: (CartIntent) -> Unit, snackbar: SnackbarHostState) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(Res.string.cart_title)) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
-            )
-        },
+        topBar = { CartTopBar(state.summary.itemCount) },
         snackbarHost = { SnackbarHost(snackbar) },
         bottomBar = {
-            AnimatedVisibility(!state.summary.isEmpty) { CheckoutBar(state.summary) { onIntent(CartIntent.Checkout) } }
+            AnimatedVisibility(
+                !state.summary.isEmpty,
+                enter = slideInVertically(MotionTokens.snappy()) { it } + fadeIn(),
+                exit = slideOutVertically(MotionTokens.snappy()) { it } + fadeOut(),
+            ) { CheckoutBar(state.summary) { onIntent(CartIntent.Checkout) } }
         },
     ) { padding ->
         if (!state.isLoading && state.summary.isEmpty) {
@@ -108,51 +109,63 @@ fun CartScreen(state: CartState, onIntent: (CartIntent) -> Unit, snackbar: Snack
                 modifier = Modifier.padding(padding).fillMaxSize(),
             )
         } else {
-            LazyColumn(
-                contentPadding = PaddingValues(
-                    start = AmazgoneDimens.spaceLg,
-                    end = AmazgoneDimens.spaceLg,
-                    top = padding.calculateTopPadding(),
-                    bottom = padding.calculateBottomPadding() + AmazgoneDimens.spaceLg,
-                ),
-                verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceMd),
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                items(state.summary.lines, key = { it.product.id }) { line ->
-                    CartLineRow(line, onIntent, Modifier.animateItem())
-                }
-            }
+            CartList(state, onIntent, padding)
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CheckoutBar(summary: CartSummary, onCheckout: () -> Unit) {
-    val interaction = remember { MutableInteractionSource() }
-    Surface(
-        color = MaterialTheme.colorScheme.surfaceContainerLowest,
-        shape = RoundedCornerShape(topStart = AmazgoneDimens.spaceXl, topEnd = AmazgoneDimens.spaceXl),
-        shadowElevation = AmazgoneDimens.spaceSm,
-    ) {
-        Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text(stringResource(Res.string.cart_subtotal, summary.itemCount), style = MaterialTheme.typography.titleMedium)
-                CoinAmount(summary.subtotalCoins, style = MaterialTheme.typography.titleLarge, animateChanges = true)
-            }
-            if (summary.savingsCoins > 0) {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(stringResource(Res.string.cart_savings), color = MaterialTheme.colorScheme.error)
-                    CoinAmount(summary.savingsCoins, style = MaterialTheme.typography.bodyMedium, animateChanges = true)
+private fun CartTopBar(itemCount: Int) {
+    TopAppBar(
+        title = {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
+                Text(stringResource(Res.string.cart_title))
+                AnimatedVisibility(itemCount > 0, enter = scaleIn(MotionTokens.bouncy()) + fadeIn(), exit = scaleOut() + fadeOut()) {
+                    Surface(color = AmazgoneTheme.extended.cta.copy(alpha = CHIP_ALPHA), contentColor = AmazgoneTheme.extended.cta, shape = CircleShape) {
+                        Text(
+                            pluralStringResource(Res.plurals.cart_items_count, itemCount, itemCount),
+                            style = MaterialTheme.typography.labelLarge,
+                            modifier = Modifier.padding(horizontal = AmazgoneDimens.spaceSm, vertical = AmazgoneDimens.spaceXs),
+                        )
+                    }
                 }
             }
-            Button(
-                onClick = onCheckout,
-                interactionSource = interaction,
-                colors = ButtonDefaults.buttonColors(containerColor = AmazgoneTheme.extended.cta, contentColor = AmazgoneTheme.extended.onCta),
-                modifier = Modifier.fillMaxWidth().heightIn(min = AmazgoneDimens.minTouchTarget + AmazgoneDimens.spaceSm).pressScale(interaction),
-            ) {
-                Text(stringResource(Res.string.cart_checkout))
+        },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+    )
+}
+
+@Composable
+private fun CartList(state: CartState, onIntent: (CartIntent) -> Unit, padding: PaddingValues) {
+    LazyColumn(
+        contentPadding = PaddingValues(
+            start = AmazgoneDimens.spaceLg,
+            end = AmazgoneDimens.spaceLg,
+            top = padding.calculateTopPadding(),
+            bottom = padding.calculateBottomPadding() + AmazgoneDimens.spaceLg,
+        ),
+        verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceMd),
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        state.balanceCoins?.let { balance ->
+            item(key = "wallet") {
+                WalletCheckCard(
+                    balance = balance,
+                    total = state.summary.totalCoins,
+                    shortfall = state.shortfallCoins,
+                    onPlay = { onIntent(CartIntent.PlayForCoins) },
+                    modifier = Modifier.animateItem().staggeredEnter(0),
+                )
             }
+        }
+        itemsIndexed(state.summary.lines, key = { _, line -> line.product.id }) { index, line ->
+            CartLineRow(line, onIntent, Modifier.animateItem().staggeredEnter(index + 1))
+        }
+        if (!state.summary.isEmpty) {
+            item(key = "summary") { OrderSummaryCard(state.summary, Modifier.animateItem().staggeredEnter(state.summary.lines.size + 1)) }
         }
     }
 }
+
+private const val CHIP_ALPHA = 0.15f

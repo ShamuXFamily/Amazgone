@@ -1,5 +1,6 @@
 package com.cikup.amazgone.account.presentation
 
+import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.account_confirm_password
 import amazgone.shared.generated.resources.account_create
@@ -56,7 +57,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AuthFormCard(form: AuthForm, remoteAvailable: Boolean, onIntent: (AccountIntent) -> Unit, modifier: Modifier = Modifier) {
-    ElevatedCard(modifier.fillMaxWidth().shakeOnChange(form.errorPulse)) {
+    ElevatedCard(modifier.fillMaxWidth().shakeOnChange(form.errorPulse), colors = appCardColors()) {
         SecondaryTabRow(selectedTabIndex = form.mode.ordinal) {
             AuthMode.entries.forEach { mode ->
                 Tab(

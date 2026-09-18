@@ -1,5 +1,6 @@
 package com.cikup.amazgone.wallet.presentation
 
+import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.ledger_pending
 import amazgone.shared.generated.resources.ledger_rejected
@@ -75,7 +76,7 @@ private fun BalanceHeader(state: WalletState) {
     val reduceMotion = LocalReduceMotion.current
     val flip = remember { Animatable(if (reduceMotion) 1f else 0f) }
     LaunchedEffect(Unit) { if (!reduceMotion) flip.animateTo(1f, tween(MotionTokens.DURATION_EXTRA_LONG_MS, easing = MotionTokens.EmphasizedDecelerate)) }
-    ElevatedCard(Modifier.fillMaxWidth()) {
+    ElevatedCard(Modifier.fillMaxWidth(), colors = appCardColors()) {
         Column(
             Modifier.fillMaxWidth().padding(AmazgoneDimens.spaceXl),
             horizontalAlignment = Alignment.CenterHorizontally,

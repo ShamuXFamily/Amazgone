@@ -11,10 +11,12 @@ class ObserveHomeFeedUseCase(private val repository: CatalogRepository) {
         repository.observeTopRated(TOP_RATED_LIMIT),
         repository.observeCategories(),
         repository.observeProducts(categorySlug),
-    ) { deals, topRated, categories, products -> HomeFeed(deals, topRated, categories, products) }
+        repository.observeNewArrivals(NEW_ARRIVALS_LIMIT),
+    ) { deals, topRated, categories, products, newArrivals -> HomeFeed(deals, topRated, categories, products, newArrivals) }
 
     private companion object {
         const val DEALS_LIMIT = 8
         const val TOP_RATED_LIMIT = 12
+        const val NEW_ARRIVALS_LIMIT = 10
     }
 }

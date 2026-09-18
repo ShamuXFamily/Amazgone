@@ -17,15 +17,20 @@ import com.cikup.amazgone.core.designsystem.motion.rememberReduceMotion
 @Composable
 fun AmazgoneTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    followSystem: Boolean = true,
+    animateChanges: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     val reduceMotion = rememberReduceMotion()
+    val target = if (darkTheme) ThemeColors(DarkColorScheme, DarkExtendedColors) else ThemeColors(LightColorScheme, LightExtendedColors)
+    val colors = animateThemeColors(target, animate = animateChanges && !reduceMotion)
+    SystemBarsAppearance(darkTheme, followSystem)
     CompositionLocalProvider(
         LocalReduceMotion provides reduceMotion,
-        LocalExtendedColors provides if (darkTheme) DarkExtendedColors else LightExtendedColors,
+        LocalExtendedColors provides colors.extended,
     ) {
         MaterialExpressiveTheme(
-            colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
+            colorScheme = colors.scheme,
             motionScheme = if (reduceMotion) MotionScheme.standard() else MotionScheme.expressive(),
             shapes = AmazgoneShapes,
             typography = AmazgoneTypography,

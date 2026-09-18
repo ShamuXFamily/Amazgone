@@ -1,5 +1,6 @@
 package com.cikup.amazgone.games.presentation.deal
 
+import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.game_deal_body
 import amazgone.shared.generated.resources.game_deal_claim
@@ -104,7 +105,7 @@ private fun DealContent(state: DealState, onIntent: (DealIntent) -> Unit, modifi
         modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(AmazgoneDimens.spaceLg),
         verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceLg),
     ) {
-        ElevatedCard(onClick = { onIntent(DealIntent.OpenProduct) }, modifier = Modifier.fillMaxWidth().graphicsLayer { scaleX = pulse; scaleY = pulse }) {
+        ElevatedCard(onClick = { onIntent(DealIntent.OpenProduct) }, modifier = Modifier.fillMaxWidth().graphicsLayer { scaleX = pulse; scaleY = pulse }, colors = appCardColors()) {
             ProductImage(deal.product.imageUrls.firstOrNull() ?: deal.product.thumbnailUrl, deal.product.id, Modifier.fillMaxWidth().aspectRatio(1f))
             Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
                 Text(stringResource(Res.string.game_deal_body, deal.extraPercent.toInt()), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelLarge)
