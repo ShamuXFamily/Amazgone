@@ -307,4 +307,10 @@
     <string name="menu_your_account">Your account</string>
     <string name="menu_shop_by_category">Shop by category</string>
     <string name="categories_title">Shop by category</string>
+
+    <!-- Detail v2 -->
+    <string name="detail_key_facts">Key facts</string>
+    <string name="detail_reviews_count">%1$d reviews</string>
+    <string name="detail_out_of_five">out of 5</string>
+    <string name="detail_verified">Verified purchase</string>
 </resources>

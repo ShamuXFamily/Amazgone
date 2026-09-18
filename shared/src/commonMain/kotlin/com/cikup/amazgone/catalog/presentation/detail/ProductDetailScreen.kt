@@ -1,7 +1,6 @@
 package com.cikup.amazgone.catalog.presentation.detail
 
 import amazgone.shared.generated.resources.Res
-import amazgone.shared.generated.resources.action_back
 import amazgone.shared.generated.resources.detail_also_bought
 import amazgone.shared.generated.resources.detail_limit_reached
 import amazgone.shared.generated.resources.detail_not_found
@@ -10,8 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -19,11 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.Inventory2
-import androidx.compose.material3.FilledTonalIconButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -105,12 +98,7 @@ fun ProductDetailScreen(
                 product != null -> DetailContent(product, state, onIntent, listState, padding, onHeroPositioned)
                 state.notFound -> MessageState(Icons.Outlined.Inventory2, stringResource(Res.string.detail_not_found), "", Modifier.align(Alignment.Center))
             }
-            FilledTonalIconButton(
-                onClick = { onIntent(ProductDetailIntent.Back) },
-                colors = IconButtonDefaults.filledTonalIconButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
-                modifier = Modifier.statusBarsPadding().padding(AmazgoneDimens.spaceSm),
-            ) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(Res.string.action_back)) }
-            product?.rating?.let { RatingBadge(it, Modifier.align(Alignment.TopEnd).statusBarsPadding().padding(AmazgoneDimens.spaceMd)) }
+            DetailOverlay(product, rememberIsCollapsed(listState), state.isSaved, onIntent)
         }
     }
 }
@@ -126,7 +114,7 @@ private fun DetailContent(
 ) {
     LazyColumn(
         state = listState,
-        contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + AmazgoneDimens.spaceXl),
+        contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + AmazgoneDimens.spaceXxl),
         verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceLg),
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -139,11 +127,12 @@ private fun DetailContent(
             )
         }
         item(key = "info") { InfoCard(product, state, onIntent) }
-        item(key = "specs") { SpecsSection(product, Modifier.staggeredEnter(1)) }
+        item(key = "facts") { KeyFacts(product) }
         item(key = "reviews-title") { SectionHeader(stringResource(Res.string.detail_reviews)) }
-        if (state.reviews.isEmpty()) {
+        if (state.reviews.isEmpty() && product.rating == null) {
             item(key = "no-reviews") { NoReviews() }
         } else {
+            item(key = "rating-summary") { RatingSummary(product.rating, state.reviews, Modifier.staggeredEnter(0)) }
             itemsIndexed(state.reviews, key = { index, _ -> "review-$index" }) { index, review -> ReviewCard(review, Modifier.staggeredEnter(index)) }
         }
         if (state.recommendations.isNotEmpty()) {

@@ -103,6 +103,8 @@ data class ExtendedColors(
     /** Vivid call-to-action orange (buttons, selected nav pill, prices). */
     val cta: Color,
     val onCta: Color,
+    /** Positive status (in stock, verified purchase). */
+    val success: Color,
     /** Soft pastel tiles behind quick actions. */
     val tileTints: List<Color>,
 )
@@ -113,11 +115,13 @@ internal val LightExtendedColors = ExtendedColors(
     onBrandNavyVariant = Color(0xFFB9B5D6),
     cta = Color(0xFFFF6B2C),
     onCta = Color(0xFFFFFFFF),
+    success = Color(0xFF1E8E4F),
     tileTints = listOf(Color(0xFFE8F1FF), Color(0xFFFFEFE6), Color(0xFFE9F8EF), Color(0xFFF3ECFF), Color(0xFFFFF6DB)),
 )
 
 internal val DarkExtendedColors = LightExtendedColors.copy(
     brandNavy = Color(0xFF2A2650),
+    success = Color(0xFF5FD18E),
     tileTints = listOf(Color(0xFF1F2B3D), Color(0xFF3A2519), Color(0xFF1C3226), Color(0xFF2B2240), Color(0xFF363018)),
 )
 

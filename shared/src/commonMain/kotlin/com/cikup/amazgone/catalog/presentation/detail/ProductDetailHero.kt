@@ -171,8 +171,9 @@ fun InfoCard(product: Product, state: ProductDetailState, onIntent: (ProductDeta
                         }
                     }
                 }
+                StockPill(product)
                 ExpandableDescription(product)
-                StockLabelPublic(product)
+                TrustBadges(product)
             }
         }
         HeartButton(state.isSaved, { onIntent(ProductDetailIntent.ToggleWishlist) }, Modifier.align(Alignment.TopEnd).padding(AmazgoneDimens.spaceMd))
