@@ -99,14 +99,14 @@ service cloud.firestore {
       }
     }
 
-    // Public ranking: any signed-in player can read; you may only write your own row,
-    // and it must match your private profile after this write.
     // Curated "New arrivals": public read (guests too), edited only in the console / with admin credentials.
     match /catalog/{productId} {
       allow read: if true;
       allow write: if false;
     }
 
+    // Public ranking: any signed-in player can read; you may only write your own row,
+    // and it must match your private profile after this write.
     match /leaderboard/{uid} {
       allow read: if signedIn();
       allow write: if isOwner(uid)
