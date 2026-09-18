@@ -1,0 +1,310 @@
+<resources>
+    <string name="app_name">Amazgone</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_games">Games</string>
+    <string name="nav_cart">Cart</string>
+    <string name="nav_account">Account</string>
+
+    <!-- Common -->
+    <string name="action_back">Back</string>
+    <string name="action_retry">Try again</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_apply">Apply</string>
+    <string name="action_reset">Reset</string>
+    <string name="action_see_all">See all</string>
+    <string name="coins_amount">%1$s coins</string>
+    <string name="coins_short">%1$s</string>
+    <string name="discount_off">-%1$d%</string>
+    <string name="rating_count">(%1$s)</string>
+    <string name="rating_a11y">Rated %1$s out of 5</string>
+    <string name="image_placeholder">Product image</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_offline">You're offline. Showing saved data.</string>
+
+    <!-- Sync -->
+    <string name="sync_synced">All changes synced</string>
+    <string name="sync_pending">%1$d changes waiting to sync</string>
+    <string name="sync_offline">Offline · %1$d changes saved on this device</string>
+    <string name="sync_error">Sync paused · %1$d changes saved on this device. We'll retry automatically.</string>
+
+    <!-- Home -->
+    <string name="home_search_hint">Search Amazgone</string>
+    <string name="home_deals_title">Today's deals</string>
+    <string name="home_top_rated">Top rated</string>
+    <string name="home_all_products">Recommended for you</string>
+    <string name="home_category_all">All</string>
+    <string name="home_empty_title">The shelves are empty</string>
+    <string name="home_empty_body">Connect to the internet to load the catalog.</string>
+    <string name="home_deal_ends">Deal of the day</string>
+
+    <!-- Search -->
+    <string name="search_hint">Search products, brands and games</string>
+    <string name="search_results_count">%1$d results</string>
+    <string name="search_no_results_title">No matches found</string>
+    <string name="search_no_results_body">Try a different word or remove some filters.</string>
+    <string name="search_filters">Filters</string>
+    <string name="search_sort">Sort by</string>
+    <string name="sort_relevance">Featured</string>
+    <string name="sort_price_low">Price: low to high</string>
+    <string name="sort_price_high">Price: high to low</string>
+    <string name="sort_rating">Top rated</string>
+    <string name="sort_discount">Biggest discount</string>
+    <string name="filter_category">Department</string>
+    <string name="filter_price">Price (coins)</string>
+    <string name="filter_price_range">%1$s – %2$s coins</string>
+    <string name="filter_rating">Customer rating</string>
+    <string name="filter_rating_value">%1$d★ &amp; up</string>
+    <string name="filter_rating_any">Any</string>
+    <string name="detail_limit_reached">You already have the maximum quantity in your cart</string>
+    <string name="filter_in_stock">In stock only</string>
+
+    <!-- Product detail -->
+    <string name="detail_add_to_cart">Add to cart</string>
+    <string name="detail_added_to_cart">Added to cart</string>
+    <string name="detail_in_stock">In stock</string>
+    <string name="detail_low_stock">Only %1$d left in stock</string>
+    <string name="detail_out_of_stock">Currently unavailable</string>
+    <string name="detail_about">About this item</string>
+    <string name="detail_specs">Product details</string>
+    <string name="detail_brand">Brand</string>
+    <string name="detail_warranty">Warranty</string>
+    <string name="detail_shipping">Shipping</string>
+    <string name="detail_returns">Returns</string>
+    <string name="detail_min_order">Minimum order</string>
+    <string name="detail_sku">SKU</string>
+    <string name="detail_metacritic">Metacritic</string>
+    <string name="detail_steam_rating">Steam reviews</string>
+    <string name="detail_reviews">Customer reviews</string>
+    <string name="detail_no_reviews">No reviews yet.</string>
+    <string name="detail_also_bought">Customers also bought</string>
+    <string name="detail_not_found">This product is no longer available.</string>
+    <string name="detail_you_save">You save %1$s coins</string>
+    <string name="detail_game_description">A PC game deal sourced live from digital stores.</string>
+
+    <!-- Cart -->
+    <string name="cart_title">Shopping cart</string>
+    <string name="cart_empty_title">Your cart is empty</string>
+    <string name="cart_empty_body">Discover today's deals and fill it up with coins.</string>
+    <string name="cart_browse">Browse deals</string>
+    <string name="cart_subtotal">Subtotal (%1$d items)</string>
+    <string name="cart_savings">You save</string>
+    <string name="cart_checkout">Proceed to checkout</string>
+    <string name="cart_item_removed">Removed %1$s</string>
+    <string name="cart_undo">Undo</string>
+    <string name="cart_increase">Increase quantity</string>
+    <string name="cart_decrease">Decrease quantity</string>
+    <string name="cart_remove">Remove</string>
+
+    <!-- Account -->
+    <string name="account_title">Account</string>
+    <string name="account_hello_guest">Hello, guest</string>
+    <string name="account_hello_user">Hello, %1$s</string>
+    <string name="account_guest_body">Sign in to save your coins, orders and rank online.</string>
+    <string name="account_sign_in">Sign in</string>
+    <string name="account_create">Create account</string>
+    <string name="account_username">Username</string>
+    <string name="account_password">Password</string>
+    <string name="account_confirm_password">Confirm password</string>
+    <string name="account_username_hint">3–20 characters: a–z, 0–9, _</string>
+    <string name="account_show_password">Show password</string>
+    <string name="account_hide_password">Hide password</string>
+    <string name="account_orders">Your orders</string>
+    <string name="account_wishlist">Your wishlist</string>
+    <string name="account_wallet">Coin wallet</string>
+    <string name="account_leaderboard">Leaderboard</string>
+    <string name="account_achievements">Achievements</string>
+    <string name="account_sync_now">Sync now</string>
+    <string name="account_sign_out">Sign out</string>
+    <string name="account_sign_out_pending_title">Unsynced changes</string>
+    <string name="account_sign_out_pending_body">%1$d changes haven't reached the server yet. Signing out now will discard them.</string>
+    <string name="account_sign_out_anyway">Sign out anyway</string>
+    <string name="account_cancel">Cancel</string>
+    <string name="account_online_required">Creating an account or signing in needs an internet connection.</string>
+    <string name="account_session_expired">Your session for %1$s expired. Sign in again to resume syncing — your changes are safe on this device.</string>
+    <string name="account_guest_carry_over">Your guest cart and orders move into your account.</string>
+    <string name="error_username_taken">That username is already taken</string>
+    <string name="error_invalid_credentials">Wrong username or password</string>
+    <string name="error_field_empty">This field is required</string>
+    <string name="error_field_short">Too short</string>
+    <string name="error_field_long">Too long</string>
+    <string name="error_field_chars">Use only a–z, 0–9 and _</string>
+    <string name="error_passwords_mismatch">Passwords don't match</string>
+    <string name="error_remote_unavailable">Online accounts aren't available right now. You can keep shopping as a guest.</string>
+    <string name="error_too_many_attempts">Too many attempts. Please wait a moment and try again.</string>
+    <string name="error_network">Can't reach the server. Check your connection and try again.</string>
+
+    <!-- Wallet -->
+    <string name="wallet_title">Coin wallet</string>
+    <string name="wallet_balance">Available balance</string>
+    <string name="wallet_pending">%1$s coins waiting to sync</string>
+    <string name="wallet_history">Activity</string>
+    <string name="wallet_empty">No activity yet.</string>
+    <string name="ledger_STARTER">Welcome bonus</string>
+    <string name="ledger_BASELINE">Balance</string>
+    <string name="ledger_PURCHASE">Order payment</string>
+    <string name="ledger_SPIN_REWARD">Daily spin reward</string>
+    <string name="ledger_SCRATCH_REWARD">Scratch card reward</string>
+    <string name="ledger_ORDER_XP">Order XP</string>
+    <string name="ledger_GAME_XP">Game XP</string>
+    <string name="ledger_DAILY_XP">Daily visit XP</string>
+    <string name="ledger_pending">Pending</string>
+    <string name="ledger_rejected">Reversed</string>
+
+    <!-- Checkout -->
+    <string name="checkout_title">Checkout</string>
+    <string name="checkout_step_address">Shipping</string>
+    <string name="checkout_step_payment">Payment</string>
+    <string name="checkout_step_review">Review</string>
+    <string name="checkout_full_name">Full name</string>
+    <string name="checkout_line1">Street address</string>
+    <string name="checkout_city">City</string>
+    <string name="checkout_postal">Postal code</string>
+    <string name="checkout_country">Country</string>
+    <string name="checkout_continue">Continue</string>
+    <string name="checkout_pay_with_coins">Pay with coins</string>
+    <string name="checkout_balance">Your balance</string>
+    <string name="checkout_after_purchase">Balance after purchase</string>
+    <string name="checkout_coupons">Coupons</string>
+    <string name="checkout_no_coupon">No coupon</string>
+    <string name="checkout_coupon_percent">%1$d% off</string>
+    <string name="checkout_coupon_flat">%1$s coins off</string>
+    <string name="checkout_coupon_min">Min. %1$s coins</string>
+    <string name="checkout_subtotal">Subtotal</string>
+    <string name="checkout_discount">Coupon discount</string>
+    <string name="checkout_total">Order total</string>
+    <string name="checkout_hold_to_pay">Hold to pay %1$s coins</string>
+    <string name="checkout_ship_to">Ship to</string>
+    <string name="checkout_items">Items</string>
+    <string name="checkout_insufficient">You need %1$s more coins. Play games to earn more!</string>
+    <string name="checkout_success_title">Order placed!</string>
+    <string name="checkout_success_body">You earned %1$s XP. We'll confirm it with the server as soon as you're online.</string>
+    <string name="checkout_view_order">View order</string>
+    <string name="checkout_keep_shopping">Keep shopping</string>
+    <string name="checkout_invalid_postal">Enter a valid postal code</string>
+
+    <!-- Orders -->
+    <string name="orders_title">Your orders</string>
+    <string name="orders_empty_title">No orders yet</string>
+    <string name="orders_empty_body">Orders you place will show up here.</string>
+    <string name="order_status_PENDING_SYNC">Waiting to sync</string>
+    <string name="order_status_CONFIRMED">Confirmed</string>
+    <string name="order_status_REJECTED">Cancelled · coins refunded</string>
+    <string name="order_placed_on">Order #%1$s</string>
+    <string name="order_items_count">%1$d items</string>
+    <string name="order_detail_title">Order details</string>
+    <string name="order_rejected_reason">The server couldn't confirm this order (%1$s). Your coins were refunded and the items are back in your cart.</string>
+    <string name="order_timeline_placed">Placed on this device</string>
+    <string name="order_timeline_synced">Confirmed by the server</string>
+    <string name="order_timeline_shipping">Preparing to ship</string>
+
+    <!-- Wishlist -->
+    <string name="wishlist_title">Your wishlist</string>
+    <string name="wishlist_empty_title">Nothing saved yet</string>
+    <string name="wishlist_empty_body">Tap the heart on any product to save it for later.</string>
+    <string name="wishlist_add">Save to wishlist</string>
+    <string name="wishlist_remove">Remove from wishlist</string>
+
+    <!-- Progress -->
+    <string name="level_short">Lv %1$d</string>
+    <string name="xp_to_next">%1$s / %2$s XP</string>
+    <string name="leaderboard_title">Leaderboard</string>
+    <string name="leaderboard_you">You</string>
+    <string name="leaderboard_empty_title">No rankings yet</string>
+    <string name="leaderboard_empty_body">Sign in and play to appear on the leaderboard.</string>
+    <string name="leaderboard_updated">Updated %1$s</string>
+    <string name="leaderboard_offline">Showing the last saved rankings.</string>
+    <string name="leaderboard_xp">%1$s XP</string>
+    <string name="achievements_title">Achievements</string>
+    <string name="achievements_unlocked">%1$d of %2$d unlocked</string>
+    <string name="achievement_unlocked_toast">Achievement unlocked: %1$s</string>
+    <string name="level_up_title">Level up!</string>
+    <string name="level_up_body">You reached level %1$d</string>
+
+    <!-- Games -->
+    <string name="games_title">Game zone</string>
+    <string name="games_subtitle">Play daily to earn coins, coupons and XP.</string>
+    <string name="game_spin_title">Daily spin</string>
+    <string name="game_spin_body">Spin the wheel once a day for coins and coupons.</string>
+    <string name="game_scratch_title">Scratch card</string>
+    <string name="game_scratch_body">A new card every 4 hours. Scratch to reveal your prize.</string>
+    <string name="game_deal_title">Lightning deal</string>
+    <string name="game_deal_body">Extra %1$d% off, this hour only.</string>
+    <string name="game_ready">Ready to play</string>
+    <string name="game_next_in">Next in %1$s</string>
+    <string name="game_spin_button">Spin!</string>
+    <string name="game_spinning">Good luck…</string>
+    <string name="game_you_won">You won</string>
+    <string name="game_reward_coins">%1$s coins</string>
+    <string name="game_reward_coupon_percent">%1$d% off coupon</string>
+    <string name="game_reward_coupon_flat">%1$s coins off coupon</string>
+    <string name="game_reward_xp">+%1$s XP boost</string>
+    <string name="game_plus_xp">+%1$s XP</string>
+    <string name="game_reward_saved">Saved to your wallet. It syncs when you're online.</string>
+    <string name="game_new_card">Get a new card</string>
+    <string name="game_scratch_hint">Scratch here</string>
+    <string name="game_deal_ends_in">Ends in</string>
+    <string name="game_deal_claimed">%1$d% claimed</string>
+    <string name="game_deal_claim">Claim deal</string>
+    <string name="game_deal_claimed_toast">Added to cart — coupon %1$s applies at checkout</string>
+    <string name="game_deal_none">No deal right now. Check back soon!</string>
+    <string name="game_cooldown">Come back in %1$s</string>
+    <string name="game_wheel_a11y">Prize wheel</string>
+    <string name="game_card_a11y">Scratch card</string>
+
+    <!-- Achievement names -->
+    <string name="ach_FIRST_ORDER">First purchase</string>
+    <string name="ach_FIRST_ORDER_desc">Place your first order</string>
+    <string name="ach_SHOPAHOLIC">Shopaholic</string>
+    <string name="ach_SHOPAHOLIC_desc">Place 10 orders</string>
+    <string name="ach_BIG_SPENDER">Big spender</string>
+    <string name="ach_BIG_SPENDER_desc">Spend 10,000 coins</string>
+    <string name="ach_LUCKY_SPIN">Lucky spin</string>
+    <string name="ach_LUCKY_SPIN_desc">Spin the daily wheel</string>
+    <string name="ach_WHEEL_REGULAR">Wheel regular</string>
+    <string name="ach_WHEEL_REGULAR_desc">Spin the wheel 7 times</string>
+    <string name="ach_SCRATCHER">Scratcher</string>
+    <string name="ach_SCRATCHER_desc">Scratch 5 cards</string>
+    <string name="ach_RISING_STAR">Rising star</string>
+    <string name="ach_RISING_STAR_desc">Reach level 5</string>
+    <string name="ach_LEGEND">Legend</string>
+    <string name="ach_LEGEND_desc">Reach level 10</string>
+    <string name="ach_COLLECTOR">Collector</string>
+    <string name="ach_COLLECTOR_desc">Save 5 items to your wishlist</string>
+    <string name="achievement_progress">%1$s / %2$s</string>
+
+    <!-- Redesign -->
+    <string name="nav_menu">Menu</string>
+    <string name="flash_sold">%1$d% sold</string>
+    <string name="flash_title">Flash Sale</string>
+    <string name="flash_done">Done flash</string>
+    <string name="flash_ongoing">Ongoing</string>
+    <string name="flash_next">Next flash</string>
+    <string name="flash_banner_title">FLASH SALE</string>
+    <string name="flash_banner_body">New deals every hour — tap in daily</string>
+    <string name="flash_banner_chip">24 hours</string>
+    <string name="flash_view_all">View all</string>
+    <string name="flash_all">All</string>
+    <string name="home_deliver_to">Deliver to Jakarta 10110</string>
+    <string name="quick_all_categories">All category</string>
+    <string name="quick_wallet">Coin wallet</string>
+    <string name="quick_spin">Daily spin</string>
+    <string name="quick_scratch">Scratch card</string>
+    <string name="quick_orders">My orders</string>
+    <string name="banner_title">Mega Gaming Festival</string>
+    <string name="banner_body">Everything you need, now up to -95%</string>
+    <string name="detail_ratings">%1$s ratings</string>
+    <string name="detail_see_more">See more detail</string>
+    <string name="detail_see_less">See less</string>
+    <string name="detail_quantity">Quantity</string>
+    <string name="detail_added_check">Added!</string>
+    <string name="menu_title">Menu</string>
+    <string name="menu_roulette_kicker">Amazgone Coins</string>
+    <string name="menu_roulette_title">ROULETTE</string>
+    <string name="menu_roulette_body">Spin daily to unlock exciting rewards</string>
+    <string name="menu_roulette_cta">Spin now</string>
+    <string name="menu_games_tile">Game zone</string>
+    <string name="menu_buy_again">Buy again</string>
+    <string name="menu_your_account">Your account</string>
+    <string name="menu_shop_by_category">Shop by category</string>
+    <string name="categories_title">Shop by category</string>
+</resources>

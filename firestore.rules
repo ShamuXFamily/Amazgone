@@ -1,0 +1,112 @@
+rules_version = '2';
+
+// Amazgone — Cloud Firestore security rules.
+// The client writes through the Firestore REST API with the user's ID token, so these rules are
+// the real guard for the fake-coin economy. They mirror the constants in the app:
+//   WalletRules.STARTER_COINS = 5000, XpRules.MAX_XP_PER_WRITE = 5000,
+//   spin: max 1000 coins / 125 XP every 24h; scratch: max 400 coins / 65 XP every 4h; daily visit: +20 XP every 20h.
+//   Cooldowns allow 5 minutes of client clock skew (GameRewardHandler uses the same tolerance).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function changed(field) { return request.resource.data.get(field, null) != resource.data.get(field, null); }
+    function unchanged(field) { return !changed(field); }
+    function delta(field) { return request.resource.data.get(field, 0) - resource.data.get(field, 0); }
+    function cooledDownMinutes(field, minutes) {
+      return resource.data.get(field, null) == null
+        || request.time > resource.data.get(field, timestamp.value(0)) + duration.value(minutes, 'm');
+    }
+    function userPath(uid) { return /databases/$(database)/documents/users/$(uid); }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+
+      // Registration: starter coins only, level 1, no XP.
+      allow create: if isOwner(uid)
+        && request.resource.data.username is string
+        && request.resource.data.username.matches('^[a-z0-9_]{3,20}$')
+        && request.resource.data.coins == 5000
+        && request.resource.data.xp == 0
+        && request.resource.data.level == 1
+        && request.resource.data.orderCount == 0;
+
+      // Every update is exactly ONE of these activities, each with its own bounds
+      // (reward maxima mirror RewardTables / XpRules in the app).
+      allow update: if isOwner(uid)
+        && unchanged('username') && unchanged('createdAt') && unchanged('starterGranted')
+        && request.resource.data.coins >= 0
+        && levelMatchesXp(request.resource.data)
+        && (isPurchase() || isSpinReward() || isScratchReward() || isDailyVisit());
+
+      // Mirrors LevelCurve: level = floor(sqrt(xp / 100)) + 1, capped at 99.
+      function levelMatchesXp(data) {
+        return data.level == math.floor(math.sqrt(data.xp / 100.0)) + 1
+          || (data.level == 99 && data.xp >= 960400);
+      }
+
+      // Order: coins go down, orderCount +1, XP up to MAX_XP_PER_WRITE; game/daily timestamps untouched.
+      function isPurchase() {
+        return delta('coins') < 0 && delta('orderCount') == 1
+          && delta('xp') >= 0 && delta('xp') <= 5000
+          && unchanged('lastSpinAt') && unchanged('lastScratchAt') && unchanged('lastDailyAt');
+      }
+      // Spin: max prize 1000 coins, max XP 25 + 100 boost; once per 24h (minus 5 min clock skew).
+      function isSpinReward() {
+        return delta('coins') >= 0 && delta('coins') <= 1000
+          && delta('xp') >= 0 && delta('xp') <= 125
+          && unchanged('orderCount') && unchanged('lastScratchAt') && unchanged('lastDailyAt')
+          && request.resource.data.lastSpinAt == request.time && cooledDownMinutes('lastSpinAt', 1435);
+      }
+      // Scratch: max prize 400 coins, max XP 15 + 50 boost; once per 4h (minus 5 min clock skew).
+      function isScratchReward() {
+        return delta('coins') >= 0 && delta('coins') <= 400
+          && delta('xp') >= 0 && delta('xp') <= 65
+          && unchanged('orderCount') && unchanged('lastSpinAt') && unchanged('lastDailyAt')
+          && request.resource.data.lastScratchAt == request.time && cooledDownMinutes('lastScratchAt', 235);
+      }
+      // Daily visit: exactly +20 XP, no coins, at most every 20h.
+      function isDailyVisit() {
+        return delta('coins') == 0 && delta('xp') == 20
+          && unchanged('orderCount') && unchanged('lastSpinAt') && unchanged('lastScratchAt')
+          && request.resource.data.lastDailyAt == request.time && cooledDownMinutes('lastDailyAt', 1200);
+      }
+
+      // Orders, rewards and achievements are append-only records owned by the user.
+      match /orders/{orderId} {
+        allow read: if isOwner(uid);
+        // Only together with the matching debit in the same commit (the app's checkout transaction).
+        allow create: if isOwner(uid)
+          && request.resource.data.totalCoins is int && request.resource.data.totalCoins > 0
+          && getAfter(userPath(uid)).data.coins == get(userPath(uid)).data.coins - request.resource.data.totalCoins
+          && getAfter(userPath(uid)).data.orderCount == get(userPath(uid)).data.orderCount + 1;
+      }
+      match /rewards/{rewardId} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && request.resource.data.coins <= 1000 && request.resource.data.xp <= 125;
+      }
+      match /achievements/{achievementId} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid);
+      }
+      // Cart and wishlist mirror device state (last-write-wins); owner only.
+      match /cart/{productId} {
+        allow read, write: if isOwner(uid);
+      }
+      match /wishlist/{productId} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    // Public ranking: any signed-in player can read; you may only write your own row,
+    // and it must match your private profile after this write.
+    match /leaderboard/{uid} {
+      allow read: if signedIn();
+      allow write: if isOwner(uid)
+        && request.resource.data.xp == getAfter(/databases/$(database)/documents/users/$(uid)).data.xp
+        && request.resource.data.level == getAfter(/databases/$(database)/documents/users/$(uid)).data.level
+        && request.resource.data.username == getAfter(/databases/$(database)/documents/users/$(uid)).data.username;
+    }
+  }
+}
