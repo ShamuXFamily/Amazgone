@@ -40,7 +40,7 @@ class FakeOutboxStore(private val clock: FakeClock = FakeClock()) : OutboxStore 
     }
 
     override suspend fun unparkAll() {
-        entries.value = entries.value.map { if (it.parked) it.copy(parked = false, attempts = 0, nextAttemptAt = 0) else it }
+        entries.value = entries.value.map { if (it.parked) it.copy(parked = false, attempts = 0, nextAttemptAt = 0) else it.copy(nextAttemptAt = 0) }
     }
 
     override suspend fun remove(seq: Long) {

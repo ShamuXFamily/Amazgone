@@ -41,7 +41,7 @@ interface OutboxStore {
     suspend fun scheduleRetry(seq: Long, attempts: Int, nextAttemptAt: Long, error: String)
     /** Moves an entry out of the FIFO path without dropping it. */
     suspend fun park(seq: Long, error: String)
-    /** Puts parked entries back in the queue (user pressed "Sync now"). */
+    /** User pressed "Sync now": parked entries rejoin the queue and backoff waits are skipped. */
     suspend fun unparkAll()
     fun observePendingCount(): Flow<Int>
 }

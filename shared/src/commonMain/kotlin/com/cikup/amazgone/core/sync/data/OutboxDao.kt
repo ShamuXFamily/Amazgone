@@ -25,7 +25,8 @@ interface OutboxDao {
     @Query("UPDATE outbox SET parked = 1, lastError = :error WHERE seq = :seq")
     suspend fun park(seq: Long, error: String)
 
-    @Query("UPDATE outbox SET parked = 0, attempts = 0, nextAttemptAt = 0 WHERE parked = 1")
+    /** Manual retry: un-park everything and skip any pending backoff wait. */
+    @Query("UPDATE outbox SET attempts = CASE WHEN parked = 1 THEN 0 ELSE attempts END, parked = 0, nextAttemptAt = 0")
     suspend fun unparkAll()
 
     @Query("DELETE FROM outbox")

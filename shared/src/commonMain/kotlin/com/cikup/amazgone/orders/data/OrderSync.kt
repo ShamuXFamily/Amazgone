@@ -37,7 +37,11 @@ class OrderPlaceHandler(
         val firestore = firebase.requireFirestore()
         val outcome = try {
             firestore.runTransaction { tx ->
-                val user = firestore.get(UserDocuments.user(session.uid), tx)?.toRemoteUser()
+                // Retried blocks (after a conflict or a lost response) must not apply the order twice.
+                if (tx.get(UserDocuments.order(session.uid, payload.orderId)) != null) {
+                    return@runTransaction TransactionResult(emptyList(), PushResult.Success)
+                }
+                val user = tx.get(UserDocuments.user(session.uid))?.toRemoteUser()
                     ?: return@runTransaction TransactionResult(emptyList(), PushResult.Retry("profile not created yet"))
                 if (user.coins < payload.totalCoins) {
                     return@runTransaction TransactionResult(emptyList(), PushResult.Rejected(REJECT_INSUFFICIENT_COINS))

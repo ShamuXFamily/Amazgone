@@ -35,7 +35,7 @@ class SyncEngine(
     suspend fun sync(forcePull: Boolean = false) = mutex.withLock {
         if (!connectivity.isOnline.value) return@withLock
         mutableSyncing.value = true
-        if (forcePull) store.unparkAll() // an explicit user refresh also retries parked changes
+        if (forcePull) store.unparkAll() // an explicit user refresh retries now: un-park + skip backoff
         try {
             val canPush = gate.canPush()
             if (canPush) drain()

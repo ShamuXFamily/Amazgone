@@ -97,6 +97,19 @@ class SyncEngineTest {
     }
 
     @Test
+    fun manualSyncSkipsTheBackoffWait() = runTest {
+        val handler = ScriptedHandler("order", mutableListOf(PushResult.Retry("down")))
+        store.enqueue("a", "order", "{}")
+        val engine = engine(handler)
+        engine.sync()
+        engine.sync()
+        assertEquals(1, handler.pushedIds.size, "automatic sync respects the backoff")
+
+        engine.sync(forcePull = true)
+        assertEquals(listOf("a", "a"), handler.pushedIds, "\"Sync now\" retries immediately")
+    }
+
+    @Test
     fun retriedPushReusesTheSameIdempotencyKey() = runTest {
         val handler = ScriptedHandler("order", mutableListOf(PushResult.Retry("x"), PushResult.Retry("x")))
         store.enqueue("order-42", "order", "{}")

@@ -74,7 +74,6 @@ class CheckoutFlowTest {
     private suspend fun signIn() {
         backend.onPathEnds("POST", "accounts:signInWithPassword", ok(TOKENS))
         auth.login("bob", "password1")
-        backend.onPathEnds("POST", ":beginTransaction", ok("""{"transaction":"tx"}"""))
     }
 
     private suspend fun checkout(quantity: Int = 1, coupon: Coupon? = null) = run {
@@ -171,10 +170,12 @@ class CheckoutFlowTest {
     fun alreadyCommittedOrderIsTreatedAsSuccess() = runTest {
         signIn()
         backend.onPathEnds("GET", "users/uid-1", ok(userDoc("uid-1", coins = 5_000)))
-        backend.onPathEnds("POST", ":commit", error(HttpStatusCode.BadRequest, "FAILED_PRECONDITION"))
         val order = (checkout() as DomainResult.Success).value
+        // an earlier attempt committed but the response was lost: the order document already exists
+        backend.onPathEnds("GET", "orders/${order.id}", ok(userDoc("x", 0).replace("users/x", "users/uid-1/orders/${order.id}")))
 
         assertEquals(PushResult.Success, handler.push(outbox.head(20).first { it.id == order.id }))
+        assertTrue(backend.requests.none { it.url.encodedPath.endsWith(":commit") }, "never applied twice")
         assertEquals(OrderStatus.CONFIRMED, orders.observeOrder(order.id).first()!!.status)
     }
 
@@ -201,6 +202,19 @@ class CheckoutFlowTest {
         assertEquals(8_000L, wallet.balance(Currency.COINS), "server 9,000 minus the pending 1,000 order")
         assertEquals(400L, wallet.balance(Currency.XP))
         assertEquals("bob", profiles.current()?.username)
+    }
+
+    @Test
+    fun missingServerProfileIsCreatedOnPullSoTheQueueCanDrain() = runTest {
+        signIn()
+        backend.onPathEnds("GET", "users/uid-1", com.cikup.amazgone.remote.error(HttpStatusCode.NotFound, "NOT_FOUND"))
+        backend.onPathEnds("POST", ":commit", ok("{}"))
+        val profiles = ProfileRepositoryImpl(db.userProfileDao(), outbox, ids)
+
+        ProfilePuller(auth, firebase, profiles, wallet, clock).pull(force = false)
+
+        val created = backend.bodies.last { it?.get("writes") != null }!!.toString()
+        assertTrue("\"exists\":false" in created && "users/uid-1" in created, "creates the profile idempotently")
     }
 
     @Test

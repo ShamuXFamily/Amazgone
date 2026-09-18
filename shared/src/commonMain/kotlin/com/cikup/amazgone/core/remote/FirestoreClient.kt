@@ -46,12 +46,11 @@ class FirestoreClient(
 
     fun documentName(path: String) = "$documentsPath/${path.trimStart('/')}"
 
-    suspend fun get(path: String, transaction: String? = null): FirestoreDocument? = try {
+    suspend fun get(path: String): FirestoreDocument? = try {
         authorized { token ->
             client.get("$baseUrl/${documentName(path)}") {
                 bearerAuth(token)
                 appIdentity(config)
-                transaction?.let { parameter("transaction", it) }
             }.body<JsonObject>().toDocument()
         }
     } catch (_: FirestoreException.NotFound) {
@@ -77,21 +76,9 @@ class FirestoreClient(
         return documents
     }
 
-    suspend fun beginTransaction(): String = authorized { token ->
-        client.post("$baseUrl/$documentsPath:beginTransaction") {
-            bearerAuth(token)
-            appIdentity(config)
-            contentType(ContentType.Application.Json)
-            setBody(JsonObject(emptyMap()))
-        }.body<JsonObject>()["transaction"]!!.jsonPrimitive.content
-    }
-
-    suspend fun commit(writes: List<FirestoreWrite>, transaction: String? = null) {
-        if (writes.isEmpty() && transaction == null) return
-        val body = buildJsonObject {
-            put("writes", JsonArray(writes.map { encodeWrite(it) }))
-            transaction?.let { put("transaction", it) }
-        }
+    suspend fun commit(writes: List<FirestoreWrite>) {
+        if (writes.isEmpty()) return
+        val body = buildJsonObject { put("writes", JsonArray(writes.map { encodeWrite(it) })) }
         authorized { token ->
             client.post("$baseUrl/$documentsPath:commit") {
                 bearerAuth(token)
@@ -103,42 +90,25 @@ class FirestoreClient(
     }
 
     /**
-     * Read-modify-write with optimistic concurrency. [block] reads with the given transaction id
-     * and returns the writes to commit (or null to abort without writing). Retries on contention.
+     * Read-modify-write with optimistic concurrency, the way the client SDKs do it: server-side
+     * transactions (beginTransaction) are not permitted for end-user tokens. Documents read through
+     * [TransactionScope.get] are pinned — writes to them commit only if they are unchanged
+     * (updateTime precondition) or still absent. On a conflict the whole [block] runs again, so
+     * blocks must re-check their own idempotency marker (e.g. "order doc already exists").
      */
-    suspend fun <T> runTransaction(block: suspend (transaction: String) -> TransactionResult<T>): T {
+    suspend fun <T> runTransaction(block: suspend (TransactionScope) -> TransactionResult<T>): T {
         var attempt = 0
         while (true) {
-            val transaction = beginTransaction()
-            val result = try {
-                block(transaction)
-            } catch (t: Throwable) {
-                rollback(transaction) // never leave the transaction dangling on a failed read/decode
-                throw t
-            }
-            if (result.writes.isEmpty()) {
-                rollback(transaction)
-                return result.value
-            }
+            val scope = TransactionScope(this)
+            val result = block(scope)
+            if (result.writes.isEmpty()) return result.value
             try {
-                commit(result.writes, transaction)
+                commit(scope.pin(result.writes))
                 return result.value
+            } catch (conflict: FirestoreException.PreconditionFailed) {
+                if (++attempt >= MAX_TRANSACTION_ATTEMPTS) throw conflict
             } catch (aborted: FirestoreException.Aborted) {
                 if (++attempt >= MAX_TRANSACTION_ATTEMPTS) throw aborted
-            }
-        }
-    }
-
-    /** Releases a read-only transaction; failure is harmless (it expires server-side anyway). */
-    private suspend fun rollback(transaction: String) {
-        runCatching {
-            authorized { token ->
-                client.post("$baseUrl/$documentsPath:rollback") {
-                    bearerAuth(token)
-                    appIdentity(config)
-                    contentType(ContentType.Application.Json)
-                    setBody(buildJsonObject { put("transaction", transaction) })
-                }.body<JsonObject>()
             }
         }
     }

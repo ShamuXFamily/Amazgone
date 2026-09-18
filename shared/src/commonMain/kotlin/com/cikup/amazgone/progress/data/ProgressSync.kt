@@ -130,7 +130,9 @@ class DailyXpHandler(
         val firestore = firebase.requireFirestore()
         val outcome = try {
             firestore.runTransaction { tx ->
-                val user = firestore.get(UserDocuments.user(session.uid), tx)?.toRemoteUser()
+                val marker = UserDocuments.reward(session.uid, "daily-${payload.id}")
+                if (tx.get(marker) != null) return@runTransaction TransactionResult(emptyList(), PushResult.Success) // already applied
+                val user = tx.get(UserDocuments.user(session.uid))?.toRemoteUser()
                     ?: return@runTransaction TransactionResult(emptyList(), PushResult.Retry("profile not created yet"))
                 val last = user.lastDailyAt
                 if (last != null && payload.claimedAt - last < DAILY_MIN_GAP_MS) {
@@ -147,6 +149,7 @@ class DailyXpHandler(
                             transforms = listOf(FieldTransform.ServerTimestamp(UserDocuments.LAST_DAILY_AT)),
                         ),
                         FirestoreWrite.Set(UserDocuments.leaderboard(session.uid), mapOf(UserDocuments.USERNAME to user.username, UserDocuments.XP to xp, UserDocuments.LEVEL to level)),
+                        FirestoreWrite.Set(marker, mapOf("kind" to "DAILY", "coins" to 0L, "xp" to XpRules.DAILY_LOGIN_XP)),
                     ),
                     PushResult.Success,
                 )

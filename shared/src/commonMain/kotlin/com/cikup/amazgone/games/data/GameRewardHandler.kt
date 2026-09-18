@@ -43,7 +43,10 @@ class GameRewardHandler(
         val firestore = firebase.requireFirestore()
         val outcome = try {
             firestore.runTransaction { tx ->
-                val user = firestore.get(UserDocuments.user(session.uid), tx)?.toRemoteUser()
+                if (tx.get(UserDocuments.reward(session.uid, payload.playId)) != null) {
+                    return@runTransaction TransactionResult(emptyList(), PushResult.Success) // already applied
+                }
+                val user = tx.get(UserDocuments.user(session.uid))?.toRemoteUser()
                     ?: return@runTransaction TransactionResult(emptyList(), PushResult.Retry("profile not created yet"))
                 val lastServerPlay = if (kind == GameKind.SPIN) user.lastSpinAt else user.lastScratchAt
                 if (Cooldowns.remaining(kind, lastServerPlay, payload.playedAt + CLOCK_SKEW_TOLERANCE_MS) > 0) {

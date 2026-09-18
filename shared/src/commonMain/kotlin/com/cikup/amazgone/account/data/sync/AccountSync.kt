@@ -48,7 +48,11 @@ class ProfileCreateHandler(private val firebase: FirebaseServices) : OutboxHandl
     override suspend fun onRejected(entry: OutboxEntry, reason: String) = Unit
 }
 
-/** Pulls users/{uid}: caches the profile and re-bases the wallet/XP ledger on server totals. */
+/**
+ * Pulls users/{uid}: caches the profile and re-bases the wallet/XP ledger on server totals.
+ * Self-healing: if the account has no server profile (e.g. the registration's queued creation was
+ * lost), it is created here directly — otherwise every queued order/reward would wait on it forever.
+ */
 class ProfilePuller(
     private val auth: AuthRepository,
     private val firebase: FirebaseServices,
@@ -61,7 +65,15 @@ class ProfilePuller(
 
     override suspend fun pull(force: Boolean) {
         val session = auth.session.value ?: return
-        val document = firebase.requireFirestore().get(UserDocuments.user(session.uid)) ?: return
+        val firestore = firebase.requireFirestore()
+        val document = firestore.get(UserDocuments.user(session.uid)) ?: run {
+            try {
+                firestore.commit(UserDocuments.createProfileWrites(session.uid, session.username))
+            } catch (_: FirestoreException.PreconditionFailed) {
+                // created concurrently (e.g. by the queued profile.create) — fine, read it below
+            }
+            firestore.get(UserDocuments.user(session.uid))
+        } ?: return
         val user = document.toRemoteUser()
         profiles.save(
             UserProfileEntity(

@@ -101,20 +101,27 @@ class FirestoreClientTest {
     }
 
     @Test
-    fun transactionsRetryWhenAborted() = runTest {
-        backend.onPathEnds("POST", ":beginTransaction", ok("""{"transaction":"tx-1"}"""))
-        backend.onPathEnds("POST", ":commit", error(HttpStatusCode.Conflict, "ABORTED"), ok("{}"))
+    fun transactionsAreOptimisticPinReadsAndRetryOnConflict() = runTest {
+        backend.onPathEnds("GET", "users/u1", ok(userDoc("u1", coins = 10)))
+        backend.onPathEnds("POST", ":commit", error(HttpStatusCode.BadRequest, "FAILED_PRECONDITION"), ok("{}"))
         var attempts = 0
 
         val result = backend.firestore().runTransaction { tx ->
             attempts++
-            assertEquals("tx-1", tx)
-            TransactionResult(listOf(FirestoreWrite.Delete("a/b")), "done")
+            tx.get("users/u1")
+            tx.get("users/u1/orders/o1") // missing
+            TransactionResult(
+                listOf(FirestoreWrite.Set("users/u1", mapOf("coins" to 5L)), FirestoreWrite.Set("users/u1/orders/o1", mapOf("n" to 1L))),
+                "done",
+            )
         }
 
         assertEquals("done", result)
-        assertEquals(2, attempts)
-        assertEquals("tx-1", backend.bodies.last()!!["transaction"]!!.jsonPrimitive.content)
+        assertEquals(2, attempts, "conflict re-runs the block")
+        assertTrue(backend.requests.none { it.url.encodedPath.endsWith(":beginTransaction") }, "end-user tokens may not use server transactions")
+        val writes = backend.bodies.last()!!["writes"]!!.jsonArray
+        assertEquals("2026-01-01T00:00:00Z", writes[0].jsonObject["currentDocument"]!!.jsonObject["updateTime"]!!.jsonPrimitive.content)
+        assertEquals("false", writes[1].jsonObject["currentDocument"]!!.jsonObject["exists"]!!.jsonPrimitive.content)
     }
 
     @Test

@@ -136,10 +136,9 @@ class AccountCheckoutViewModelsTest {
     fun syncEngineConfirmsQueuedOrderAfterSignIn() = runTest {
         graph.backend.onPathEnds("POST", "accounts:signInWithPassword", ok(TOKENS))
         graph.backend.onPathEnds("GET", "users/uid-1", ok(userDoc("uid-1", coins = 5_000)))
-        graph.backend.onPathEnds("POST", ":beginTransaction", ok("""{"transaction":"tx"}"""))
         graph.backend.onPathEnds("POST", ":commit", ok("{}"))
         graph.backend.onPathEnds("POST", ":runQuery", ok("[]"))
-        graph.backend.on({ it.url.encodedPath.contains("/documents/users/uid-1/") && it.method.value == "GET" }, ok("{}"))
+        graph.backend.on({ p -> p.method.value == "GET" && listOf("/orders", "/cart", "/wishlist", "/achievements").any { p.url.encodedPath.endsWith(it) } }, ok("{}"))
         graph.grantGuestWallet()
         graph.get<CatalogRepositoryImpl>().save(CatalogBatch(listOf(phone), emptyList()))
         graph.get<AddToCartUseCase>()(phone.id)

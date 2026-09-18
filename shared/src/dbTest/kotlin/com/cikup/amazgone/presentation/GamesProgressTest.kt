@@ -63,7 +63,6 @@ class GamesProgressTest {
 
     private suspend fun signIn() {
         graph.backend.onPathEnds("POST", "accounts:signInWithPassword", ok(TOKENS))
-        graph.backend.onPathEnds("POST", ":beginTransaction", ok("""{"transaction":"tx"}"""))
         graph.backend.onPathEnds("POST", ":commit", ok("{}"))
         graph.get<AuthRepository>().login("bob", "password1")
     }
