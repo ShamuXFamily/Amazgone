@@ -1,5 +1,7 @@
 package com.cikup.amazgone.core.presentation.format
 
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -31,6 +33,15 @@ object Formatters {
     fun rating(value: Double): String {
         val tenths = (value * TENTHS).roundToInt()
         return "${tenths / TENTHS}.${tenths % TENTHS}"
+    }
+
+    private val MONTHS = listOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+    /** Epoch millis → "23 Oct 2026" in the device time zone ([utc] for release days and tests). */
+    fun shortDate(millis: Long, utc: Boolean = false): String {
+        val zone = if (utc) TimeZone.UTC else TimeZone.currentSystemDefault()
+        val date = kotlin.time.Instant.fromEpochMilliseconds(millis).toLocalDateTime(zone).date
+        return "${date.day} ${MONTHS[date.month.ordinal]} ${date.year}"
     }
 
     /** "home-decoration" → "Home Decoration". */

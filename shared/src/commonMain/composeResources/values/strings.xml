@@ -346,4 +346,6 @@
     <string name="badge_preorder">PRE-ORDER</string>
     <string name="detail_highlights">About this item</string>
     <string name="detail_not_affiliated">Demo shop · not affiliated with the brand</string>
+    <string name="detail_preorder">Pre-order · releases %1$s</string>
+    <string name="detail_preorder_button">Pre-order now</string>
 </resources>

@@ -67,8 +67,7 @@ private val QUICK_ACTIONS = listOf(
 @Composable
 fun QuickActions(onIntent: (HomeIntent) -> Unit, modifier: Modifier = Modifier) {
     val tints = AmazgoneTheme.extended.tileTints
-    val colors = AmazgoneTheme.extended
-    val iconColors = listOf(MaterialTheme.colorScheme.secondary, colors.cta, MaterialTheme.colorScheme.tertiary, colors.brandNavy, colors.cta)
+    val iconColors = AmazgoneTheme.extended.tileIcons
     Surface(
         color = MaterialTheme.colorScheme.surfaceContainerLowest,
         shape = MaterialTheme.shapes.large,

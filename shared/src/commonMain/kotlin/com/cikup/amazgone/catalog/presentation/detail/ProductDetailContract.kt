@@ -19,8 +19,11 @@ data class ProductDetailState(
     val quantity: Int = 1,
     /** Briefly true after a successful add so the button can morph to a check. */
     val justAdded: Boolean = false,
+    /** Clock reading used for time-based labels (pre-order); 0 until read. */
+    val now: Long = 0,
 ) : UiState {
     val notFound: Boolean get() = !isLoading && product == null
+    val isPreorder: Boolean get() = now > 0 && product?.isPreorderAt(now) == true
 }
 
 sealed interface ProductDetailIntent : UiIntent {

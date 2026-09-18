@@ -11,6 +11,7 @@ import amazgone.shared.generated.resources.detail_min_order
 import amazgone.shared.generated.resources.detail_no_reviews
 import amazgone.shared.generated.resources.detail_out_of_five
 import amazgone.shared.generated.resources.detail_out_of_stock
+import amazgone.shared.generated.resources.detail_preorder
 import amazgone.shared.generated.resources.detail_reviews_count
 import amazgone.shared.generated.resources.detail_sku
 import amazgone.shared.generated.resources.detail_steam_rating
@@ -66,11 +67,8 @@ import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
 import com.cikup.amazgone.core.presentation.format.Formatters
 import kotlinx.coroutines.delay
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import kotlin.time.Instant
 
 private const val LOW_STOCK_THRESHOLD = 10
 private const val STAR_LEVELS = 5
@@ -78,9 +76,12 @@ private const val TRACK_ALPHA = 0.15f
 
 /** Coloured availability pill: green in stock, gold low stock, red unavailable. */
 @Composable
-fun StockPill(product: Product) {
+fun StockPill(product: Product, preorder: Boolean) {
     val stock = product.stock ?: return
+    val releaseDay = product.details.releaseDateMillis
     val (text, color) = when {
+        preorder && releaseDay != null ->
+            stringResource(Res.string.detail_preorder, Formatters.shortDate(releaseDay, utc = true)) to AmazgoneTheme.extended.cta
         stock <= 0 -> stringResource(Res.string.detail_out_of_stock) to MaterialTheme.colorScheme.error
         stock < LOW_STOCK_THRESHOLD -> stringResource(Res.string.detail_low_stock, stock) to MaterialTheme.colorScheme.tertiary
         else -> stringResource(Res.string.detail_in_stock) to AmazgoneTheme.extended.success
@@ -226,7 +227,7 @@ fun ReviewCard(review: Review, modifier: Modifier = Modifier) {
                     }
                 }
                 if (review.dateMillis > 0) {
-                    Text(dateLabel(review.dateMillis), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(Formatters.shortDate(review.dateMillis), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
             RatingStars(review.rating.toDouble())
@@ -242,13 +243,6 @@ private fun Avatar(name: String) {
     Box(Modifier.size(AmazgoneDimens.iconLg * 0.75f).clip(CircleShape).background(tint), contentAlignment = Alignment.Center) {
         Text(name.take(1).uppercase(), style = MaterialTheme.typography.titleMedium, color = AmazgoneTheme.extended.brandNavy)
     }
-}
-
-private val MONTHS = listOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
-
-private fun dateLabel(millis: Long): String {
-    val date = Instant.fromEpochMilliseconds(millis).toLocalDateTime(TimeZone.currentSystemDefault()).date
-    return "${date.day} ${MONTHS[date.month.ordinal]} ${date.year}"
 }
 
 @Composable

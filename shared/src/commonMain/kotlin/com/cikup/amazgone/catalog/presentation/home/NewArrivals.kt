@@ -54,7 +54,7 @@ fun NewArrivalsRow(products: List<Product>, now: Long, origin: String, onOpen: (
         }
         LazyRow(horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceMd)) {
             itemsIndexed(products, key = { _, p -> p.id }) { index, product ->
-                val preorder = (product.details.releaseDateMillis ?: 0) > now && now > 0
+                val preorder = now > 0 && product.isPreorderAt(now)
                 NewArrivalCard(product, preorder, origin, { onOpen(product.id) }, Modifier.staggeredEnter(index))
             }
         }
@@ -71,14 +71,13 @@ private fun NewArrivalCard(product: Product, preorder: Boolean, origin: String, 
         modifier = modifier.width(AmazgoneDimens.productCardMinWidth).pressScale(interaction),
     ) {
         Box {
-            Surface(color = AmazgoneTheme.extended.imageStage, shape = MaterialTheme.shapes.medium, modifier = Modifier.padding(AmazgoneDimens.spaceSm)) {
-                ProductImage(
-                    url = product.thumbnailUrl,
-                    productId = product.id,
-                    modifier = Modifier.fillMaxWidth().aspectRatio(1f).padding(AmazgoneDimens.spaceSm)
-                        .sharedElementOrNone(SharedKeys.image(origin, product.id)),
-                )
-            }
+            ProductImage(
+                url = product.thumbnailUrl,
+                productId = product.id,
+                modifier = Modifier.fillMaxWidth().aspectRatio(1f).padding(AmazgoneDimens.spaceMd)
+                    .sharedElementOrNone(SharedKeys.image(origin, product.id))
+                    .clip(MaterialTheme.shapes.medium),
+            )
             LaunchBadge(preorder, Modifier.align(Alignment.TopStart).padding(AmazgoneDimens.spaceMd))
         }
         Column(Modifier.padding(start = AmazgoneDimens.spaceMd, end = AmazgoneDimens.spaceMd, bottom = AmazgoneDimens.spaceMd), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceXs)) {

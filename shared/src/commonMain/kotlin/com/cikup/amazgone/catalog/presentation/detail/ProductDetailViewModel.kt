@@ -5,6 +5,7 @@ import com.cikup.amazgone.cart.domain.usecase.AddToCartUseCase
 import com.cikup.amazgone.cart.domain.usecase.ObserveQuantityInCartUseCase
 import com.cikup.amazgone.catalog.domain.usecase.ObserveProductDetailUseCase
 import com.cikup.amazgone.catalog.domain.usecase.ObserveRecommendationsUseCase
+import com.cikup.amazgone.core.common.TimeProvider
 import com.cikup.amazgone.core.domain.DomainResult
 import com.cikup.amazgone.core.presentation.mvi.MviViewModel
 import com.cikup.amazgone.wishlist.domain.usecase.ObserveIsSavedUseCase
@@ -25,9 +26,11 @@ class ProductDetailViewModel(
     observeQuantityInCart: ObserveQuantityInCartUseCase,
     observeIsSaved: ObserveIsSavedUseCase,
     private val toggleWishlist: ToggleWishlistUseCase,
+    time: TimeProvider,
 ) : MviViewModel<ProductDetailState, ProductDetailIntent, ProductDetailEffect>(ProductDetailState(productId, origin)) {
 
     init {
+        setState { copy(now = time.nowMillis()) }
         val detail = observeDetail(productId)
         detail.observe { found ->
             setState { copy(isLoading = false, product = found?.product, reviews = found?.reviews.orEmpty()) }

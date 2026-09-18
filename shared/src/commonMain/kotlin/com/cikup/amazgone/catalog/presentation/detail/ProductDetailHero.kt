@@ -3,6 +3,7 @@ package com.cikup.amazgone.catalog.presentation.detail
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.detail_added_check
 import amazgone.shared.generated.resources.detail_add_to_cart
+import amazgone.shared.generated.resources.detail_preorder_button
 import amazgone.shared.generated.resources.detail_ratings
 import amazgone.shared.generated.resources.detail_see_less
 import amazgone.shared.generated.resources.detail_see_more
@@ -171,7 +172,7 @@ fun InfoCard(product: Product, state: ProductDetailState, onIntent: (ProductDeta
                         }
                     }
                 }
-                StockPill(product)
+                StockPill(product, state.isPreorder)
                 ExpandableDescription(product)
                 TrustBadges(product)
             }
@@ -239,7 +240,7 @@ fun BuyBar(product: Product, state: ProductDetailState, onIntent: (ProductDetail
                 ) { added ->
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
                         Icon(if (added) Icons.Rounded.Check else Icons.Rounded.AddShoppingCart, contentDescription = null)
-                        Text(stringResource(if (added) Res.string.detail_added_check else Res.string.detail_add_to_cart), style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(if (added) Res.string.detail_added_check else if (state.isPreorder) Res.string.detail_preorder_button else Res.string.detail_add_to_cart), style = MaterialTheme.typography.titleMedium)
                     }
                 }
             }

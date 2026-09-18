@@ -40,6 +40,9 @@ data class Product(
     /** From coin prices (what the player actually pays), so the 1-coin minimum never shows as -100%. */
     val discountPercent: Int get() = CoinPricing.discountPercent(priceCoins.toDouble(), originalPriceCoins?.toDouble())
     val isInStock: Boolean get() = stock == null || stock > 0
+
+    /** Announced but not released yet: sold as a pre-order until its release day. */
+    fun isPreorderAt(nowMillis: Long): Boolean = details.releaseDateMillis?.let { it > nowMillis } ?: false
 }
 
 /** Optional spec sheet; sources fill what they have and the UI hides the rest. */
