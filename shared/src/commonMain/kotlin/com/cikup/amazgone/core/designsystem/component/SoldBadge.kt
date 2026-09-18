@@ -16,13 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.text.font.FontWeight
 import com.cikup.amazgone.core.designsystem.motion.LocalReduceMotion
 import com.cikup.amazgone.core.designsystem.motion.MotionTokens
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
 import org.jetbrains.compose.resources.stringResource
 
-private const val TRACK_ALPHA = 0.35f
+private const val TRACK_ALPHA = 0.55f
 
 /** Orange pill whose fill springs from empty to [fraction] the first time it appears (and on changes). */
 @Composable
@@ -40,7 +41,7 @@ fun SoldBadge(fraction: Float, modifier: Modifier = Modifier) {
     ) {
         Text(
             stringResource(Res.string.flash_sold, (fill.value * PERCENT).toInt()),
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
             color = AmazgoneTheme.extended.onCta,
             modifier = Modifier.padding(horizontal = AmazgoneDimens.spaceSm, vertical = AmazgoneDimens.spaceXs / 2),
         )

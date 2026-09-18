@@ -52,7 +52,7 @@ fun CategoriesRoute(onBack: () -> Unit, onOpenCategory: (String) -> Unit, viewMo
     }
     val tints = AmazgoneTheme.extended.tileTints
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = { BackTopBar(stringResource(Res.string.categories_title), { viewModel.onIntent(CategoriesIntent.Back) }) },
     ) { padding ->
         LazyVerticalGrid(

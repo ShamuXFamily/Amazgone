@@ -32,7 +32,8 @@ fun MiniWheel(modifier: Modifier = Modifier) {
         ).value
     }
     val scheme = MaterialTheme.colorScheme
-    val fills = listOf(scheme.secondary, AmazgoneTheme.extended.cta, scheme.secondaryContainer, scheme.primaryContainer)
+    val brand = AmazgoneTheme.extended
+    val fills = listOf(brand.brandNavy, brand.cta, scheme.tertiary, scheme.surfaceContainerLowest)
     Canvas(modifier) {
         val sweep = FULL_TURN / SEGMENTS
         rotate(rotation) {

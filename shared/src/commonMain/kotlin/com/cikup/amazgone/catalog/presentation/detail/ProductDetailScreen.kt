@@ -95,7 +95,7 @@ fun ProductDetailScreen(
 ) {
     val listState = rememberLazyListState()
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { SnackbarHost(snackbar) },
         bottomBar = { state.product?.let { BuyBar(it, state, onIntent) } },
     ) { padding ->

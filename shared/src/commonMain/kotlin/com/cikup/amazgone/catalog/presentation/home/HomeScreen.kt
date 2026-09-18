@@ -74,7 +74,7 @@ fun HomeRoute(
 
 @Composable
 fun HomeScreen(state: HomeState, onIntent: (HomeIntent) -> Unit) {
-    Scaffold(containerColor = MaterialTheme.colorScheme.surfaceContainerLow) { padding ->
+    Scaffold(containerColor = MaterialTheme.colorScheme.background) { padding ->
         PullToRefreshBox(
             isRefreshing = state.isRefreshing,
             onRefresh = { onIntent(HomeIntent.Refresh) },
@@ -97,7 +97,7 @@ fun HomeScreen(state: HomeState, onIntent: (HomeIntent) -> Unit) {
                     else -> feed(state, onIntent)
                 }
             }
-            StatusBarScrim(MaterialTheme.colorScheme.surfaceContainerLow)
+            StatusBarScrim(MaterialTheme.colorScheme.background)
         }
     }
 }

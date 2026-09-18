@@ -64,9 +64,13 @@ class TestGraph(
     /** What AppStartup does on first launch: the guest starter coins. */
     suspend fun grantGuestWallet() = get<WalletRepositoryImpl>().run()
 
+    /**
+     * Stops DI only. The in-memory database is deliberately left open: ViewModels under test keep
+     * ticking on their own scopes, and closing SQLite underneath them segfaults on Kotlin/Native.
+     * Each test gets a fresh tiny in-memory DB, released when the test process exits.
+     */
     fun close() {
         app.close()
-        database.close()
     }
 }
 

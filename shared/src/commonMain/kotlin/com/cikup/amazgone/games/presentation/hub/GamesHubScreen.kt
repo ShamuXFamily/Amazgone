@@ -61,6 +61,9 @@ import com.cikup.amazgone.core.designsystem.motion.pressScale
 import com.cikup.amazgone.core.designsystem.motion.staggeredEnter
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
 import com.cikup.amazgone.games.presentation.formatCountdown
+import com.cikup.amazgone.games.presentation.spin.MiniWheel
+import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
+import androidx.compose.ui.text.font.FontWeight
 import com.cikup.amazgone.progress.presentation.LevelBadge
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
@@ -98,16 +101,22 @@ fun GamesHubScreen(state: GamesHubState, onIntent: (GamesHubIntent) -> Unit) {
                 }
             }
             item {
+                val colors = AmazgoneTheme.extended
                 GameCard(
-                    Icons.Outlined.Casino, Res.string.game_spin_title, stringResource(Res.string.game_spin_body), state.spinCooldown,
-                    MaterialTheme.colorScheme.primaryContainer, Modifier.staggeredEnter(1),
-                ) { onIntent(GamesHubIntent.Open(GameDestination.SPIN)) }
+                    Res.string.game_spin_title, stringResource(Res.string.game_spin_body), state.spinCooldown,
+                    container = colors.brandNavy, content = colors.onBrandNavy, modifier = Modifier.staggeredEnter(1),
+                    onClick = { onIntent(GamesHubIntent.Open(GameDestination.SPIN)) },
+                ) { MiniWheel(Modifier.size(AmazgoneDimens.iconXl)) }
             }
             item {
+                val colors = AmazgoneTheme.extended
                 GameCard(
-                    Icons.Outlined.Style, Res.string.game_scratch_title, stringResource(Res.string.game_scratch_body), state.scratchCooldown,
-                    MaterialTheme.colorScheme.tertiaryContainer, Modifier.staggeredEnter(2),
-                ) { onIntent(GamesHubIntent.Open(GameDestination.SCRATCH)) }
+                    Res.string.game_scratch_title, stringResource(Res.string.game_scratch_body), state.scratchCooldown,
+                    container = colors.cta, content = colors.onCta, modifier = Modifier.staggeredEnter(2),
+                    onClick = { onIntent(GamesHubIntent.Open(GameDestination.SCRATCH)) },
+                ) {
+                    Icon(Icons.Outlined.Style, contentDescription = null, modifier = Modifier.size(AmazgoneDimens.iconXl * 0.8f))
+                }
             }
             item { DealPreview(state, Modifier.staggeredEnter(3)) { onIntent(GamesHubIntent.Open(GameDestination.DEAL)) } }
             item {
@@ -124,16 +133,20 @@ fun GamesHubScreen(state: GamesHubState, onIntent: (GamesHubIntent) -> Unit) {
     }
 }
 
-/** Available games gently breathe to invite a tap; cooling-down ones show a live countdown. */
+/**
+ * Bold brand hero card. Available games gently breathe to invite a tap; cooling-down ones show a
+ * live countdown chip. [art] sits on the right (e.g. the spinning mini wheel).
+ */
 @Composable
 private fun GameCard(
-    icon: ImageVector,
     title: StringResource,
     body: String,
     cooldown: Long,
     container: Color,
+    content: Color,
     modifier: Modifier,
     onClick: () -> Unit,
+    art: @Composable () -> Unit,
 ) {
     val interaction = remember { MutableInteractionSource() }
     val ready = cooldown <= 0
@@ -144,27 +157,34 @@ private fun GameCard(
     } else {
         1f
     }
-    ElevatedCard(
+    Surface(
         onClick = onClick,
         interactionSource = interaction,
+        color = container,
+        contentColor = content,
+        shape = MaterialTheme.shapes.extraLarge,
+        shadowElevation = AmazgoneDimens.spaceXs,
         modifier = modifier.fillMaxWidth().pressScale(interaction).graphicsLayer { scaleX = pulse; scaleY = pulse },
     ) {
         Row(Modifier.padding(AmazgoneDimens.spaceLg), horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceLg), verticalAlignment = Alignment.CenterVertically) {
-            Surface(color = container, shape = MaterialTheme.shapes.large) {
-                Icon(icon, contentDescription = null, modifier = Modifier.padding(AmazgoneDimens.spaceMd).size(AmazgoneDimens.iconLg))
-            }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceXs)) {
-                Text(stringResource(title), style = MaterialTheme.typography.titleLarge)
-                Text(body, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text(
-                    if (ready) stringResource(Res.string.game_ready) else stringResource(Res.string.game_next_in, formatCountdown(cooldown)),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = if (ready) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary,
-                )
+                Text(stringResource(title), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+                Text(body, style = MaterialTheme.typography.bodyMedium, color = content.copy(alpha = BODY_ALPHA))
+                Surface(color = content.copy(alpha = CHIP_ALPHA), contentColor = content, shape = MaterialTheme.shapes.small) {
+                    Text(
+                        if (ready) stringResource(Res.string.game_ready) else stringResource(Res.string.game_next_in, formatCountdown(cooldown)),
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier.padding(horizontal = AmazgoneDimens.spaceSm, vertical = AmazgoneDimens.spaceXs),
+                    )
+                }
             }
+            art()
         }
     }
 }
+
+private const val BODY_ALPHA = 0.8f
+private const val CHIP_ALPHA = 0.18f
 
 @Composable
 private fun DealPreview(state: GamesHubState, modifier: Modifier, onClick: () -> Unit) {

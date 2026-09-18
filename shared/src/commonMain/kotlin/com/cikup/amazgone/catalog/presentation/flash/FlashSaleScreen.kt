@@ -63,7 +63,7 @@ fun FlashSaleRoute(onBack: () -> Unit, onOpenProduct: (String, String) -> Unit, 
 fun FlashSaleScreen(state: FlashSaleState, onIntent: (FlashSaleIntent) -> Unit) {
     val grid = rememberLazyGridState()
     val collapsed by remember { derivedStateOf { grid.firstVisibleItemIndex > 0 } }
-    Scaffold(containerColor = MaterialTheme.colorScheme.surfaceContainerLow) { padding ->
+    Scaffold(containerColor = MaterialTheme.colorScheme.background) { padding ->
         Box(Modifier.fillMaxSize()) {
             LazyVerticalGrid(
                 state = grid,

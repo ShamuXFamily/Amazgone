@@ -94,7 +94,7 @@ fun RouletteBanner(onIntent: (AccountIntent) -> Unit, modifier: Modifier = Modif
         Row(Modifier.padding(AmazgoneDimens.spaceLg), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceLg)) {
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceXs)) {
                 Text(stringResource(Res.string.menu_roulette_kicker), style = MaterialTheme.typography.labelMedium)
-                Text(stringResource(Res.string.menu_roulette_title), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.secondary)
+                Text(stringResource(Res.string.menu_roulette_title), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black, color = colors.brandNavy)
                 Text(stringResource(Res.string.menu_roulette_body), style = MaterialTheme.typography.bodySmall)
                 Button(
                     onClick = { onIntent(AccountIntent.Open(AccountDestination.SPIN)) },

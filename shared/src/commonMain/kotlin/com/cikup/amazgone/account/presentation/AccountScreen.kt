@@ -50,7 +50,7 @@ fun AccountRoute(onNavigate: (AccountDestination) -> Unit, viewModel: AccountVie
 
 @Composable
 fun AccountScreen(state: AccountState, onIntent: (AccountIntent) -> Unit) {
-    Scaffold(containerColor = MaterialTheme.colorScheme.surfaceContainerLow) { padding ->
+    Scaffold(containerColor = MaterialTheme.colorScheme.background) { padding ->
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(bottom = padding.calculateBottomPadding()),
             contentPadding = PaddingValues(AmazgoneDimens.spaceLg),
@@ -72,7 +72,7 @@ fun AccountScreen(state: AccountState, onIntent: (AccountIntent) -> Unit) {
             item(key = "menu") { MenuList(onIntent) }
             if (state.session != null) signedInFooter(state, onIntent)
         }
-        StatusBarScrim(MaterialTheme.colorScheme.surfaceContainerLow)
+        StatusBarScrim(MaterialTheme.colorScheme.background)
     }
     state.pendingSignOutCount?.let { count ->
         AlertDialog(
