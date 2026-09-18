@@ -13,6 +13,8 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.parameters
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.jsonObject
@@ -26,8 +28,14 @@ data class AuthTokens(
     val expiresIn: String,
 )
 
+/** returnSecureToken must be sent explicitly: kotlinx.serialization omits default values, and without it Firebase returns no refresh token. */
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
-private data class PasswordRequest(val email: String, val password: String, val returnSecureToken: Boolean = true)
+private data class PasswordRequest(
+    val email: String,
+    val password: String,
+    @EncodeDefault val returnSecureToken: Boolean = true,
+)
 
 @Serializable
 private data class RefreshResponse(

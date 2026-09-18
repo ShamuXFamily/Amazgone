@@ -14,7 +14,9 @@ import com.cikup.amazgone.core.remote.FirebaseAuthApi
 import com.cikup.amazgone.core.remote.FirestoreException
 import com.cikup.amazgone.core.remote.IdTokenProvider
 import com.cikup.amazgone.core.storage.SecureStore
+import io.ktor.serialization.ContentConvertException
 import kotlinx.coroutines.CancellationException
+import kotlinx.serialization.SerializationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -93,6 +95,12 @@ class AuthRepositoryImpl(
         } catch (e: AuthApiException) {
             logger.error(TAG, "Auth failed: ${e.code}", e)
             DomainResult.Failure(e.toDomainError())
+        } catch (e: SerializationException) {
+            logger.error(TAG, "Unexpected auth response", e)
+            DomainResult.Failure(DomainError.Unknown(e.message))
+        } catch (e: ContentConvertException) {
+            logger.error(TAG, "Unexpected auth response", e)
+            DomainResult.Failure(DomainError.Unknown(e.message))
         } catch (t: Throwable) {
             logger.error(TAG, "Auth request failed", t)
             DomainResult.Failure(DomainError.Network)

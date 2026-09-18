@@ -41,6 +41,7 @@ class AuthRepositoryTest {
 
         assertIs<DomainResult.Success<*>>(result)
         assertEquals("bob@amazgone.local", backend.bodies.single()!!["email"]!!.jsonPrimitive.content)
+        assertEquals("true", backend.bodies.single()!!["returnSecureToken"]!!.jsonPrimitive.content, "without it Firebase omits the refresh token")
         assertEquals("uid-1", repo.session.value?.uid)
         assertEquals("refresh-1", store.get("auth.refresh_token"))
         assertEquals("uid-1", repo().session.value?.uid, "session survives an app restart")
