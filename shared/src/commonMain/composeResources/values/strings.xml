@@ -285,11 +285,11 @@
     <string name="flash_view_all">View all</string>
     <string name="flash_all">All</string>
     <string name="home_deliver_to">Deliver to Jakarta 10110</string>
-    <string name="quick_all_categories">All category</string>
-    <string name="quick_wallet">Coin wallet</string>
-    <string name="quick_spin">Daily spin</string>
-    <string name="quick_scratch">Scratch card</string>
-    <string name="quick_orders">My orders</string>
+    <string name="quick_all_categories">Categories</string>
+    <string name="quick_wallet">Wallet</string>
+    <string name="quick_spin">Spin</string>
+    <string name="quick_scratch">Scratch</string>
+    <string name="quick_orders">Orders</string>
     <string name="banner_title">Mega Gaming Festival</string>
     <string name="banner_body">Everything you need, now up to -95%</string>
     <string name="detail_ratings">%1$s ratings</string>

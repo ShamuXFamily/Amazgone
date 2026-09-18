@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.Apps
@@ -24,6 +22,7 @@ import androidx.compose.material.icons.outlined.Receipt
 import androidx.compose.material.icons.outlined.Style
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +31,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.cikup.amazgone.core.designsystem.component.BrandWordmark
 import com.cikup.amazgone.core.designsystem.component.QuickActionTile
 import com.cikup.amazgone.core.designsystem.component.SyncStatusIcon
-import com.cikup.amazgone.core.designsystem.motion.staggeredEnter
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
 import com.cikup.amazgone.core.sync.domain.SyncStatus
@@ -65,21 +63,30 @@ private val QUICK_ACTIONS = listOf(
     QuickAction(Icons.Outlined.Receipt, Res.string.quick_orders, HomeDestination.ORDERS),
 )
 
-/** Pastel shortcut tiles that cascade in. */
+/** All shortcuts in one white card, evenly spaced (no scrolling), tiles cascade in. */
 @Composable
 fun QuickActions(onIntent: (HomeIntent) -> Unit, modifier: Modifier = Modifier) {
     val tints = AmazgoneTheme.extended.tileTints
-    val iconColors = with(MaterialTheme.colorScheme) { listOf(secondary, primary, tertiary, secondary, primary) }
-    LazyRow(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceMd)) {
-        itemsIndexed(QUICK_ACTIONS) { index, action ->
-            QuickActionTile(
-                icon = action.icon,
-                label = stringResource(action.label),
-                tint = tints[index % tints.size],
-                iconColor = iconColors[index % iconColors.size],
-                onClick = { onIntent(HomeIntent.Open(action.destination)) },
-                modifier = Modifier.staggeredEnter(index),
-            )
+    val colors = AmazgoneTheme.extended
+    val iconColors = listOf(MaterialTheme.colorScheme.secondary, colors.cta, MaterialTheme.colorScheme.tertiary, colors.brandNavy, colors.cta)
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceContainerLowest,
+        shape = MaterialTheme.shapes.large,
+        shadowElevation = AmazgoneDimens.spaceXs / 4,
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Row(Modifier.padding(horizontal = AmazgoneDimens.spaceXs, vertical = AmazgoneDimens.spaceXs)) {
+            QUICK_ACTIONS.forEachIndexed { index, action ->
+                QuickActionTile(
+                    icon = action.icon,
+                    label = stringResource(action.label),
+                    tint = tints[index % tints.size],
+                    iconColor = iconColors[index % iconColors.size],
+                    index = index,
+                    onClick = { onIntent(HomeIntent.Open(action.destination)) },
+                    modifier = Modifier.weight(1f),
+                )
+            }
         }
     }
 }
