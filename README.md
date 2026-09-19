@@ -27,6 +27,7 @@ There is **no real money**: everything is paid in virtual coins that players ear
 | Sync | Every mutation = Room write + **outbox** row in one transaction → `SyncEngine` (FIFO, backoff, idempotent ids) → Firebase |
 | Money | Append-only **ledger** (coins + XP). Balances are sums; offline purchases/rewards are *pending* until the server confirms or rejects them (automatic refund) |
 | Backend | Firebase Auth (username → synthetic email) + Cloud Firestore, both over their **REST APIs** with Ktor |
+| Analytics | Firebase Analytics via the native SDKs (Android BOM, iOS SPM) behind a shared `Analytics` API with GA4 event names |
 | DI | Koin |
 | UI | Compose Multiplatform, Material 3 Expressive, type-safe Navigation, Coil 3 |
 

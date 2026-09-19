@@ -6,7 +6,7 @@ struct iOSApp: App {
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
-        KoinInit_iosKt.startAmazgone()
+        KoinInit_iosKt.startAmazgone(analytics: FirebaseAnalyticsSink.startIfConfigured())
         BackgroundSyncScheduler.register()
     }
 

@@ -44,6 +44,12 @@ outbox handler; Set writes that change a timestamp must carry `transforms` in th
 Keep reward/XP/cooldown constants in sync with `firestore.rules` (see its header comment).
 Outbox: `PushResult.Rejected` = server said no → compensate. `Retry` = transient → back off, then park (never compensate).
 
+## Analytics
+Log events only through `core/analytics/Analytics` (typed methods, GA4 recommended names where one exists), injected into ViewModels.
+Coins are virtual: send them as `value`/`price_coins` WITHOUT a `currency`, so Firebase never reports them as revenue.
+Never log PII (username, address, review text); `identify()` takes the Firebase uid only. Analytics must never throw.
+Platform sinks: `FirebaseAnalyticsSink` in androidMain (needs google-services.json values) and iosApp/FirebaseAnalyticsSink.swift.
+
 ## Auth
 Firebase Auth uses email only, so a username maps to `"{username}@amazgone.local"`. Uniqueness is enforced by `usernames/{username}` in Firestore.
 Register and first login need a network connection. A guest (local) account works offline.

@@ -30,9 +30,9 @@ val presentationModule = module {
     viewModelOf(::ShellViewModel)
     viewModelOf(::ThemeViewModel)
     viewModelOf(::StoresViewModel)
-    viewModel { params -> StoreViewModel(params.get(), get()) }
+    viewModel { params -> StoreViewModel(params.get(), get(), get()) }
     viewModelOf(::HomeViewModel)
-    viewModel { params -> SearchViewModel(params.getOrNull(), get(), get(), get()) }
+    viewModel { params -> SearchViewModel(params.getOrNull(), get(), get(), get(), get()) }
     viewModelOf(::FlashSaleViewModel)
     viewModelOf(::CategoriesViewModel)
     viewModelOf(::CartViewModel)

@@ -1,5 +1,7 @@
 package com.cikup.amazgone.games.presentation.scratch
 
+import com.cikup.amazgone.core.analytics.Analytics
+import com.cikup.amazgone.games.domain.model.Reward
 import com.cikup.amazgone.core.domain.DomainResult
 import com.cikup.amazgone.core.presentation.mvi.MviViewModel
 import com.cikup.amazgone.games.domain.model.GameKind
@@ -15,6 +17,7 @@ class ScratchViewModel(
     observeCooldown: ObserveCooldownUseCase,
     observeLatestPlay: ObserveLatestPlayUseCase,
     private val playGame: PlayGameUseCase,
+    private val analytics: Analytics,
 ) : MviViewModel<ScratchState, ScratchIntent, ScratchEffect>(ScratchState()) {
 
     init {
@@ -45,7 +48,10 @@ class ScratchViewModel(
         setState { copy(isLoading = true) }
         launchSafely {
             when (val result = playGame(GameKind.SCRATCH)) {
-                is DomainResult.Success -> setState { copy(card = result.value, revealed = false, isLoading = false) }
+                is DomainResult.Success -> {
+                    (result.value.play.reward as? Reward.Coins)?.let { analytics.earnCoins(it.amount, "scratch") }
+                    setState { copy(card = result.value, revealed = false, isLoading = false) }
+                }
                 is DomainResult.Failure -> setState { copy(isLoading = false) }
             }
         }

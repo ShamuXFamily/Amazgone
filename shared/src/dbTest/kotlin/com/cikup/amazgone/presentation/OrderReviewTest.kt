@@ -59,7 +59,7 @@ class OrderReviewTest {
     fun reviewUnlocksOnlyAfterTheParcelIsReceived() = runTest {
         val orderId = placeOrder()
         val vm = graph.koin.get<OrderDetailViewModel> { parametersOf(orderId) }
-        assertEquals(OrderStage.PLACED, vm.state.eventually { it.order != null }.stage)
+        assertEquals(OrderStage.PLACED, vm.state.eventually { it.stage != null }.stage)
 
         vm.onIntent(OrderDetailIntent.WriteReview(charger.id))
         assertNull(vm.state.value.reviewDraft) // not delivered yet: no review sheet

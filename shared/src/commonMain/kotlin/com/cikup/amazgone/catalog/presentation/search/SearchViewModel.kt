@@ -1,5 +1,6 @@
 package com.cikup.amazgone.catalog.presentation.search
 
+import com.cikup.amazgone.core.analytics.Analytics
 import com.cikup.amazgone.catalog.domain.model.SearchFilters
 import com.cikup.amazgone.catalog.domain.model.SortOrder
 import com.cikup.amazgone.catalog.domain.usecase.ObserveCategoriesUseCase
@@ -21,6 +22,7 @@ class SearchViewModel(
     searchProducts: SearchProductsUseCase,
     private val searchRemote: SearchRemoteCatalogUseCase,
     observeCategories: ObserveCategoriesUseCase,
+    private val analytics: Analytics,
 ) : MviViewModel<SearchState, SearchIntent, SearchEffect>(SearchState()) {
 
     private val query = MutableStateFlow("")
@@ -35,7 +37,10 @@ class SearchViewModel(
             .observe { results -> setState { copy(results = results, isLoading = false) } }
 
         launchSafely {
-            query.debounce(REMOTE_DEBOUNCE_MS).distinctUntilChanged().collectLatest { searchRemote(it) }
+            query.debounce(REMOTE_DEBOUNCE_MS).distinctUntilChanged().collectLatest {
+                analytics.search(it) // once the user pauses typing, not per keystroke
+                searchRemote(it)
+            }
         }
         observeCategories().observe { setState { copy(categories = it) } }
     }

@@ -1,5 +1,6 @@
 package com.cikup.amazgone.orders.presentation.checkout
 
+import com.cikup.amazgone.core.analytics.Analytics
 import com.cikup.amazgone.account.domain.usecase.ObserveSessionUseCase
 import com.cikup.amazgone.cart.domain.usecase.ObserveCartUseCase
 import com.cikup.amazgone.cart.domain.usecase.ObserveCouponsUseCase
@@ -24,6 +25,7 @@ class CheckoutViewModel(
     private val placeOrder: PlaceOrderUseCase,
     observeOrders: ObserveOrdersUseCase,
     time: TimeProvider,
+    private val analytics: Analytics,
 ) : MviViewModel<CheckoutState, CheckoutIntent, CheckoutEffect>(CheckoutState()) {
 
     private val selectedCode = MutableStateFlow<String?>(null)
@@ -34,6 +36,9 @@ class CheckoutViewModel(
         coupons.observe { setState { copy(coupons = it) } }
         observeCart(selectedCoupon).observe { summary ->
             // keep the last non-empty summary so the success screen is not replaced by an empty cart
+            if (currentState.summary.isEmpty && !summary.isEmpty && currentState.placedOrder == null) {
+                analytics.beginCheckout(summary.totalCoins, summary.itemCount)
+            }
             if (!summary.isEmpty || currentState.placedOrder == null) setState { copy(summary = summary) }
         }
         observeWallet().observe { setState { copy(balance = it.coins) } }
@@ -57,7 +62,10 @@ class CheckoutViewModel(
                 selectedCode.value = intent.code
                 setState { copy(selectedCouponCode = intent.code) }
             }
-            is CheckoutIntent.SelectDelivery -> setState { copy(delivery = intent.option) }
+            is CheckoutIntent.SelectDelivery -> {
+                if (intent.option != currentState.delivery) analytics.addShippingInfo(intent.option.name)
+                setState { copy(delivery = intent.option) }
+            }
             CheckoutIntent.EditAddress -> setState { copy(step = CheckoutStep.ADDRESS) }
             CheckoutIntent.Pay -> pay()
             CheckoutIntent.ViewOrder -> currentState.placedOrder?.let { sendEffect(CheckoutEffect.OpenOrder(it.id)) }
@@ -91,7 +99,11 @@ class CheckoutViewModel(
         setState { copy(isPlacing = true, error = null) }
         launchSafely {
             when (val result = placeOrder(currentState.summary, currentState.address, currentState.delivery)) {
-                is DomainResult.Success -> setState { copy(isPlacing = false, placedOrder = result.value) }
+                is DomainResult.Success -> {
+                    val order = result.value
+                    analytics.purchase(order.id, order.totalCoins, order.itemCount, order.delivery.name, order.couponCode, currentState.shipments.size)
+                    setState { copy(isPlacing = false, placedOrder = order) }
+                }
                 is DomainResult.Failure -> setState { copy(isPlacing = false, error = result.error, errorPulse = errorPulse + 1) }
             }
         }

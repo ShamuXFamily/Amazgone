@@ -1,5 +1,6 @@
 package com.cikup.amazgone.stores.presentation
 
+import com.cikup.amazgone.core.analytics.Analytics
 import com.cikup.amazgone.catalog.domain.model.SortOrder
 import com.cikup.amazgone.core.presentation.mvi.MviViewModel
 import com.cikup.amazgone.stores.domain.usecase.ObserveStorePageUseCase
@@ -8,12 +9,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class StoreViewModel(
     storeId: String,
     observeStorePage: ObserveStorePageUseCase,
+    analytics: Analytics,
 ) : MviViewModel<StoreState, StoreIntent, StoreEffect>(StoreState(storeId)) {
 
     private val category = MutableStateFlow<String?>(null)
     private val sort = MutableStateFlow(SortOrder.RELEVANCE)
 
     init {
+        analytics.viewStore(storeId)
         observeStorePage(storeId, category, sort).observe { page ->
             setState { copy(isLoading = false, summary = page.summary, categories = page.categories, products = page.products) }
         }

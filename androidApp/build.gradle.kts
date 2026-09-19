@@ -58,7 +58,7 @@ android {
 
 /**
  * Extracts the Firebase API key and project id from google-services.json (gitignored) so the
- * shared REST client can talk to Firebase. Without the file the app runs in local-only mode.
+ * shared REST client can talk to Firebase, plus the values Firebase Analytics needs to start. Without the file the app runs in local-only mode.
  */
 fun firebaseValuesFrom(json: File): Map<String, String> {
     if (!json.exists()) return emptyMap()
@@ -67,5 +67,17 @@ fun firebaseValuesFrom(json: File): Map<String, String> {
     val projectId = (root["project_info"] as Map<String, Any?>)["project_id"] as String
     val client = (root["client"] as List<Map<String, Any?>>).first()
     val apiKey = ((client["api_key"] as List<Map<String, Any?>>).first())["current_key"] as String
-    return mapOf("amazgone_firebase_api_key" to apiKey, "amazgone_firebase_project_id" to projectId)
+    val project = root["project_info"] as Map<String, Any?>
+    val appId = (client["client_info"] as Map<String, Any?>)["mobilesdk_app_id"] as String
+    return mapOf(
+        "amazgone_firebase_api_key" to apiKey,
+        "amazgone_firebase_project_id" to projectId,
+        // Standard names the google-services plugin would generate; FirebaseInitProvider reads them at start-up
+        // (needed by the Firebase Analytics SDK). Without google-services.json none are set and analytics is off.
+        "google_app_id" to appId,
+        "google_api_key" to apiKey,
+        "project_id" to projectId,
+        "gcm_defaultSenderId" to project["project_number"].toString(),
+        "google_storage_bucket" to (project["storage_bucket"] as String? ?: ""),
+    )
 }

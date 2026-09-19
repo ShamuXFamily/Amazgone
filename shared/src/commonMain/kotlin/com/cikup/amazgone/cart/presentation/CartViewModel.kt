@@ -1,5 +1,6 @@
 package com.cikup.amazgone.cart.presentation
 
+import com.cikup.amazgone.core.analytics.Analytics
 import com.cikup.amazgone.cart.domain.model.CartEntry
 import com.cikup.amazgone.cart.domain.usecase.ObserveCartUseCase
 import com.cikup.amazgone.cart.domain.usecase.RestoreCartUseCase
@@ -14,6 +15,7 @@ class CartViewModel(
     private val restoreCart: RestoreCartUseCase,
     observeWallet: ObserveWalletUseCase,
     private val saveToWishlist: SaveToWishlistUseCase,
+    private val analytics: Analytics,
 ) : MviViewModel<CartState, CartIntent, CartEffect>(CartState()) {
 
     init {
@@ -39,6 +41,7 @@ class CartViewModel(
     private suspend fun saveForLater(productId: String) {
         val line = currentState.summary.lines.firstOrNull { it.product.id == productId } ?: return
         saveToWishlist(productId)
+        analytics.addToWishlist(productId)
         updateQuantity(productId, 0)
         sendEffect(CartEffect.SavedForLater(line.product.title))
     }
@@ -46,6 +49,7 @@ class CartViewModel(
     private suspend fun remove(productId: String) {
         val line = currentState.summary.lines.firstOrNull { it.product.id == productId } ?: return
         updateQuantity(productId, 0)
+        analytics.removeFromCart(line.product, line.quantity)
         sendEffect(CartEffect.ShowUndo(CartEntry(productId, line.quantity, 0), line.product.title))
     }
 }

@@ -36,6 +36,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.cikup.amazgone.core.analytics.Analytics
+import org.koin.compose.koinInject
 import com.cikup.amazgone.navigation.presentation.ShellEffect
 import com.cikup.amazgone.navigation.presentation.ShellIntent
 import com.cikup.amazgone.navigation.presentation.ShellViewModel
@@ -54,6 +56,7 @@ fun AppScaffold(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
+    TrackScreens(currentDestination?.route)
     val onTab = TopLevelDestination.entries.firstOrNull { currentDestination.isOn(it) }
     // deeper screens (detail, checkout…) keep the tab they were opened from highlighted
     var lastTab by remember { mutableStateOf(TopLevelDestination.HOME) }
@@ -118,3 +121,14 @@ internal fun NavHostController.navigateToTopLevel(destination: TopLevelDestinati
         restoreState = true
     }
 }
+
+/** One screen_view per destination change, named after the route class ("ProductDetail", "Checkout"…). */
+@Composable
+private fun TrackScreens(route: String?, analytics: Analytics = koinInject()) {
+    LaunchedEffect(route) {
+        route?.let { analytics.screen(screenName(it)) }
+    }
+}
+
+/** "com.cikup.amazgone.navigation.Route.ProductDetail/{productId}/{origin}" → "ProductDetail". */
+internal fun screenName(route: String): String = route.substringBefore('/').substringBefore('?').substringAfterLast('.')

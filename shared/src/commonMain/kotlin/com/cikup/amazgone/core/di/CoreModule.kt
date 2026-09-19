@@ -1,5 +1,8 @@
 package com.cikup.amazgone.core.di
 
+import com.cikup.amazgone.core.analytics.Analytics
+import com.cikup.amazgone.core.analytics.AnalyticsSink
+import com.cikup.amazgone.core.analytics.NoopAnalyticsSink
 import com.cikup.amazgone.core.common.AppDispatchers
 import com.cikup.amazgone.core.common.AppLogger
 import com.cikup.amazgone.core.common.AppStartup
@@ -34,6 +37,7 @@ val coreModule = module {
     single<IdGenerator> { UuidGenerator }
     single<AppLogger> { PrintLogger }
     single { AppDispatchers() }
+    single { Analytics(getOrNull<AnalyticsSink>() ?: NoopAnalyticsSink, get()) }
     single { ApplicationScope(CoroutineScope(SupervisorJob() + get<AppDispatchers>().default)) }
 
     single { AppDatabase.build(get(), get<AppDispatchers>().io) }

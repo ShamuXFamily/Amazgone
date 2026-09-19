@@ -1,5 +1,6 @@
 package com.cikup.amazgone.account.presentation
 
+import com.cikup.amazgone.core.analytics.Analytics
 import com.cikup.amazgone.account.domain.repository.AuthRepository
 import com.cikup.amazgone.account.domain.usecase.LoginUseCase
 import com.cikup.amazgone.account.domain.usecase.LogoutUseCase
@@ -25,6 +26,7 @@ class AccountViewModel(
     private val register: RegisterUseCase,
     private val logout: LogoutUseCase,
     private val requestSync: RequestSyncUseCase,
+    private val analytics: Analytics,
 ) : MviViewModel<AccountState, AccountIntent, AccountEffect>(AccountState(isRemoteAvailable = auth.isRemoteAvailable)) {
 
     init {
@@ -69,6 +71,7 @@ class AccountViewModel(
             }
             when (result) {
                 is DomainResult.Success -> {
+                    if (form.mode == AuthMode.SIGN_IN) analytics.login() else analytics.signUp()
                     setState { copy(form = AuthForm()) }
                     requestSync(force = true)
                     sendEffect(AccountEffect.SignedIn)

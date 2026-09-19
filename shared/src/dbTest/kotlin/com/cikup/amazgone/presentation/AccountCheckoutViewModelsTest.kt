@@ -126,6 +126,9 @@ class AccountCheckoutViewModelsTest {
         assertEquals(CheckoutPlanner.arrival(order.createdAt, DeliveryOption.EXPRESS), order.arrival())
         vm.onIntent(CheckoutIntent.ViewOrder)
         assertEquals(CheckoutEffect.OpenOrder(order.id), vm.effects.first())
+        val events = graph.analytics.events.map { it.first }
+        assertEquals(listOf("begin_checkout", "add_shipping_info", "purchase", "spend_virtual_currency"), events.filter { it != "screen_view" })
+        assertEquals(order.id, graph.analytics.events.first { it.first == "purchase" }.second["transaction_id"])
 
         assertEquals(1, graph.get<OrdersViewModel>().state.eventually { it.orders.isNotEmpty() }.orders.size)
         val expected = 5_000L - 1_000L - DeliveryOption.EXPRESS.feeCoins

@@ -1,5 +1,7 @@
 package com.cikup.amazgone.games.presentation.spin
 
+import com.cikup.amazgone.core.analytics.Analytics
+import com.cikup.amazgone.games.domain.model.Reward
 import com.cikup.amazgone.core.domain.DomainResult
 import com.cikup.amazgone.core.presentation.mvi.MviViewModel
 import com.cikup.amazgone.games.domain.model.GameKind
@@ -12,6 +14,7 @@ class SpinViewModel(
     ticker: TickerUseCase,
     observeCooldown: ObserveCooldownUseCase,
     private val playGame: PlayGameUseCase,
+    private val analytics: Analytics,
 ) : MviViewModel<SpinState, SpinIntent, SpinEffect>(SpinState()) {
 
     private var pending: PlayOutcome? = null
@@ -27,6 +30,7 @@ class SpinViewModel(
         when (intent) {
             SpinIntent.Spin -> spin()
             SpinIntent.Landed -> pending?.let { outcome ->
+                (outcome.play.reward as? Reward.Coins)?.let { analytics.earnCoins(it.amount, "spin") }
                 setState { copy(isSpinning = false, wonReward = outcome.play.reward, wonXp = outcome.play.xp) }
                 pending = null
             }

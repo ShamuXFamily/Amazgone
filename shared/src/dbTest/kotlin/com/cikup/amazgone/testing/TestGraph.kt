@@ -1,5 +1,7 @@
 package com.cikup.amazgone.testing
 
+import com.cikup.amazgone.core.analytics.AnalyticsSink
+import com.cikup.amazgone.core.analytics.RecordingSink
 import com.cikup.amazgone.core.common.AppDispatchers
 import com.cikup.amazgone.core.common.IdGenerator
 import com.cikup.amazgone.core.common.TimeProvider
@@ -37,12 +39,15 @@ class TestGraph(
     firebaseConfigured: Boolean = true,
 ) {
     val database: AppDatabase = inMemoryDatabase()
+    /** Every analytics event the app logged, in order. */
+    val analytics = RecordingSink()
 
     private val testPlatform = module {
         single<HttpClientEngine> { backend.engine }
         single { FirebaseConfigHolder(if (firebaseConfigured) TEST_CONFIG else null) }
         single<SecureStore> { secureStore }
         single<ConnectivityObserver> { connectivity }
+        single<AnalyticsSink> { analytics }
     }
 
     private val overrides = module {

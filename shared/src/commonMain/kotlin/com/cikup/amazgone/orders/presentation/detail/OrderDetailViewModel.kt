@@ -1,5 +1,6 @@
 package com.cikup.amazgone.orders.presentation.detail
 
+import com.cikup.amazgone.core.analytics.Analytics
 import com.cikup.amazgone.cart.domain.usecase.AddToCartUseCase
 import com.cikup.amazgone.core.domain.DomainResult
 import com.cikup.amazgone.core.presentation.mvi.MviViewModel
@@ -18,6 +19,7 @@ class OrderDetailViewModel(
     private val confirmReceived: ConfirmReceivedUseCase,
     private val submitReview: SubmitReviewUseCase,
     private val addToCart: AddToCartUseCase,
+    private val analytics: Analytics,
 ) : MviViewModel<OrderDetailState, OrderDetailIntent, OrderDetailEffect>(OrderDetailState()) {
 
     init {
@@ -31,7 +33,10 @@ class OrderDetailViewModel(
             OrderDetailIntent.Back -> sendEffect(OrderDetailEffect.NavigateBack)
             is OrderDetailIntent.OpenProduct -> sendEffect(OrderDetailEffect.NavigateToProduct(intent.productId))
             OrderDetailIntent.ConfirmReceived -> launchSafely {
-                if (confirmReceived(orderId)) sendEffect(OrderDetailEffect.ReceivedConfirmed)
+                if (confirmReceived(orderId)) {
+                    analytics.orderReceived(orderId)
+                    sendEffect(OrderDetailEffect.ReceivedConfirmed)
+                }
             }
             is OrderDetailIntent.BuyAgain -> launchSafely {
                 if (addToCart(intent.productId) is DomainResult.Success) sendEffect(OrderDetailEffect.AddedToCart)
@@ -63,6 +68,7 @@ class OrderDetailViewModel(
         launchSafely {
             when (submitReview(orderId, draft.item.productId, draft.rating, draft.comment)) {
                 is DomainResult.Success -> {
+                    analytics.reviewPosted(draft.item.productId, draft.rating, draft.isEditing)
                     setState { copy(reviewDraft = null) }
                     sendEffect(OrderDetailEffect.ReviewPosted)
                 }

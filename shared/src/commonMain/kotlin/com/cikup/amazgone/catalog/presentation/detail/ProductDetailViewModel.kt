@@ -1,5 +1,6 @@
 package com.cikup.amazgone.catalog.presentation.detail
 
+import com.cikup.amazgone.core.analytics.Analytics
 import com.cikup.amazgone.cart.domain.model.CartCalculator
 import com.cikup.amazgone.cart.domain.usecase.AddToCartUseCase
 import com.cikup.amazgone.cart.domain.usecase.ObserveQuantityInCartUseCase
@@ -31,12 +32,14 @@ class ProductDetailViewModel(
     time: TimeProvider,
     observeShopperReviews: ObserveProductReviewsUseCase,
     refreshShopperReviews: RefreshProductReviewsUseCase,
+    private val analytics: Analytics,
 ) : MviViewModel<ProductDetailState, ProductDetailIntent, ProductDetailEffect>(ProductDetailState(productId, origin)) {
 
     init {
         setState { copy(now = time.nowMillis()) }
         val detail = observeDetail(productId)
         detail.observe { found ->
+            if (currentState.product == null) found?.product?.let(analytics::viewItem)
             setState { copy(isLoading = false, product = found?.product, reviews = found?.reviews.orEmpty()) }
         }
 
@@ -56,7 +59,7 @@ class ProductDetailViewModel(
         when (intent) {
             ProductDetailIntent.AddToCart -> add()
             is ProductDetailIntent.ChangeQuantity -> setState { copy(quantity = intent.quantity.coerceIn(1, CartCalculator.MAX_QUANTITY_PER_ITEM)) }
-            ProductDetailIntent.ToggleWishlist -> launchSafely { toggleWishlist(currentState.productId) }
+            ProductDetailIntent.ToggleWishlist -> launchSafely { if (toggleWishlist(currentState.productId)) analytics.addToWishlist(currentState.productId) }
             is ProductDetailIntent.OpenProduct ->
                 sendEffect(ProductDetailEffect.NavigateToProduct(intent.productId, RECOMMENDATION_ORIGIN))
             ProductDetailIntent.OpenStore -> currentState.product?.let { sendEffect(ProductDetailEffect.NavigateToStore(it.store.id)) }
@@ -71,6 +74,7 @@ class ProductDetailViewModel(
         launchSafely {
             when (addToCart(product.id, currentState.quantity)) {
                 is DomainResult.Success -> {
+                    analytics.addToCart(product, currentState.quantity)
                     sendEffect(ProductDetailEffect.FlyToCart(product.id, product.thumbnailUrl))
                     setState { copy(isAdding = false, justAdded = true, quantity = 1) }
                     delay(ADDED_FEEDBACK_MS)
