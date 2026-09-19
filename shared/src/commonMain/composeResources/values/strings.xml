@@ -549,4 +549,45 @@
     <string name="era_MOTOR_AND_JET_years">1900 – today</string>
     <string name="era_FUTURE">The future</string>
     <string name="era_FUTURE_years">2030 and beyond</string>
+
+    <!-- Notifications -->
+    <string name="notif_ORDER_CONFIRMED_title">Order confirmed ✅</string>
+    <string name="notif_ORDER_CONFIRMED_body">Order #%1$s is paid and being packed.</string>
+    <string name="notif_ORDER_REJECTED_title">Order refunded</string>
+    <string name="notif_ORDER_REJECTED_body">We couldn't confirm order #%1$s, so your coins are back in your wallet.</string>
+    <string name="notif_COURIER_DEPARTED_title">%1$s on its way</string>
+    <string name="notif_COURIER_DEPARTED_body">Your %1$s left %2$s with %3$s.</string>
+    <string name="notif_PARCEL_DELIVERED_title">Delivered! 📦</string>
+    <string name="notif_PARCEL_DELIVERED_body">%1$s arrived by %2$s.</string>
+    <string name="notif_REVIEW_PROMPT_title">How was it? ⭐</string>
+    <string name="notif_REVIEW_PROMPT_body">Tell other shoppers what you think of %1$s.</string>
+    <string name="notif_SPIN_READY_title">Your daily spin is ready 🎡</string>
+    <string name="notif_SPIN_READY_body">Spin now for coins, coupons and XP.</string>
+    <string name="notif_SCRATCH_READY_title">New scratch card 🎟️</string>
+    <string name="notif_SCRATCH_READY_body">Your next scratch card is ready to reveal.</string>
+    <string name="notif_FLASH_SALE_title">Flash sale ends in 10 min ⚡</string>
+    <string name="notif_FLASH_SALE_body">Grab this hour's deals before they're gone.</string>
+    <string name="notif_LEVEL_UP_title">Level %1$s reached! 🎉</string>
+    <string name="notif_LEVEL_UP_body">Keep shopping and playing to level up again.</string>
+    <string name="notif_ACHIEVEMENT_title">Achievement unlocked 🏆</string>
+    <string name="notif_ACHIEVEMENT_body">%1$s</string>
+    <string name="notif_COURIER_UNLOCKED_title">New courier in your fleet</string>
+    <string name="notif_COURIER_UNLOCKED_body">%1$s %2$s is ready for your next order.</string>
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_empty_title">You're all caught up</string>
+    <string name="notifications_empty_body">Delivery updates, game reminders and rewards will show up here.</string>
+    <string name="notifications_mark_all">Mark all read</string>
+    <string name="notifications_today">Today</string>
+    <string name="notifications_earlier">Earlier</string>
+    <string name="notifications_enable_title">Turn on notifications</string>
+    <string name="notifications_enable_body">Get told when your courier lands, even with the app closed.</string>
+    <string name="notifications_enable_action">Turn on</string>
+    <string name="notifications_bell">Notifications</string>
+    <string name="notifications_ago_now">now</string>
+    <string name="notifications_ago">%1$s ago</string>
+    <string name="notifications_minutes">%1$sm</string>
+    <string name="notifications_hours">%1$sh</string>
+    <string name="notifications_days">%1$sd</string>
+    <string name="notifications_remove">Remove</string>
+    <string name="notifications_unread">%1$s new</string>
 </resources>

@@ -35,6 +35,10 @@ class CourierRepositoryImpl(
         Courier.STARTERS + rows.mapNotNull { Courier.parse(it.courier) }
     }
 
+    override fun observePurchases(): Flow<Map<Courier, Long>> = dao.observeAll().map { rows ->
+        rows.mapNotNull { row -> Courier.parse(row.courier)?.let { it to row.purchasedAt } }.toMap()
+    }
+
     override suspend fun buy(courier: Courier): DomainResult<Unit> = transactions.inTransaction {
         if (courier.isStarter || dao.find(courier.name) != null) return@inTransaction DomainResult.Success(Unit)
         val balance = wallet.balance(Currency.COINS)

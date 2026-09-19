@@ -1,5 +1,7 @@
 package com.cikup.amazgone.orders.presentation.checkout
 
+import com.cikup.amazgone.core.notifications.rememberNotificationPermission
+import kotlinx.coroutines.delay
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.checkout_instant
 import amazgone.shared.generated.resources.checkout_keep_shopping
@@ -90,10 +92,18 @@ import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 /** Amazon-style "Order placed, thanks!": celebratory hero, when it arrives, what you bought and what you earned. */
+private const val PERMISSION_ASK_DELAY_MS = 1_200L
+
 @Composable
 fun OrderPlacedScreen(order: Order, onIntent: (CheckoutIntent) -> Unit) {
     val haptics = LocalHapticFeedback.current
     LaunchedEffect(order.id) { haptics.performHapticFeedback(HapticFeedbackType.Confirm) }
+    // the moment a shopper most wants delivery updates: ask once the celebration has landed
+    val notifications = rememberNotificationPermission()
+    LaunchedEffect(order.id) {
+        delay(PERMISSION_ASK_DELAY_MS)
+        if (!notifications.granted) notifications.request()
+    }
     Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Box {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).navigationBarsPadding()) {

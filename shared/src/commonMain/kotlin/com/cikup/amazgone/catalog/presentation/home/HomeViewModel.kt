@@ -7,6 +7,7 @@ import com.cikup.amazgone.core.sync.domain.usecase.ObserveIsSyncingUseCase
 import com.cikup.amazgone.core.sync.domain.usecase.ObserveSyncStatusUseCase
 import com.cikup.amazgone.core.sync.domain.usecase.RequestSyncUseCase
 import com.cikup.amazgone.games.domain.usecase.TickerUseCase
+import com.cikup.amazgone.notifications.domain.usecase.ObserveInboxUseCase
 import com.cikup.amazgone.stores.domain.model.StoreKind
 import com.cikup.amazgone.stores.domain.usecase.ObserveStoresUseCase
 import com.cikup.amazgone.wishlist.domain.usecase.ObserveWishlistIdsUseCase
@@ -28,6 +29,7 @@ class HomeViewModel(
     private val requestSync: RequestSyncUseCase,
     private val toggleWishlist: ToggleWishlistUseCase,
     observeStores: ObserveStoresUseCase,
+    observeInbox: ObserveInboxUseCase,
 ) : MviViewModel<HomeState, HomeIntent, HomeEffect>(HomeState()) {
 
     private val selectedCategory = MutableStateFlow<String?>(null)
@@ -53,6 +55,7 @@ class HomeViewModel(
         observeStores().observe { sections -> setState { copy(officialStores = sections[StoreKind.OFFICIAL].orEmpty().take(OFFICIAL_STORES)) } }
         observeWishlistIds().observe { setState { copy(savedIds = it) } }
         observeSyncStatus().observe { setState { copy(syncStatus = it) } }
+        observeInbox(ticks).observe { inbox -> setState { copy(unreadNotifications = inbox.count { !it.read }) } }
         observeIsSyncing().observe { setState { copy(isRefreshing = it) } }
     }
 

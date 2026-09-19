@@ -1,6 +1,8 @@
 package com.cikup.amazgone.core.di
 
 import com.cikup.amazgone.core.database.databaseBuilder
+import com.cikup.amazgone.core.notifications.IosSystemNotifications
+import com.cikup.amazgone.notifications.domain.repository.SystemNotifications
 import com.cikup.amazgone.core.remote.FirebaseConfigHolder
 import com.cikup.amazgone.core.remote.loadFirebaseConfig
 import com.cikup.amazgone.core.storage.KeychainSecureStore
@@ -17,4 +19,5 @@ actual val platformModule = module {
     single<HttpClientEngine> { Darwin.create() }
     single { FirebaseConfigHolder(loadFirebaseConfig()) }
     single<SecureStore> { KeychainSecureStore(service = "com.cikup.amazgone.auth") }
+    single<SystemNotifications> { IosSystemNotifications() }
 }

@@ -30,6 +30,8 @@ import com.cikup.amazgone.progress.data.LeaderboardDao
 import com.cikup.amazgone.progress.data.LeaderboardEntity
 import com.cikup.amazgone.orders.data.OrderEntity
 import com.cikup.amazgone.delivery.data.OwnedCourierDao
+import com.cikup.amazgone.notifications.data.NotificationDao
+import com.cikup.amazgone.notifications.data.NotificationEntity
 import com.cikup.amazgone.delivery.data.OwnedCourierEntity
 import com.cikup.amazgone.reviews.data.ShopperReviewDao
 import com.cikup.amazgone.reviews.data.ShopperReviewEntity
@@ -66,6 +68,7 @@ import kotlinx.coroutines.CoroutineDispatcher
         SettingEntity::class,
         ShopperReviewEntity::class,
         OwnedCourierEntity::class,
+        NotificationEntity::class,
     ],
     version = AppDatabase.SCHEMA_VERSION,
     exportSchema = true,
@@ -88,10 +91,11 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun settingsDao(): SettingsDao
     abstract fun shopperReviewDao(): ShopperReviewDao
     abstract fun ownedCourierDao(): OwnedCourierDao
+    abstract fun notificationDao(): NotificationDao
 
     companion object {
         const val FILE_NAME = "amazgone.db"
-        const val SCHEMA_VERSION = 13
+        const val SCHEMA_VERSION = 14
 
         fun build(builder: Builder<AppDatabase>, dispatcher: CoroutineDispatcher): AppDatabase = builder
             .setDriver(BundledSQLiteDriver())

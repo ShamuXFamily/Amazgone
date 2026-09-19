@@ -29,6 +29,7 @@ import com.cikup.amazgone.orders.presentation.checkout.CheckoutRoute
 import com.cikup.amazgone.orders.presentation.detail.OrderDetailRoute
 import com.cikup.amazgone.orders.presentation.list.OrdersRoute
 import com.cikup.amazgone.delivery.presentation.GarageRoute
+import com.cikup.amazgone.notifications.presentation.NotificationsRoute
 import com.cikup.amazgone.stores.presentation.StoreRoute
 import com.cikup.amazgone.stores.presentation.StoresRoute
 import com.cikup.amazgone.wallet.presentation.WalletRoute
@@ -77,6 +78,7 @@ private fun NavGraphBuilder.shopGraph(nav: NavHostController) {
                         HomeDestination.ORDERS -> nav.navigate(Route.Orders)
                         HomeDestination.FLASH_SALE -> nav.navigate(Route.FlashSale)
                         HomeDestination.STORES -> nav.navigate(Route.Stores)
+                        HomeDestination.NOTIFICATIONS -> nav.navigate(Route.Notifications)
                     }
                 },
                 onOpenProduct = nav::openProduct,
@@ -89,6 +91,7 @@ private fun NavGraphBuilder.shopGraph(nav: NavHostController) {
         Animated { SearchRoute(onBack = { nav.popBackStack() }, onOpenProduct = nav::openProduct, category = route.category) }
     }
     composable<Route.FlashSale> { Animated { FlashSaleRoute(onBack = { nav.popBackStack() }, onOpenProduct = nav::openProduct) } }
+    composable<Route.Notifications> { Animated { NotificationsRoute(onBack = { nav.popBackStack() }, onOpenLink = nav::openLink) } }
     composable<Route.Garage> { Animated { GarageRoute(onBack = { nav.popBackStack() }) } }
     composable<Route.Stores> { Animated { StoresRoute(onBack = { nav.popBackStack() }, onOpenStore = nav::openStore) } }
     composable<Route.Store> { entry ->

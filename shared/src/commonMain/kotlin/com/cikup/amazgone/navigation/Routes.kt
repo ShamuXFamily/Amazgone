@@ -26,5 +26,6 @@ sealed interface Route {
     @Serializable data object Categories : Route
     @Serializable data object Stores : Route
     @Serializable data object Garage : Route
+    @Serializable data object Notifications : Route
     @Serializable data class Store(val storeId: String) : Route
 }

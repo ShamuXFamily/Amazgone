@@ -17,6 +17,9 @@ There is **no real money**: everything is paid in virtual coins that players ear
   **Courier Garage**; follow each parcel live on an **OpenStreetMap** map
 - 📦 Order tracker (Placed → Confirmed → Shipped → Delivered) with "Order received", and **verified-purchase reviews**
   (star rating + comment) that publish to everyone's product page
+- 🔔 **Notifications**: local OS notifications (no push server) plus an in-app inbox with a bell badge and slide-down
+  banner — order confirmed/refunded, courier departed, delivered, review prompts, spin/scratch ready, flash sale ending,
+  level-ups, achievements and courier unlocks; tapping one opens the right screen
 - 🎰 Daily **spin wheel**, **scratch cards**, hourly **lightning deals**, coupons
 - 🏆 XP, levels, achievements and an online **leaderboard**
 - 📴 **Offline-first**: the app works fully in airplane mode; changes sync when you're back online

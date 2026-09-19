@@ -91,7 +91,7 @@ fun HomeScreen(state: HomeState, onIntent: (HomeIntent) -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceMd),
                 modifier = Modifier.fillMaxSize(),
             ) {
-                fullWidth("header") { HomeHeader(state.syncStatus, onIntent, Modifier.statusBarsPadding()) }
+                fullWidth("header") { HomeHeader(state.syncStatus, state.unreadNotifications, onIntent, Modifier.statusBarsPadding()) }
                 fullWidth("quick") { QuickActions(onIntent) }
                 when {
                     state.isLoading -> skeletons()

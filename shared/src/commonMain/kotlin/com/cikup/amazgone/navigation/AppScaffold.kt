@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.cikup.amazgone.core.analytics.Analytics
+import com.cikup.amazgone.core.notifications.DeepLinks
 import org.koin.compose.koinInject
 import com.cikup.amazgone.navigation.presentation.ShellEffect
 import com.cikup.amazgone.navigation.presentation.ShellIntent
@@ -71,7 +72,16 @@ fun AppScaffold(
                 is ShellEffect.AchievementsUnlocked -> effect.ids.forEach { id ->
                     snackbar.showSnackbar(getString(Res.string.achievement_unlocked_toast, getString(id.label().title)))
                 }
+                is ShellEffect.OpenLink -> navController.openLink(effect.link)
             }
+        }
+    }
+    // taps on system notifications arrive through DeepLinks (iOS delegate / Android launch intent)
+    val pendingLink by DeepLinks.pending.collectAsStateWithLifecycle()
+    LaunchedEffect(pendingLink) {
+        pendingLink?.let {
+            navController.openLink(it)
+            DeepLinks.consume()
         }
     }
     val onSelect: (TopLevelDestination) -> Unit = { destination ->
@@ -103,6 +113,12 @@ fun AppScaffold(
             }
             FlyToCartOverlay(flyToCart)
             SnackbarHost(snackbar, Modifier.align(Alignment.TopCenter).safeContentPadding())
+            NotificationBanner(
+                banner = shellState.banner,
+                onOpen = { shell.onIntent(ShellIntent.OpenBanner) },
+                onDismiss = { shell.onIntent(ShellIntent.DismissBanner) },
+                modifier = Modifier.align(Alignment.TopCenter),
+            )
             AnimatedVisibility(shellState.levelUpTo != null, enter = fadeIn(), exit = fadeOut()) {
                 shellState.levelUpTo?.let { LevelUpOverlay(it) { shell.onIntent(ShellIntent.DismissLevelUp) } }
             }

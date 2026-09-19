@@ -23,12 +23,14 @@ data class HomeState(
     val savedIds: Set<String> = emptySet(),
     val syncStatus: SyncStatus = SyncStatus.Synced,
     val isRefreshing: Boolean = false,
+    /** Unread notifications for the bell badge. */
+    val unreadNotifications: Int = 0,
 ) : UiState {
     val isEmpty: Boolean get() = !isLoading && products.isEmpty() && deals.isEmpty()
 }
 
 /** Shortcuts from the home screen to other parts of the app. */
-enum class HomeDestination { SEARCH, CATEGORIES, WALLET, SPIN, SCRATCH, ORDERS, FLASH_SALE, STORES }
+enum class HomeDestination { SEARCH, CATEGORIES, WALLET, SPIN, SCRATCH, ORDERS, FLASH_SALE, STORES, NOTIFICATIONS }
 
 sealed interface HomeIntent : UiIntent {
     data class SelectCategory(val slug: String?) : HomeIntent

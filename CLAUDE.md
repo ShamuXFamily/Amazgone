@@ -56,6 +56,13 @@ and `FirestoreRulesSyncTest` fails if they drift. Store origins: `Origins.kt`. A
 Nominatim (≤1 request/s, identifying User-Agent) with country-centre fallback. Maps use tile.openstreetmap.org: keep the
 "© OpenStreetMap contributors" credit visible, the app User-Agent on image requests, and never prefetch tiles in bulk.
 
+## Notifications
+Local only (WorkManager on Android, UNUserNotificationCenter on iOS) — there is no push server. `NotificationPlanner` is a pure
+function from app data to `PlannedNotification`s with STABLE ids; `NotificationCoordinator` re-plans on every data change and
+`NotificationRepository.reconcile` inserts new ones (rendered text), schedules future ones and withdraws stale future ones.
+New event kind = `NotificationKind` + planner rule + `notif_{KIND}_title/body` strings + a link `routeForLink` understands.
+Room `notifications` is the inbox; never post an OS notification directly.
+
 ## Auth
 Firebase Auth uses email only, so a username maps to `"{username}@amazgone.local"`. Uniqueness is enforced by `usernames/{username}` in Firestore.
 Register and first login need a network connection. A guest (local) account works offline.

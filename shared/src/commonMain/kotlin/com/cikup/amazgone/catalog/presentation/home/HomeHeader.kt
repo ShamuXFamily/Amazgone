@@ -7,7 +7,24 @@ import amazgone.shared.generated.resources.quick_orders
 import amazgone.shared.generated.resources.quick_scratch
 import amazgone.shared.generated.resources.quick_spin
 import amazgone.shared.generated.resources.quick_wallet
+import amazgone.shared.generated.resources.notifications_bell
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.graphicsLayer
+import com.cikup.amazgone.core.designsystem.motion.MotionTokens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,9 +54,40 @@ import com.cikup.amazgone.core.sync.domain.SyncStatus
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
+/** Bell with an unread count that pops in; the icon wiggles when the count goes up. */
+@Composable
+private fun NotificationBell(unread: Int, onClick: () -> Unit) {
+    val wiggle = remember { Animatable(0f) }
+    var last by remember { mutableIntStateOf(unread) }
+    LaunchedEffect(unread) {
+        if (unread > last) {
+            WIGGLE_DEGREES.forEach { wiggle.animateTo(it, MotionTokens.snappy()) }
+        }
+        last = unread
+    }
+    IconButton(onClick = onClick) {
+        BadgedBox(badge = {
+            AnimatedVisibility(unread > 0, enter = scaleIn(MotionTokens.bouncy()), exit = scaleOut()) {
+                Badge(containerColor = AmazgoneTheme.extended.cta, contentColor = AmazgoneTheme.extended.onCta) {
+                    Text(if (unread > MAX_BADGE) "$MAX_BADGE+" else unread.toString())
+                }
+            }
+        }) {
+            Icon(
+                if (unread > 0) Icons.Rounded.Notifications else Icons.Outlined.Notifications,
+                stringResource(Res.string.notifications_bell),
+                modifier = Modifier.graphicsLayer { rotationZ = wiggle.value },
+            )
+        }
+    }
+}
+
+private const val MAX_BADGE = 9
+private val WIGGLE_DEGREES = listOf(-14f, 12f, -8f, 5f, 0f)
+
 /** Wordmark + delivery chip + sync state, then the search pill. */
 @Composable
-fun HomeHeader(syncStatus: SyncStatus, onIntent: (HomeIntent) -> Unit, modifier: Modifier = Modifier) {
+fun HomeHeader(syncStatus: SyncStatus, unread: Int, onIntent: (HomeIntent) -> Unit, modifier: Modifier = Modifier) {
     Column(modifier.padding(top = AmazgoneDimens.spaceMd), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceMd)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
             BrandWordmark()
@@ -48,6 +96,7 @@ fun HomeHeader(syncStatus: SyncStatus, onIntent: (HomeIntent) -> Unit, modifier:
                 Text(stringResource(Res.string.home_deliver_to), style = MaterialTheme.typography.labelMedium, maxLines = 1)
             }
             SyncStatusIcon(syncStatus)
+            NotificationBell(unread) { onIntent(HomeIntent.Open(HomeDestination.NOTIFICATIONS)) }
         }
         SearchPill(onClick = { onIntent(HomeIntent.Open(HomeDestination.SEARCH)) })
     }

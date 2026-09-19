@@ -15,6 +15,7 @@ import com.cikup.amazgone.games.presentation.hub.GamesHubViewModel
 import com.cikup.amazgone.games.presentation.scratch.ScratchViewModel
 import com.cikup.amazgone.games.presentation.spin.SpinViewModel
 import com.cikup.amazgone.navigation.presentation.ShellViewModel
+import com.cikup.amazgone.notifications.presentation.NotificationsViewModel
 import com.cikup.amazgone.progress.presentation.AchievementsViewModel
 import com.cikup.amazgone.progress.presentation.LeaderboardViewModel
 import com.cikup.amazgone.catalog.presentation.categories.CategoriesViewModel
@@ -32,6 +33,7 @@ val presentationModule = module {
     viewModelOf(::ThemeViewModel)
     viewModelOf(::StoresViewModel)
     viewModelOf(::GarageViewModel)
+    viewModelOf(::NotificationsViewModel)
     viewModel { params -> StoreViewModel(params.get(), get(), get()) }
     viewModelOf(::HomeViewModel)
     viewModel { params -> SearchViewModel(params.getOrNull(), get(), get(), get(), get()) }
