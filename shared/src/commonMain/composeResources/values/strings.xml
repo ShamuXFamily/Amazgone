@@ -430,4 +430,24 @@
     <string name="review_posted">Thanks for your review!</string>
     <string name="review_yours">Your review</string>
     <string name="review_star">%1$d star</string>
+
+    <!-- Wishlist v2 -->
+    <plurals name="wishlist_items">
+        <item quantity="one">%1$d saved item</item>
+        <item quantity="other">%1$d saved items</item>
+    </plurals>
+    <string name="wishlist_worth">Worth %1$s coins</string>
+    <string name="wishlist_on_sale">%1$d on sale · save %2$s</string>
+    <string name="wishlist_add_all">Add all to cart (%1$d)</string>
+    <string name="wishlist_all_in_cart">Everything available is in your cart</string>
+    <string name="wishlist_filter_all">All</string>
+    <string name="wishlist_filter_sale">On sale</string>
+    <string name="wishlist_filter_stock">In stock</string>
+    <string name="wishlist_sort_recent">Recently saved</string>
+    <string name="wishlist_in_cart">In cart</string>
+    <string name="wishlist_no_match">Nothing matches this filter</string>
+    <plurals name="wishlist_added">
+        <item quantity="one">Added %1$d item to your cart</item>
+        <item quantity="other">Added %1$d items to your cart</item>
+    </plurals>
 </resources>

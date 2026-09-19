@@ -156,7 +156,9 @@ private fun NavGraphBuilder.accountGraph(nav: NavHostController) {
         val route = entry.toRoute<Route.OrderDetail>()
         Animated { OrderDetailRoute(route.orderId, onBack = { nav.popBackStack() }, onOpenProduct = { nav.openProduct(it, "order") }) }
     }
-    composable<Route.Wishlist> { Animated { WishlistRoute(onBack = { nav.popBackStack() }, onOpenProduct = nav::openProduct) } }
+    composable<Route.Wishlist> {
+        Animated { WishlistRoute(onBack = { nav.popBackStack() }, onOpenProduct = nav::openProduct, onBrowse = { nav.navigateToTopLevel(TopLevelDestination.HOME) }) }
+    }
     composable<Route.Wallet> { Animated { WalletRoute(onBack = { nav.popBackStack() }) } }
 }
 
