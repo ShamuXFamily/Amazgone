@@ -3,14 +3,18 @@ package com.cikup.amazgone.orders.presentation.checkout
 import com.cikup.amazgone.account.domain.usecase.ObserveSessionUseCase
 import com.cikup.amazgone.cart.domain.usecase.ObserveCartUseCase
 import com.cikup.amazgone.cart.domain.usecase.ObserveCouponsUseCase
+import com.cikup.amazgone.core.common.TimeProvider
 import com.cikup.amazgone.core.domain.DomainResult
 import com.cikup.amazgone.core.presentation.mvi.MviViewModel
 import com.cikup.amazgone.orders.domain.model.AddressValidator
+import com.cikup.amazgone.orders.domain.model.Order
 import com.cikup.amazgone.orders.domain.model.ShippingAddress
+import com.cikup.amazgone.orders.domain.usecase.ObserveOrdersUseCase
 import com.cikup.amazgone.orders.domain.usecase.PlaceOrderUseCase
 import com.cikup.amazgone.wallet.domain.usecase.ObserveWalletUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 
 class CheckoutViewModel(
     observeCart: ObserveCartUseCase,
@@ -18,6 +22,8 @@ class CheckoutViewModel(
     observeWallet: ObserveWalletUseCase,
     observeSession: ObserveSessionUseCase,
     private val placeOrder: PlaceOrderUseCase,
+    observeOrders: ObserveOrdersUseCase,
+    time: TimeProvider,
 ) : MviViewModel<CheckoutState, CheckoutIntent, CheckoutEffect>(CheckoutState()) {
 
     private val selectedCode = MutableStateFlow<String?>(null)
@@ -31,6 +37,8 @@ class CheckoutViewModel(
             if (!summary.isEmpty || currentState.placedOrder == null) setState { copy(summary = summary) }
         }
         observeWallet().observe { setState { copy(balance = it.coins) } }
+        setState { copy(now = time.nowMillis()) }
+        launchSafely { reuseLastAddress(observeOrders().first()) }
         observeSession().observe { session ->
             if (session != null && currentState.address.fullName.isEmpty()) {
                 setState { copy(address = address.copy(fullName = session.username)) }
@@ -49,6 +57,8 @@ class CheckoutViewModel(
                 selectedCode.value = intent.code
                 setState { copy(selectedCouponCode = intent.code) }
             }
+            is CheckoutIntent.SelectDelivery -> setState { copy(delivery = intent.option) }
+            CheckoutIntent.EditAddress -> setState { copy(step = CheckoutStep.ADDRESS) }
             CheckoutIntent.Pay -> pay()
             CheckoutIntent.ViewOrder -> currentState.placedOrder?.let { sendEffect(CheckoutEffect.OpenOrder(it.id)) }
             CheckoutIntent.KeepShopping -> sendEffect(CheckoutEffect.GoHome)
@@ -60,21 +70,19 @@ class CheckoutViewModel(
             CheckoutStep.ADDRESS -> {
                 val invalid = AddressValidator.invalidFields(currentState.address)
                 if (invalid.isEmpty()) {
-                    setState { copy(step = CheckoutStep.PAYMENT) }
+                    setState { copy(step = CheckoutStep.REVIEW, hasSavedAddress = true) }
                 } else {
                     setState { copy(invalidFields = invalid, errorPulse = errorPulse + 1) }
                 }
             }
-            CheckoutStep.PAYMENT -> setState { copy(step = CheckoutStep.REVIEW) }
             CheckoutStep.REVIEW -> pay()
         }
     }
 
     private fun back() {
         when (currentState.step) {
-            CheckoutStep.ADDRESS -> sendEffect(CheckoutEffect.Close)
-            CheckoutStep.PAYMENT -> setState { copy(step = CheckoutStep.ADDRESS) }
-            CheckoutStep.REVIEW -> setState { copy(step = CheckoutStep.PAYMENT) }
+            CheckoutStep.ADDRESS -> if (currentState.hasSavedAddress) setState { copy(step = CheckoutStep.REVIEW) } else sendEffect(CheckoutEffect.Close)
+            CheckoutStep.REVIEW -> sendEffect(CheckoutEffect.Close)
         }
     }
 
@@ -82,10 +90,21 @@ class CheckoutViewModel(
         if (currentState.isPlacing || currentState.placedOrder != null) return
         setState { copy(isPlacing = true, error = null) }
         launchSafely {
-            when (val result = placeOrder(currentState.summary, currentState.address)) {
+            when (val result = placeOrder(currentState.summary, currentState.address, currentState.delivery)) {
                 is DomainResult.Success -> setState { copy(isPlacing = false, placedOrder = result.value) }
                 is DomainResult.Failure -> setState { copy(isPlacing = false, error = result.error, errorPulse = errorPulse + 1) }
             }
+        }
+    }
+
+    /** Like Amazon: a returning customer lands on the review page with their last address filled in. */
+    private fun reuseLastAddress(orders: List<Order>) {
+        val last = orders.firstOrNull()?.address
+        val untouched = currentState.address.line1.isEmpty()
+        if (last != null && untouched && AddressValidator.invalidFields(last).isEmpty()) {
+            setState { copy(address = last, step = CheckoutStep.REVIEW, hasSavedAddress = true, addressLoaded = true) }
+        } else {
+            setState { copy(addressLoaded = true) }
         }
     }
 

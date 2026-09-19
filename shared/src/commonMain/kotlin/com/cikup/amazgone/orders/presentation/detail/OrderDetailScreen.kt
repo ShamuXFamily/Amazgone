@@ -3,7 +3,9 @@ package com.cikup.amazgone.orders.presentation.detail
 import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.checkout_discount
+import amazgone.shared.generated.resources.checkout_delivery
 import amazgone.shared.generated.resources.checkout_ship_to
+import amazgone.shared.generated.resources.store_sold_by
 import amazgone.shared.generated.resources.checkout_subtotal
 import amazgone.shared.generated.resources.checkout_total
 import amazgone.shared.generated.resources.order_detail_title
@@ -102,7 +104,9 @@ private fun OrderDetailContent(order: Order, padding: PaddingValues, onIntent: (
                             ProductImage(item.thumbnailUrl, item.productId, Modifier.size(AmazgoneDimens.iconLg).clip(MaterialTheme.shapes.small))
                         },
                         headlineContent = { Text(item.title, maxLines = 2) },
-                        supportingContent = { Text("× ${item.quantity}") },
+                        supportingContent = {
+                            Text(listOfNotNull("× ${item.quantity}", item.storeName?.let { stringResource(Res.string.store_sold_by, it) }).joinToString(" · "))
+                        },
                         trailingContent = { CoinAmount(item.unitPriceCoins * item.quantity, style = MaterialTheme.typography.bodyMedium) },
                         modifier = Modifier.padding(vertical = AmazgoneDimens.spaceXs),
                     )
@@ -168,6 +172,7 @@ private fun Totals(order: Order, modifier: Modifier = Modifier) {
         Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
             Amount(Res.string.checkout_subtotal, order.subtotalCoins)
             if (order.discountCoins > 0) Amount(Res.string.checkout_discount, -order.discountCoins)
+            if (order.deliveryFeeCoins > 0) Amount(Res.string.checkout_delivery, order.deliveryFeeCoins)
             Amount(Res.string.checkout_total, order.totalCoins)
         }
     }

@@ -1,5 +1,8 @@
 package com.cikup.amazgone.catalog.domain.model
 
+import com.cikup.amazgone.stores.domain.model.Store
+import com.cikup.amazgone.stores.domain.model.StoreDirectory
+
 /** Which upstream API a product came from; part of every product id ("{source}:{id}"). */
 enum class CatalogSourceId(val key: String) {
     DUMMY_JSON("dummyjson"),
@@ -41,6 +44,9 @@ data class Product(
     val discountPercent: Int get() = CoinPricing.discountPercent(priceCoins.toDouble(), originalPriceCoins?.toDouble())
     val isInStock: Boolean get() = stock == null || stock > 0
 
+    /** Who sells it (official brand store, digital shop or Amazgone itself). */
+    val store: Store get() = StoreDirectory.resolve(source, brand, categorySlug, details.sellerId)
+
     /** Announced but not released yet: sold as a pre-order until its release day. */
     fun isPreorderAt(nowMillis: Long): Boolean = details.releaseDateMillis?.let { it > nowMillis } ?: false
 }
@@ -59,6 +65,8 @@ data class ProductDetails(
     val highlights: List<String> = emptyList(),
     /** Attribution required by the image licence (e.g. CC BY-SA), shown under the gallery. */
     val imageCredit: String? = null,
+    /** Upstream seller id when the source has one (CheapShark storeID). */
+    val sellerId: String? = null,
 )
 
 data class Review(

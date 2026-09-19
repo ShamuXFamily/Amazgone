@@ -9,6 +9,7 @@ import com.cikup.amazgone.orders.di.ordersModule
 import com.cikup.amazgone.progress.di.progressModule
 import com.cikup.amazgone.wallet.di.walletModule
 import com.cikup.amazgone.settings.di.settingsModule
+import com.cikup.amazgone.stores.di.storesModule
 import com.cikup.amazgone.wishlist.di.wishlistModule
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
@@ -30,6 +31,7 @@ internal val featureModules: List<Module> = listOf(
     gamesModule,
     progressModule,
     settingsModule,
+    storesModule,
     presentationModule,
 )
 

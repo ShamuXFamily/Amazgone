@@ -103,6 +103,8 @@ data class ExtendedColors(
     /** Vivid call-to-action orange (buttons, selected nav pill, prices). */
     val cta: Color,
     val onCta: Color,
+    /** Verified-seller check (official stores). */
+    val verified: Color,
     /** Positive status (in stock, verified purchase). */
     val success: Color,
     /** Soft pastel tiles behind quick actions. */
@@ -118,6 +120,7 @@ internal val LightExtendedColors = ExtendedColors(
     cta = Color(0xFFFF6B2C),
     onCta = Color(0xFFFFFFFF),
     success = Color(0xFF1E8E4F),
+    verified = Color(0xFF2F6FDB),
     tileTints = listOf(Color(0xFFE8F1FF), Color(0xFFFFEFE6), Color(0xFFE9F8EF), Color(0xFFF3ECFF), Color(0xFFFFF6DB)),
     tileIcons = listOf(Color(0xFF2F6FDB), Color(0xFFE8590C), Color(0xFF1E8E4F), Color(0xFF6B3FC9), Color(0xFFB77A00)),
 )
@@ -125,6 +128,7 @@ internal val LightExtendedColors = ExtendedColors(
 internal val DarkExtendedColors = LightExtendedColors.copy(
     brandNavy = Color(0xFF2A2650),
     success = Color(0xFF5FD18E),
+    verified = Color(0xFF8AB4FF),
     tileTints = listOf(Color(0xFF1F2B3D), Color(0xFF3A2519), Color(0xFF1C3226), Color(0xFF2B2240), Color(0xFF363018)),
     tileIcons = listOf(Color(0xFF8AB4FF), Color(0xFFFF9A66), Color(0xFF6FD69A), Color(0xFFC3A6FF), Color(0xFFF2C14E)),
 )

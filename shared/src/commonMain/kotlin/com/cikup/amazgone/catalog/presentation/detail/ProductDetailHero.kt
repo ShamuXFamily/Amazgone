@@ -67,6 +67,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.cikup.amazgone.catalog.domain.model.CatalogSourceId
 import com.cikup.amazgone.catalog.domain.model.Product
+import com.cikup.amazgone.stores.presentation.StoreLink
 import com.cikup.amazgone.catalog.presentation.home.PagerDots
 import com.cikup.amazgone.cart.domain.model.CartCalculator
 import com.cikup.amazgone.core.designsystem.component.CoinAmount
@@ -148,6 +149,7 @@ fun InfoCard(product: Product, state: ProductDetailState, onIntent: (ProductDeta
     Box(Modifier.padding(horizontal = AmazgoneDimens.spaceLg).graphicsLayer { translationY = rise.value; alpha = 1f - rise.value / CARD_RISE_PX }) {
         Surface(color = MaterialTheme.colorScheme.surfaceContainerLowest, shape = MaterialTheme.shapes.extraLarge, modifier = Modifier.fillMaxWidth()) {
             Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
+                StoreLink(product.store, onClick = { onIntent(ProductDetailIntent.OpenStore) }, Modifier.padding(end = AmazgoneDimens.iconXl / 2))
                 Text(
                     product.title,
                     style = MaterialTheme.typography.titleLarge,

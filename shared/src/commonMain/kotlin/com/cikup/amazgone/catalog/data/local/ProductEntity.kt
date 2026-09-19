@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "products",
-    indices = [Index("categorySlug"), Index("rating")],
+    indices = [Index("categorySlug"), Index("rating"), Index("storeId")],
 )
 data class ProductEntity(
     @PrimaryKey val id: String,
@@ -35,6 +35,11 @@ data class ProductEntity(
     val releaseDateMillis: Long?,
     val highlights: List<String>,
     val imageCredit: String?,
+    val sellerId: String?,
+    /** Derived from the product on write (StoreDirectory) so stores can be listed and filtered in SQL. */
+    val storeId: String,
+    val storeName: String,
+    val storeKind: String,
     val updatedAt: Long,
 )
 
@@ -61,3 +66,13 @@ data class ReviewEntity(
 
 /** Row shape for the category aggregate query. */
 data class CategoryRow(val slug: String, val productCount: Int)
+
+/** Row shape for the store aggregate query. */
+data class StoreRow(
+    val storeId: String,
+    val storeName: String,
+    val storeKind: String,
+    val productCount: Int,
+    val averageRating: Double?,
+    val topCategory: String?,
+)

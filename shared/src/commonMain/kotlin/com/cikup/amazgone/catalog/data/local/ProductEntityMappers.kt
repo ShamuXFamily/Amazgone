@@ -32,6 +32,10 @@ fun Product.toEntity() = ProductEntity(
     releaseDateMillis = details.releaseDateMillis,
     highlights = details.highlights,
     imageCredit = details.imageCredit,
+    sellerId = details.sellerId,
+    storeId = store.id,
+    storeName = store.name,
+    storeKind = store.kind.name,
     updatedAt = updatedAt,
 )
 
@@ -62,6 +66,7 @@ fun ProductEntity.toDomain() = Product(
         releaseDateMillis = releaseDateMillis,
         highlights = highlights,
         imageCredit = imageCredit,
+        sellerId = sellerId,
     ),
     updatedAt = updatedAt,
 )

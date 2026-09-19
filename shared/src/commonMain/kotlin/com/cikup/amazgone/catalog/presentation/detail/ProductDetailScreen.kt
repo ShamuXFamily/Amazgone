@@ -53,6 +53,7 @@ fun ProductDetailRoute(
     origin: String,
     onBack: () -> Unit,
     onOpenProduct: (productId: String, origin: String) -> Unit,
+    onOpenStore: (storeId: String) -> Unit,
     viewModel: ProductDetailViewModel = koinViewModel(key = "$origin/$productId") { parametersOf(productId, origin) },
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -65,6 +66,7 @@ fun ProductDetailRoute(
             when (effect) {
                 ProductDetailEffect.NavigateBack -> onBack()
                 is ProductDetailEffect.NavigateToProduct -> onOpenProduct(effect.productId, effect.origin)
+                is ProductDetailEffect.NavigateToStore -> onOpenStore(effect.storeId)
                 is ProductDetailEffect.FlyToCart -> {
                     haptics.performHapticFeedback(HapticFeedbackType.Confirm)
                     heroBounds?.let { flyToCart.launch(effect.productId, effect.imageUrl, it) }

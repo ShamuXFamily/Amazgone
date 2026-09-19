@@ -16,6 +16,8 @@ data class OrderEntity(
     val discountCoins: Long,
     val totalCoins: Long,
     val couponCode: String?,
+    val deliveryOption: String,
+    val deliveryFeeCoins: Long,
     val addressJson: String,
     val itemsJson: String,
     val xpEarned: Long,

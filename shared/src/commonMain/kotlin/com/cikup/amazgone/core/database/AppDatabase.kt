@@ -83,7 +83,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         const val FILE_NAME = "amazgone.db"
-        const val SCHEMA_VERSION = 9
+        const val SCHEMA_VERSION = 11
 
         fun build(builder: Builder<AppDatabase>, dispatcher: CoroutineDispatcher): AppDatabase = builder
             .setDriver(BundledSQLiteDriver())

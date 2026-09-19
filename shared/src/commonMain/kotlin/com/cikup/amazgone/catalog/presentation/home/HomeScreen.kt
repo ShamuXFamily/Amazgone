@@ -41,6 +41,7 @@ import com.cikup.amazgone.core.designsystem.component.MessageState
 import com.cikup.amazgone.core.designsystem.component.ProductCard
 import com.cikup.amazgone.core.designsystem.component.ProductCardSkeleton
 import com.cikup.amazgone.core.designsystem.component.SectionHeader
+import com.cikup.amazgone.stores.presentation.OfficialStoresRow
 import com.cikup.amazgone.core.designsystem.component.StatusBarScrim
 import com.cikup.amazgone.core.designsystem.motion.staggeredEnter
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
@@ -59,6 +60,7 @@ private const val ORIGIN_GRID = "grid"
 fun HomeRoute(
     onNavigate: (HomeDestination) -> Unit,
     onOpenProduct: (productId: String, origin: String) -> Unit,
+    onOpenStore: (storeId: String) -> Unit,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -67,6 +69,7 @@ fun HomeRoute(
             when (effect) {
                 is HomeEffect.Navigate -> onNavigate(effect.destination)
                 is HomeEffect.NavigateToProduct -> onOpenProduct(effect.productId, effect.origin)
+                is HomeEffect.NavigateToStore -> onOpenStore(effect.storeId)
             }
         }
     }
@@ -110,6 +113,15 @@ private fun LazyGridScope.feed(state: HomeState, onIntent: (HomeIntent) -> Unit)
     if (state.newArrivals.isNotEmpty() && state.selectedCategory == null) {
         fullWidth("new-arrivals") {
             NewArrivalsRow(state.newArrivals, state.now, ORIGIN_NEW, onOpen = { onIntent(HomeIntent.OpenProduct(it, ORIGIN_NEW)) })
+        }
+    }
+    if (state.officialStores.isNotEmpty() && state.selectedCategory == null) {
+        fullWidth("official-stores") {
+            OfficialStoresRow(
+                state.officialStores,
+                onOpenStore = { onIntent(HomeIntent.OpenStore(it)) },
+                onSeeAll = { onIntent(HomeIntent.Open(HomeDestination.STORES)) },
+            )
         }
     }
     state.flashSale?.takeIf { it.deals.isNotEmpty() }?.let { sale ->

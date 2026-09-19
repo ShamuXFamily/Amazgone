@@ -98,6 +98,7 @@ fun CheapSharkDealDto.toProduct(now: Long): Product {
         details = ProductDetails(
             metacriticScore = metacriticScore?.toIntOrNull()?.takeIf { it > 0 },
             ratingLabel = steamRatingText,
+            sellerId = storeID,
             releaseDateMillis = releaseDate?.takeIf { it > 0 }?.times(SECONDS_TO_MILLIS),
         ),
         updatedAt = now,

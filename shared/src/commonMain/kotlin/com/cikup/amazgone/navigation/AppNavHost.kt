@@ -28,6 +28,8 @@ import com.cikup.amazgone.core.designsystem.motion.MotionTokens
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutRoute
 import com.cikup.amazgone.orders.presentation.detail.OrderDetailRoute
 import com.cikup.amazgone.orders.presentation.list.OrdersRoute
+import com.cikup.amazgone.stores.presentation.StoreRoute
+import com.cikup.amazgone.stores.presentation.StoresRoute
 import com.cikup.amazgone.wallet.presentation.WalletRoute
 import com.cikup.amazgone.wishlist.presentation.WishlistRoute
 
@@ -55,6 +57,11 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
 private fun NavHostController.openProduct(productId: String, origin: String) = navigate(Route.ProductDetail(productId, origin))
 
+/** Re-opening the store you came from pops back to it instead of stacking a copy. */
+private fun NavHostController.openStore(storeId: String) {
+    if (!popBackStack(Route.Store(storeId), inclusive = false)) navigate(Route.Store(storeId))
+}
+
 private fun NavGraphBuilder.shopGraph(nav: NavHostController) {
     composable<Route.Home> {
         Animated {
@@ -68,9 +75,11 @@ private fun NavGraphBuilder.shopGraph(nav: NavHostController) {
                         HomeDestination.SCRATCH -> nav.navigate(Route.ScratchCard)
                         HomeDestination.ORDERS -> nav.navigate(Route.Orders)
                         HomeDestination.FLASH_SALE -> nav.navigate(Route.FlashSale)
+                        HomeDestination.STORES -> nav.navigate(Route.Stores)
                     }
                 },
                 onOpenProduct = nav::openProduct,
+                onOpenStore = nav::openStore,
             )
         }
     }
@@ -79,6 +88,11 @@ private fun NavGraphBuilder.shopGraph(nav: NavHostController) {
         Animated { SearchRoute(onBack = { nav.popBackStack() }, onOpenProduct = nav::openProduct, category = route.category) }
     }
     composable<Route.FlashSale> { Animated { FlashSaleRoute(onBack = { nav.popBackStack() }, onOpenProduct = nav::openProduct) } }
+    composable<Route.Stores> { Animated { StoresRoute(onBack = { nav.popBackStack() }, onOpenStore = nav::openStore) } }
+    composable<Route.Store> { entry ->
+        val route = entry.toRoute<Route.Store>()
+        Animated { StoreRoute(route.storeId, onBack = { nav.popBackStack() }, onOpenProduct = nav::openProduct) }
+    }
     composable<Route.Categories> {
         Animated { CategoriesRoute(onBack = { nav.popBackStack() }, onOpenCategory = { nav.navigate(Route.Search(it)) }) }
     }
@@ -91,7 +105,7 @@ private fun NavGraphBuilder.shopGraph(nav: NavHostController) {
     ) { entry ->
         val route = entry.toRoute<Route.ProductDetail>()
         Animated {
-            ProductDetailRoute(route.productId, route.origin, onBack = { nav.popBackStack() }, onOpenProduct = nav::openProduct)
+            ProductDetailRoute(route.productId, route.origin, onBack = { nav.popBackStack() }, onOpenProduct = nav::openProduct, onOpenStore = nav::openStore)
         }
     }
     composable<Route.Cart> {

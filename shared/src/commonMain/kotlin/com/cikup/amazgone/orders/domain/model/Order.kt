@@ -18,6 +18,8 @@ data class OrderItem(
     val thumbnailUrl: String,
     val quantity: Int,
     val unitPriceCoins: Long,
+    /** Seller shown on the receipt; null for orders placed before stores existed. */
+    val storeName: String? = null,
 )
 
 /** PENDING_SYNC: paid locally, waiting for the server to confirm the coins. */
@@ -31,6 +33,8 @@ data class Order(
     val totalCoins: Long,
     val couponCode: String?,
     val address: ShippingAddress,
+    val delivery: DeliveryOption,
+    val deliveryFeeCoins: Long,
     val status: OrderStatus,
     val xpEarned: Long,
     val createdAt: Long,
@@ -47,6 +51,8 @@ data class OrderDraft(
     val totalCoins: Long,
     val couponCode: String?,
     val address: ShippingAddress,
+    val delivery: DeliveryOption,
+    val deliveryFeeCoins: Long,
     val xpEarned: Long,
 )
 

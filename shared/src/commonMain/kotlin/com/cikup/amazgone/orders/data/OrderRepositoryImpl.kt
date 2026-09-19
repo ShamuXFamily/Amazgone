@@ -11,6 +11,7 @@ import com.cikup.amazgone.core.domain.DomainError
 import com.cikup.amazgone.core.domain.DomainResult
 import com.cikup.amazgone.core.network.AppJson
 import com.cikup.amazgone.core.sync.domain.OutboxStore
+import com.cikup.amazgone.orders.domain.model.DeliveryOption
 import com.cikup.amazgone.orders.domain.model.Order
 import com.cikup.amazgone.orders.domain.model.OrderDraft
 import com.cikup.amazgone.orders.domain.model.OrderItem
@@ -39,6 +40,9 @@ data class OrderPayload(
     val address: ShippingAddress,
     val xpEarned: Long,
     val createdAt: Long,
+    // Defaults keep payloads written before delivery options readable.
+    val deliveryOption: String = DeliveryOption.STANDARD.name,
+    val deliveryFeeCoins: Long = 0,
 )
 
 class OrderRepositoryImpl(
@@ -72,6 +76,8 @@ class OrderRepositoryImpl(
             address = draft.address,
             xpEarned = draft.xpEarned,
             createdAt = time.nowMillis(),
+            deliveryOption = draft.delivery.name,
+            deliveryFeeCoins = draft.deliveryFeeCoins,
         )
         val entity = payload.toEntity(OrderStatus.PENDING_SYNC)
         dao.insert(entity)
@@ -114,6 +120,8 @@ private fun OrderPayload.toEntity(status: OrderStatus) = OrderEntity(
     discountCoins = discountCoins,
     totalCoins = totalCoins,
     couponCode = couponCode,
+    deliveryOption = deliveryOption,
+    deliveryFeeCoins = deliveryFeeCoins,
     addressJson = AppJson.encodeToString(ShippingAddress.serializer(), address),
     itemsJson = AppJson.encodeToString(itemsSerializer, items),
     xpEarned = xpEarned,
@@ -131,6 +139,8 @@ private fun OrderEntity.toDomain() = Order(
     totalCoins = totalCoins,
     couponCode = couponCode,
     address = AppJson.decodeFromString(ShippingAddress.serializer(), addressJson),
+    delivery = DeliveryOption.parse(deliveryOption),
+    deliveryFeeCoins = deliveryFeeCoins,
     status = OrderStatus.valueOf(status),
     xpEarned = xpEarned,
     createdAt = createdAt,

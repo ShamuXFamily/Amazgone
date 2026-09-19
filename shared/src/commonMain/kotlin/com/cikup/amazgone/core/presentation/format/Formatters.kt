@@ -44,6 +44,15 @@ object Formatters {
         return "${date.day} ${MONTHS[date.month.ordinal]} ${date.year}"
     }
 
+    private val WEEKDAYS = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+
+    /** Epoch millis → "Tue, 23 Sep" (delivery estimates). */
+    fun weekdayDate(millis: Long, utc: Boolean = false): String {
+        val zone = if (utc) TimeZone.UTC else TimeZone.currentSystemDefault()
+        val date = kotlin.time.Instant.fromEpochMilliseconds(millis).toLocalDateTime(zone).date
+        return "${WEEKDAYS[date.dayOfWeek.ordinal]}, ${date.day} ${MONTHS[date.month.ordinal]}"
+    }
+
     /** "home-decoration" → "Home Decoration". */
     fun categoryLabel(slug: String): String =
         slug.split('-', '_', ' ')

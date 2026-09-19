@@ -7,7 +7,10 @@ There is **no real money**: everything is paid in virtual coins that players ear
   + hand-curated **New arrivals** (e.g. iPhone 18 Pro, iPhone Duo) from a public Firestore `catalog` collection
 - 🌗 Light / Dark / System theme switch (Account → Appearance)
 - 🔎 Offline full-text search (Room FTS4) with filters/sorting, topped up by remote search when online
-- 🛒 Cart, wishlist, 3-step checkout with **hold-to-pay**, order history with sync status
+- 🏬 **Stores**: every product has a seller — official brand stores (Apple Official, Samsung Official…), brand stores,
+  real digital game shops (Steam, GOG, Epic…) and Amazgone itself; store pages, directory and "Visit the store" links
+- 🛒 Cart, wishlist, Amazon-style one-page checkout (saved address, Standard/Express delivery, one shipment per store,
+  **hold-to-pay**), order history with sync status
 - 🎰 Daily **spin wheel**, **scratch cards**, hourly **lightning deals**, coupons
 - 🏆 XP, levels, achievements and an online **leaderboard**
 - 📴 **Offline-first**: the app works fully in airplane mode; changes sync when you're back online

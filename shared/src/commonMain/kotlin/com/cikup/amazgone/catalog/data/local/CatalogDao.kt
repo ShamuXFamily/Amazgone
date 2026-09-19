@@ -40,6 +40,20 @@ interface CatalogDao {
     @Query("SELECT categorySlug AS slug, COUNT(*) AS productCount FROM products GROUP BY categorySlug ORDER BY productCount DESC, slug ASC")
     fun observeCategories(): Flow<List<CategoryRow>>
 
+    @Query(
+        """SELECT storeId, storeName, storeKind, COUNT(*) AS productCount, AVG(rating) AS averageRating,
+             (SELECT p2.categorySlug FROM products p2 WHERE p2.storeId = p.storeId
+              GROUP BY p2.categorySlug ORDER BY COUNT(*) DESC LIMIT 1) AS topCategory
+           FROM products p GROUP BY storeId ORDER BY productCount DESC, storeName ASC""",
+    )
+    fun observeStores(): Flow<List<StoreRow>>
+
+    @Query(
+        """SELECT * FROM products WHERE storeId = :storeId
+           ORDER BY COALESCE(releaseDateMillis, 0) DESC, COALESCE(rating, 0) DESC, title ASC""",
+    )
+    fun observeStoreProducts(storeId: String): Flow<List<ProductEntity>>
+
     @Query("SELECT * FROM products WHERE id = :id")
     fun observeProduct(id: String): Flow<ProductEntity?>
 

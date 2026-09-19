@@ -53,6 +53,7 @@ class ProductDetailViewModel(
             ProductDetailIntent.ToggleWishlist -> launchSafely { toggleWishlist(currentState.productId) }
             is ProductDetailIntent.OpenProduct ->
                 sendEffect(ProductDetailEffect.NavigateToProduct(intent.productId, RECOMMENDATION_ORIGIN))
+            ProductDetailIntent.OpenStore -> currentState.product?.let { sendEffect(ProductDetailEffect.NavigateToStore(it.store.id)) }
             ProductDetailIntent.Back -> sendEffect(ProductDetailEffect.NavigateBack)
         }
     }

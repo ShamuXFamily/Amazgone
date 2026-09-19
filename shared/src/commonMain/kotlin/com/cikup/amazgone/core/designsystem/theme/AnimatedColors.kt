@@ -44,6 +44,7 @@ private fun blend(a: ExtendedColors, b: ExtendedColors, t: Float) = b.copy(
     cta = lerp(a.cta, b.cta, t),
     onCta = lerp(a.onCta, b.onCta, t),
     success = lerp(a.success, b.success, t),
+    verified = lerp(a.verified, b.verified, t),
     tileTints = a.tileTints.zip(b.tileTints) { x, y -> lerp(x, y, t) },
     tileIcons = a.tileIcons.zip(b.tileIcons) { x, y -> lerp(x, y, t) },
 )

@@ -152,18 +152,11 @@
 
     <!-- Checkout -->
     <string name="checkout_title">Checkout</string>
-    <string name="checkout_step_address">Shipping</string>
-    <string name="checkout_step_payment">Payment</string>
-    <string name="checkout_step_review">Review</string>
     <string name="checkout_full_name">Full name</string>
     <string name="checkout_line1">Street address</string>
     <string name="checkout_city">City</string>
     <string name="checkout_postal">Postal code</string>
     <string name="checkout_country">Country</string>
-    <string name="checkout_continue">Continue</string>
-    <string name="checkout_pay_with_coins">Pay with coins</string>
-    <string name="checkout_balance">Your balance</string>
-    <string name="checkout_after_purchase">Balance after purchase</string>
     <string name="checkout_coupons">Coupons</string>
     <string name="checkout_no_coupon">No coupon</string>
     <string name="checkout_coupon_percent">%1$d% off</string>
@@ -172,9 +165,8 @@
     <string name="checkout_subtotal">Subtotal</string>
     <string name="checkout_discount">Coupon discount</string>
     <string name="checkout_total">Order total</string>
-    <string name="checkout_hold_to_pay">Hold to pay %1$s coins</string>
     <string name="checkout_ship_to">Ship to</string>
-    <string name="checkout_items">Items</string>
+    <string name="checkout_hold_to_pay">Hold to pay %1$s coins</string>
     <string name="checkout_insufficient">You need %1$s more coins. Play games to earn more!</string>
     <string name="checkout_success_title">Order placed!</string>
     <string name="checkout_success_body">You earned %1$s XP. We'll confirm it with the server as soon as you're online.</string>
@@ -348,4 +340,46 @@
     <string name="detail_not_affiliated">Demo shop · not affiliated with the brand</string>
     <string name="detail_preorder">Pre-order · releases %1$s</string>
     <string name="detail_preorder_button">Pre-order now</string>
+
+    <!-- Stores -->
+    <string name="stores_title">Stores</string>
+    <string name="stores_official_row">Official stores</string>
+    <string name="stores_see_all">See all</string>
+    <string name="store_kind_official">Official store</string>
+    <string name="store_kind_brand">Brand store</string>
+    <string name="store_kind_digital">Digital game store</string>
+    <string name="store_kind_amazgone">Sold by Amazgone</string>
+    <string name="stores_section_official">Official brand stores</string>
+    <string name="stores_section_amazgone">Amazgone</string>
+    <string name="stores_section_digital">Digital game stores</string>
+    <string name="stores_section_brand">More brands</string>
+    <string name="store_visit">Visit the %1$s store</string>
+    <string name="store_sold_by">Sold by %1$s</string>
+    <string name="store_products">%1$d products</string>
+    <string name="store_all">All</string>
+    <string name="store_not_found">This store has no products right now</string>
+    <string name="store_verified">Verified</string>
+
+    <!-- Checkout v2 -->
+    <string name="checkout_title_address">Delivery address</string>
+    <string name="checkout_title_review">Place your order</string>
+    <string name="checkout_address_hint">Where should we send your order?</string>
+    <string name="checkout_use_address">Deliver to this address</string>
+    <string name="checkout_deliver_to">Deliver to %1$s</string>
+    <string name="checkout_change">Change</string>
+    <string name="checkout_delivery_speed">Delivery speed</string>
+    <string name="checkout_standard">Standard</string>
+    <string name="checkout_express">Express</string>
+    <string name="checkout_free">FREE</string>
+    <string name="checkout_arrives_on">Arrives %1$s</string>
+    <string name="checkout_arrives_between">Arrives %1$s – %2$s</string>
+    <string name="checkout_payment_method">Payment method</string>
+    <string name="checkout_wallet_card">Amazgone Coins</string>
+    <string name="checkout_left_after">%1$s left after this order</string>
+    <string name="checkout_shipment">Shipment %1$d of %2$d</string>
+    <string name="checkout_instant">Instant delivery · digital code</string>
+    <string name="checkout_delivery">Delivery</string>
+    <string name="checkout_items_count">Items (%1$d)</string>
+    <string name="checkout_xp_reward">You'll earn %1$s XP</string>
+    <string name="checkout_qty">Qty %1$d</string>
 </resources>

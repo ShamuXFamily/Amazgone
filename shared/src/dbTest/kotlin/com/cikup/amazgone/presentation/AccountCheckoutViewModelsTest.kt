@@ -14,6 +14,7 @@ import com.cikup.amazgone.orders.domain.model.OrderStatus
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutEffect
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutIntent
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutStep
+import com.cikup.amazgone.orders.domain.model.DeliveryOption
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutViewModel
 import com.cikup.amazgone.orders.presentation.list.OrdersViewModel
 import com.cikup.amazgone.remote.ok
@@ -94,31 +95,48 @@ class AccountCheckoutViewModelsTest {
         graph.get<CatalogRepositoryImpl>().save(CatalogBatch(listOf(phone), emptyList()))
         graph.get<AddToCartUseCase>()(phone.id)
         val vm = graph.get<CheckoutViewModel>()
-        vm.state.eventually { !it.summary.isEmpty && it.balance == 5_000L }
+        val first = vm.state.eventually { !it.summary.isEmpty && it.balance == 5_000L && it.addressLoaded }
+        assertEquals(CheckoutStep.ADDRESS, first.step) // no earlier order to reuse an address from
 
         vm.onIntent(CheckoutIntent.Next)
         assertEquals(5, vm.state.eventually { it.invalidFields.isNotEmpty() }.invalidFields.size)
-        mapOf(
-            AddressValidator.FIELD_NAME to "Bob", AddressValidator.FIELD_LINE1 to "1 Main", AddressValidator.FIELD_CITY to "Jakarta",
-            AddressValidator.FIELD_POSTAL to "10110", AddressValidator.FIELD_COUNTRY to "Indonesia",
-        ).forEach { (field, value) -> vm.onIntent(CheckoutIntent.FieldChanged(field, value)) }
-        vm.onIntent(CheckoutIntent.Next)
-        vm.state.eventually { it.step == CheckoutStep.PAYMENT }
-        vm.onIntent(CheckoutIntent.Back)
-        vm.state.eventually { it.step == CheckoutStep.ADDRESS }
-        vm.onIntent(CheckoutIntent.Next)
+        fillAddress(vm)
         vm.onIntent(CheckoutIntent.Next)
         vm.state.eventually { it.step == CheckoutStep.REVIEW }
+        vm.onIntent(CheckoutIntent.EditAddress)
+        vm.state.eventually { it.step == CheckoutStep.ADDRESS }
+        vm.onIntent(CheckoutIntent.Back) // back from editing returns to the review page, not out of checkout
+        vm.state.eventually { it.step == CheckoutStep.REVIEW }
+
+        vm.onIntent(CheckoutIntent.SelectDelivery(DeliveryOption.EXPRESS))
+        val review = vm.state.eventually { it.delivery == DeliveryOption.EXPRESS }
+        assertEquals(DeliveryOption.EXPRESS.feeCoins, review.deliveryFeeCoins)
+        assertEquals(1_000L + DeliveryOption.EXPRESS.feeCoins, review.totalCoins)
+        assertEquals(listOf(phone.store.id), review.shipments.map { it.store.id })
 
         vm.onIntent(CheckoutIntent.Pay)
         val order = vm.state.eventually { it.placedOrder != null }.placedOrder!!
         assertEquals(OrderStatus.PENDING_SYNC, order.status)
+        assertEquals(DeliveryOption.EXPRESS, order.delivery)
+        assertEquals(phone.store.name, order.items.single().storeName)
         vm.onIntent(CheckoutIntent.ViewOrder)
         assertEquals(CheckoutEffect.OpenOrder(order.id), vm.effects.first())
 
         assertEquals(1, graph.get<OrdersViewModel>().state.eventually { it.orders.isNotEmpty() }.orders.size)
-        assertEquals(4_000L, graph.get<WalletViewModel>().state.eventually { it.summary.coins == 4_000L }.summary.coins)
+        val expected = 5_000L - 1_000L - DeliveryOption.EXPRESS.feeCoins
+        assertEquals(expected, graph.get<WalletViewModel>().state.eventually { it.summary.coins == expected }.summary.coins)
+
+        // Next checkout reuses the last address and opens straight on the review page.
+        graph.get<AddToCartUseCase>()(phone.id)
+        val again = graph.koin.get<CheckoutViewModel>().state.eventually { it.addressLoaded && !it.summary.isEmpty }
+        assertEquals(CheckoutStep.REVIEW, again.step)
+        assertEquals("1 Main", again.address.line1)
     }
+
+    private fun fillAddress(vm: CheckoutViewModel) = mapOf(
+        AddressValidator.FIELD_NAME to "Bob", AddressValidator.FIELD_LINE1 to "1 Main", AddressValidator.FIELD_CITY to "Jakarta",
+        AddressValidator.FIELD_POSTAL to "10110", AddressValidator.FIELD_COUNTRY to "Indonesia",
+    ).forEach { (field, value) -> vm.onIntent(CheckoutIntent.FieldChanged(field, value)) }
 
     @Test
     fun checkoutRefusesWhenTheWalletIsShort() = runTest {

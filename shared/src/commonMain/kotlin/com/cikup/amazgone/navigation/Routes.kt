@@ -24,4 +24,6 @@ sealed interface Route {
     @Serializable data object LightningDeal : Route
     @Serializable data object FlashSale : Route
     @Serializable data object Categories : Route
+    @Serializable data object Stores : Route
+    @Serializable data class Store(val storeId: String) : Route
 }

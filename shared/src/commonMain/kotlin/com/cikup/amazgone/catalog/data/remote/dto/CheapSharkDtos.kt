@@ -8,6 +8,7 @@ data class CheapSharkDealDto(
     val title: String,
     val gameID: String,
     val dealID: String? = null,
+    val storeID: String? = null,
     val steamAppID: String? = null,
     val salePrice: String,
     val normalPrice: String? = null,

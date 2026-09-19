@@ -30,5 +30,6 @@ class PreorderTest {
     @Test
     fun shortDateIsDayMonthYear() {
         assertEquals("23 Oct 2026", Formatters.shortDate(releaseDay, utc = true))
+        assertEquals("Fri, 23 Oct", Formatters.weekdayDate(releaseDay, utc = true))
     }
 }

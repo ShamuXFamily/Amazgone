@@ -5,6 +5,8 @@ import com.cikup.amazgone.core.domain.DomainError
 import com.cikup.amazgone.core.domain.DomainResult
 import com.cikup.amazgone.core.domain.ValidationReason
 import com.cikup.amazgone.orders.domain.model.AddressValidator
+import com.cikup.amazgone.orders.domain.model.CheckoutPlanner
+import com.cikup.amazgone.orders.domain.model.DeliveryOption
 import com.cikup.amazgone.orders.domain.model.Order
 import com.cikup.amazgone.orders.domain.model.OrderDraft
 import com.cikup.amazgone.orders.domain.model.OrderItem
@@ -19,22 +21,32 @@ class PlaceOrderUseCase(
     private val orders: OrderRepository,
     private val wallet: WalletRepository,
 ) {
-    suspend operator fun invoke(summary: CartSummary, address: ShippingAddress): DomainResult<Order> {
+    suspend operator fun invoke(
+        summary: CartSummary,
+        address: ShippingAddress,
+        delivery: DeliveryOption = DeliveryOption.STANDARD,
+    ): DomainResult<Order> {
         if (summary.isEmpty) return DomainResult.Failure(DomainError.NotFound)
         AddressValidator.invalidFields(address).firstOrNull()?.let { field ->
             return DomainResult.Failure(DomainError.Validation(field, ValidationReason.EMPTY))
         }
+        val fee = CheckoutPlanner.deliveryFee(CheckoutPlanner.shipments(summary.lines), delivery)
+        val total = summary.totalCoins + fee
         val balance = wallet.balance(Currency.COINS)
-        if (balance < summary.totalCoins) {
-            return DomainResult.Failure(DomainError.InsufficientCoins(summary.totalCoins, balance))
+        if (balance < total) {
+            return DomainResult.Failure(DomainError.InsufficientCoins(total, balance))
         }
         val draft = OrderDraft(
-            items = summary.lines.map { OrderItem(it.product.id, it.product.title, it.product.thumbnailUrl, it.quantity, it.product.priceCoins) },
+            items = summary.lines.map {
+                OrderItem(it.product.id, it.product.title, it.product.thumbnailUrl, it.quantity, it.product.priceCoins, it.product.store.name)
+            },
             subtotalCoins = summary.subtotalCoins,
             discountCoins = summary.couponDiscountCoins,
-            totalCoins = summary.totalCoins,
+            totalCoins = total,
             couponCode = summary.appliedCoupon?.code,
             address = address.trimmed(),
+            delivery = delivery,
+            deliveryFeeCoins = fee,
             xpEarned = XpRules.forOrder(summary.totalCoins),
         )
         return orders.placeOrder(draft, summary.appliedCoupon?.code)

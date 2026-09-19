@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
@@ -36,6 +37,7 @@ import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
+import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
 import kotlinx.coroutines.launch
 
 private const val SHAKE_OFFSET_PX = 18f
@@ -78,11 +80,11 @@ fun HoldToConfirmButton(
     val haptics = LocalHapticFeedback.current
     val confirm by rememberUpdatedState(onConfirm)
     var done by remember { mutableStateOf(false) }
-    val container = if (enabled) MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.surfaceContainerHighest
+    val ext = AmazgoneTheme.extended
     Surface(
         shape = MaterialTheme.shapes.extraLarge,
-        color = container,
-        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+        color = if (enabled) ext.cta else MaterialTheme.colorScheme.surfaceContainerHighest,
+        contentColor = if (enabled) ext.onCta else MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = AmazgoneDimens.minTouchTarget + AmazgoneDimens.spaceSm)
@@ -110,7 +112,8 @@ fun HoldToConfirmButton(
                 }
             },
     ) {
-        val fillColor = MaterialTheme.colorScheme.tertiary
+        // The hold progress sweeps across in a deeper shade of the button colour.
+        val fillColor = lerp(ext.cta, ext.brandNavy, HOLD_FILL_DEPTH)
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.drawBehind {
@@ -126,3 +129,5 @@ fun HoldToConfirmButton(
         }
     }
 }
+
+private const val HOLD_FILL_DEPTH = 0.35f

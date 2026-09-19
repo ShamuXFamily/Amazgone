@@ -31,6 +31,7 @@ sealed interface ProductDetailIntent : UiIntent {
     data object ToggleWishlist : ProductDetailIntent
     data class ChangeQuantity(val quantity: Int) : ProductDetailIntent
     data class OpenProduct(val productId: String) : ProductDetailIntent
+    data object OpenStore : ProductDetailIntent
     data object Back : ProductDetailIntent
 }
 
@@ -40,6 +41,7 @@ sealed interface ProductDetailEffect : UiEffect {
     /** Starts the fly-to-cart animation from the add button towards the cart tab. */
     data class FlyToCart(val productId: String, val imageUrl: String) : ProductDetailEffect
     data object LimitReached : ProductDetailEffect
+    data class NavigateToStore(val storeId: String) : ProductDetailEffect
 }
 
 const val RECOMMENDATION_ORIGIN = "recommendation"
