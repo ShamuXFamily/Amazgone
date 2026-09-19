@@ -34,6 +34,8 @@ class GarageViewModel(
             is GarageIntent.RequestBuy -> requestBuy(intent.courier)
             GarageIntent.ConfirmBuy -> confirm()
             GarageIntent.DismissBuy -> setState { copy(confirming = null) }
+            is GarageIntent.SetFilter -> setState { copy(filter = intent.filter) }
+            GarageIntent.CelebrationDone -> setState { copy(justUnlocked = null) }
             GarageIntent.Back -> sendEffect(GarageEffect.NavigateBack)
         }
     }
@@ -53,7 +55,7 @@ class GarageViewModel(
             when (val result = buyCourier(courier)) {
                 is DomainResult.Success -> {
                     analytics.spendCoins(courier.priceCoins, "courier_${courier.name.lowercase()}")
-                    setState { copy(isBuying = false, confirming = null) }
+                    setState { copy(isBuying = false, confirming = null, justUnlocked = courier) }
                     sendEffect(GarageEffect.Unlocked(courier))
                 }
                 is DomainResult.Failure -> {

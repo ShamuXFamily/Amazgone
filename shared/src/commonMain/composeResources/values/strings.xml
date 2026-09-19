@@ -516,7 +516,7 @@
     <string name="garage_trip_cant">%1$s → %2$s: too far</string>
     <string name="garage_owned">Owned</string>
     <string name="garage_starter">Free starter</string>
-    <string name="garage_unlock">Unlock · %1$s</string>
+    <string name="garage_unlock">Unlock for</string>
     <string name="garage_confirm_title">Unlock %1$s?</string>
     <string name="garage_confirm_body">%1$s coins will be taken from your wallet. You keep this courier for every future order.</string>
     <string name="garage_confirm_yes">Unlock</string>
@@ -531,4 +531,22 @@
     <string name="tracking_packing">Packing at %1$s</string>
     <string name="tracking_arrived">Arrived %1$s</string>
     <string name="tracking_percent">%1$d% of the way</string>
+
+    <!-- Garage v2 -->
+    <string name="garage_fleet">Your fleet</string>
+    <string name="garage_fastest">Fastest: %1$s → %2$s in %3$s</string>
+    <string name="garage_filter_all">All</string>
+    <string name="garage_filter_owned">In your fleet</string>
+    <string name="garage_filter_locked">Locked</string>
+    <string name="garage_speed">Speed</string>
+    <string name="garage_need">Need %1$s more coins</string>
+    <string name="garage_in_fleet">In your fleet</string>
+    <string name="era_ANCIENT">Ancient world</string>
+    <string name="era_ANCIENT_years">before 1800</string>
+    <string name="era_STEAM_AND_SAIL">Age of steam &amp; sail</string>
+    <string name="era_STEAM_AND_SAIL_years">1800s</string>
+    <string name="era_MOTOR_AND_JET">Motor &amp; jet age</string>
+    <string name="era_MOTOR_AND_JET_years">1900 – today</string>
+    <string name="era_FUTURE">The future</string>
+    <string name="era_FUTURE_years">2030 and beyond</string>
 </resources>

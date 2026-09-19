@@ -1,7 +1,9 @@
 package com.cikup.amazgone.presentation
 
 import com.cikup.amazgone.delivery.domain.model.Courier
+import com.cikup.amazgone.delivery.presentation.CourierEra
 import com.cikup.amazgone.delivery.presentation.GarageEffect
+import com.cikup.amazgone.delivery.presentation.GarageFilter
 import com.cikup.amazgone.delivery.presentation.GarageIntent
 import com.cikup.amazgone.delivery.presentation.GarageViewModel
 import com.cikup.amazgone.testing.TestGraph
@@ -56,5 +58,19 @@ class GarageViewModelTest {
         vm.state.eventually { it.balance == 5_000L }
         vm.onIntent(GarageIntent.RequestBuy(Courier.TELEPORTER)) // 20,000 coins
         assertEquals(GarageEffect.NotEnoughCoins(Courier.TELEPORTER.priceCoins - 5_000), vm.effects.first())
+    }
+
+    @Test
+    fun filtersAndErasGroupTheTimeline() = runTest {
+        graph.grantGuestWallet()
+        val vm = graph.get<GarageViewModel>()
+        val all = vm.state.eventually { it.balance > 0 }
+        assertEquals(CourierEra.entries.toList(), all.sections.map { it.first })
+        assertEquals(Courier.PIGEON, all.fastestOwned) // faster than the camel
+
+        vm.onIntent(GarageIntent.SetFilter(GarageFilter.OWNED))
+        assertEquals(listOf(Courier.CAMEL, Courier.PIGEON), vm.state.eventually { it.filter == GarageFilter.OWNED }.sections.flatMap { it.second })
+        vm.onIntent(GarageIntent.SetFilter(GarageFilter.LOCKED))
+        assertTrue(vm.state.eventually { it.filter == GarageFilter.LOCKED }.sections.flatMap { it.second }.none { it.isStarter })
     }
 }
