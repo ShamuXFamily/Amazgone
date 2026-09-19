@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import com.cikup.amazgone.catalog.presentation.home.SearchPill
-import com.cikup.amazgone.core.designsystem.component.BrandWordmark
+import com.cikup.amazgone.core.designsystem.component.BrandLogo
 import com.cikup.amazgone.core.designsystem.component.StatusBarScrim
 import com.cikup.amazgone.core.designsystem.motion.staggeredEnter
 import androidx.compose.foundation.layout.fillMaxSize
@@ -64,7 +64,7 @@ fun AccountScreen(
             item(key = "header") {
                 Column(Modifier.statusBarsPadding(), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceMd)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.weight(1f)) { BrandWordmark() }
+                        Box(Modifier.weight(1f)) { BrandLogo() }
                         SyncStatusIcon(state.syncStatus)
                     }
                     SearchPill(onClick = { onIntent(AccountIntent.Open(AccountDestination.SEARCH)) })

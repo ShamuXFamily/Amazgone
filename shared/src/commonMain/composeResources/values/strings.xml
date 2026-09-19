@@ -573,6 +573,7 @@
     <string name="notif_ACHIEVEMENT_body">%1$s</string>
     <string name="notif_COURIER_UNLOCKED_title">New courier in your fleet</string>
     <string name="notif_COURIER_UNLOCKED_body">%1$s %2$s is ready for your next order.</string>
+    <string name="brand_tagline">Your order is somewhere…</string>
     <string name="notifications_title">Notifications</string>
     <string name="notifications_empty_title">You're all caught up</string>
     <string name="notifications_empty_body">Delivery updates, game reminders and rewards will show up here.</string>
