@@ -39,7 +39,8 @@ object StoreDirectory {
         "apple", "samsung", "google", "oppo", "realme", "vivo", "huawei", "asus", "lenovo", "dell", "gigabyte",
         "beats", "amazon", "rolex", "longines", "iwc", "nike", "puma", "calvin klein", "off white", "chanel", "dior",
         "dolce & gabbana", "gucci", "prada", "essence", "olay", "vaseline", "knoll", "annibale colombo", "dodge",
-        "chrysler", "kawasaki",
+        "chrysler", "kawasaki", "sony", "microsoft", "nintendo", "xiaomi", "oneplus", "nothing", "bose", "jbl", "adidas",
+        "dyson", "canon", "logitech", "dji", "garmin",
     )
 
     /** Active CheapShark stores (GET /stores). */

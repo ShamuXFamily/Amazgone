@@ -8,7 +8,9 @@
       "description": "Apple's first foldable iPhone. It opens like a book to a 7.6-inch inner screen, and the outer screen keeps the same aspect ratio, so apps look the same folded or open.",
       "priceUsd": 1999,
       "stock": 40,
-      "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Iphone_Duo_Vector_%28portrait%29.svg/1280px-Iphone_Duo_Vector_%28portrait%29.svg.png"],
+      "images": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Iphone_Duo_Vector_%28portrait%29.svg/1280px-Iphone_Duo_Vector_%28portrait%29.svg.png"
+      ],
       "imageCredit": "Illustration: Rafael Fernandez (TheGoldenBox) · CC BY-SA 4.0 · Wikimedia Commons",
       "highlights": [
         "A20 Pro chip",
@@ -21,7 +23,12 @@
       "shipping": "Pre-order · ships from 23 Oct",
       "warranty": "1 year warranty",
       "returnPolicy": "30 days return policy",
-      "tags": ["iphone", "apple", "foldable", "new"]
+      "tags": [
+        "iphone",
+        "apple",
+        "foldable",
+        "new"
+      ]
     },
     {
       "id": "iphone-18-pro",
@@ -31,7 +38,9 @@
       "description": "Apple's smaller 2026 Pro phone. The main camera has a variable aperture for more control over depth of field, and the Dynamic Island is smaller.",
       "priceUsd": 1199,
       "stock": 25,
-      "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/IPhone_18_Pro_Vector.svg/1280px-IPhone_18_Pro_Vector.svg.png"],
+      "images": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/IPhone_18_Pro_Vector.svg/1280px-IPhone_18_Pro_Vector.svg.png"
+      ],
       "imageCredit": "Illustration: Rafael Fernandez (TheGoldenBox) · CC BY-SA 4.0 · Wikimedia Commons",
       "highlights": [
         "A20 Pro chip (2nm)",
@@ -44,7 +53,11 @@
       "shipping": "Ships in 1-2 days",
       "warranty": "1 year warranty",
       "returnPolicy": "30 days return policy",
-      "tags": ["iphone", "apple", "new"]
+      "tags": [
+        "iphone",
+        "apple",
+        "new"
+      ]
     },
     {
       "id": "iphone-18-pro-max",
@@ -54,7 +67,9 @@
       "description": "The larger iPhone 18 Pro, with the same variable-aperture camera and A20 Pro chip and the longest battery life of any iPhone so far.",
       "priceUsd": 1299,
       "stock": 18,
-      "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/IPhone_18_Pro_Max_%28burgundy_model%29_-_1.jpg/1280px-IPhone_18_Pro_Max_%28burgundy_model%29_-_1.jpg"],
+      "images": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/IPhone_18_Pro_Max_%28burgundy_model%29_-_1.jpg/1280px-IPhone_18_Pro_Max_%28burgundy_model%29_-_1.jpg"
+      ],
       "imageCredit": "Photo: Kyu3a · CC BY-SA 4.0 · Wikimedia Commons",
       "highlights": [
         "A20 Pro chip (2nm)",
@@ -67,7 +82,11 @@
       "shipping": "Ships in 1-2 days",
       "warranty": "1 year warranty",
       "returnPolicy": "30 days return policy",
-      "tags": ["iphone", "apple", "new"]
+      "tags": [
+        "iphone",
+        "apple",
+        "new"
+      ]
     },
     {
       "id": "galaxy-s26-ultra",
@@ -77,7 +96,9 @@
       "description": "Samsung's top 2026 flagship phone, with a built-in S Pen, a privacy display and a four-camera zoom system.",
       "priceUsd": 1299.99,
       "stock": 30,
-      "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Galaxy_S26_Ultra_-_1.jpg/1280px-Galaxy_S26_Ultra_-_1.jpg"],
+      "images": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Galaxy_S26_Ultra_-_1.jpg/1280px-Galaxy_S26_Ultra_-_1.jpg"
+      ],
       "imageCredit": "Photo: Kyu3a · CC BY-SA 4.0 · Wikimedia Commons",
       "highlights": [
         "Snapdragon 8 Elite Gen 5 for Galaxy",
@@ -90,7 +111,12 @@
       "shipping": "Ships in 1-2 days",
       "warranty": "1 year warranty",
       "returnPolicy": "30 days return policy",
-      "tags": ["samsung", "galaxy", "android", "new"]
+      "tags": [
+        "samsung",
+        "galaxy",
+        "android",
+        "new"
+      ]
     },
     {
       "id": "pixel-11-pro",
@@ -100,7 +126,9 @@
       "description": "Google's compact 2026 Pro phone. It runs on the new Tensor G6 chip and has a brighter, more scratch-resistant screen.",
       "priceUsd": 1099,
       "stock": 35,
-      "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Pixel_11_Pro_back_%28Canyon%29.svg/1280px-Pixel_11_Pro_back_%28Canyon%29.svg.png"],
+      "images": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Pixel_11_Pro_back_%28Canyon%29.svg/1280px-Pixel_11_Pro_back_%28Canyon%29.svg.png"
+      ],
       "imageCredit": "Illustration: DM115Wiki · CC BY-SA 4.0 · Wikimedia Commons",
       "highlights": [
         "Google Tensor G6",
@@ -113,7 +141,1203 @@
       "shipping": "Ships in 1-2 days",
       "warranty": "1 year warranty",
       "returnPolicy": "30 days return policy",
-      "tags": ["pixel", "google", "android", "new"]
+      "tags": [
+        "pixel",
+        "google",
+        "android",
+        "new"
+      ]
+    },
+    {
+      "id": "sony-ps5-pro",
+      "title": "PlayStation 5 Pro Console (Digital Edition)",
+      "brand": "Sony",
+      "category": "gaming-consoles",
+      "description": "The most powerful PlayStation. A bigger GPU, advanced ray tracing and AI-driven upscaling (PSSR) push games to sharper 4K at higher frame rates.",
+      "priceUsd": 749.99,
+      "stock": 30,
+      "releaseDate": "2024-11-07",
+      "highlights": [
+        "Upgraded GPU with up to 45% faster rendering",
+        "Advanced ray tracing",
+        "PlayStation Spectral Super Resolution (PSSR)",
+        "2TB SSD",
+        "Wi-Fi 7 · disc drive sold separately"
+      ],
+      "tags": [
+        "playstation",
+        "ps5",
+        "console"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/PlayStation_5_Pro_no_disc_drive.jpg/1280px-PlayStation_5_Pro_no_disc_drive.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: BeatEmUps · CC BY 3.0 · Wikimedia Commons"
+    },
+    {
+      "id": "sony-dualsense-edge",
+      "title": "DualSense Edge Wireless Controller",
+      "brand": "Sony",
+      "category": "gaming-consoles",
+      "description": "Sony's pro controller for PS5: swappable stick modules, back buttons and adjustable triggers, with profiles you can switch mid-game.",
+      "priceUsd": 199.99,
+      "stock": 45,
+      "releaseDate": "2023-01-26",
+      "highlights": [
+        "Replaceable stick modules",
+        "2 remappable back buttons",
+        "Adjustable trigger stops",
+        "Haptic feedback + adaptive triggers",
+        "Carrying case included"
+      ],
+      "tags": [
+        "playstation",
+        "controller"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://upload.wikimedia.org/wikipedia/commons/a/ac/DualSense_Edge_Controller.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+      ],
+      "imageCredit": "Photo: Sonson2 · CC0 · Wikimedia Commons"
+    },
+    {
+      "id": "sony-zv-e10",
+      "title": "Sony ZV-E10 Vlog Camera with 16-50mm Lens",
+      "brand": "Sony",
+      "category": "cameras",
+      "description": "A small interchangeable-lens camera built for creators: flip-out screen, fast autofocus that tracks faces, and a directional microphone on top.",
+      "priceUsd": 799.99,
+      "originalPriceUsd": 899.99,
+      "stock": 20,
+      "releaseDate": "2021-08-27",
+      "highlights": [
+        "24.2MP APS-C sensor",
+        "4K video",
+        "Side-flip vari-angle screen",
+        "Real-time Eye AF",
+        "E-mount interchangeable lenses"
+      ],
+      "tags": [
+        "camera",
+        "vlog",
+        "mirrorless"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Sony_ZV-E10_with_Sony_E_16-50mm_F3.5-5.6_OSS_PZ_-_by_Henry_S%C3%B6derlund_%2851375243603%29.jpg/1280px-Sony_ZV-E10_with_Sony_E_16-50mm_F3.5-5.6_OSS_PZ_-_by_Henry_S%C3%B6derlund_%2851375243603%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Henry Söderlund · CC BY 2.0 · Wikimedia Commons"
+    },
+    {
+      "id": "sony-wf-1000xm4",
+      "title": "Sony WF-1000XM4 Noise Cancelling Earbuds",
+      "brand": "Sony",
+      "category": "audio",
+      "description": "Sony's award-winning true wireless earbuds with industry-leading noise cancelling and LDAC hi-res audio.",
+      "priceUsd": 199.99,
+      "originalPriceUsd": 279.99,
+      "stock": 35,
+      "releaseDate": "2021-06-08",
+      "highlights": [
+        "Integrated Processor V1 noise cancelling",
+        "LDAC Hi-Res Audio Wireless",
+        "Up to 8 hrs (24 hrs with case)",
+        "IPX4",
+        "Wireless charging case"
+      ],
+      "tags": [
+        "earbuds",
+        "anc"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Sony_WF-1000XM4.jpg/1280px-Sony_WF-1000XM4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: KKPCW（Kyu3） · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "xbox-series-x",
+      "title": "Xbox Series X 1TB Console",
+      "brand": "Microsoft",
+      "category": "gaming-consoles",
+      "description": "The fastest, most powerful Xbox: true 4K gaming, up to 120 fps and Quick Resume across several games at once.",
+      "priceUsd": 599.99,
+      "stock": 25,
+      "releaseDate": "2020-11-10",
+      "highlights": [
+        "12 teraflops of processing power",
+        "4K at up to 120 fps",
+        "1TB custom NVMe SSD",
+        "Quick Resume",
+        "4K UHD Blu-ray drive"
+      ],
+      "tags": [
+        "xbox",
+        "console"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Xbox_Series_X%E3%81%A8Series_S.jpg/1280px-Xbox_Series_X%E3%81%A8Series_S.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Kyu3a · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "xbox-wireless-controller",
+      "title": "Xbox Wireless Controller – Carbon Black",
+      "brand": "Microsoft",
+      "category": "gaming-consoles",
+      "description": "The standard Xbox controller with a hybrid D-pad, textured grip and a Share button. Works with Xbox, Windows, iOS and Android.",
+      "priceUsd": 64.99,
+      "stock": 80,
+      "releaseDate": "2020-11-10",
+      "highlights": [
+        "Hybrid D-pad",
+        "Share button",
+        "Bluetooth + Xbox Wireless",
+        "USB-C",
+        "Up to 40 hrs on AA batteries"
+      ],
+      "tags": [
+        "xbox",
+        "controller"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Xbox_Series_Controller_Carbon_Black.jpg/1280px-Xbox_Series_Controller_Carbon_Black.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: uKER · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "surface-laptop-7",
+      "title": "Surface Laptop, 7th Edition 13.8\" (Snapdragon X Plus)",
+      "brand": "Microsoft",
+      "category": "laptops",
+      "description": "A thin Copilot+ PC with an Arm-based Snapdragon X chip, a touchscreen and all-day battery life.",
+      "priceUsd": 999.99,
+      "stock": 15,
+      "releaseDate": "2024-06-18",
+      "highlights": [
+        "Snapdragon X Plus with 45 TOPS NPU",
+        "13.8\" PixelSense touchscreen, 120Hz",
+        "16GB RAM · 512GB SSD",
+        "Up to 20 hrs video playback",
+        "Copilot+ PC features"
+      ],
+      "tags": [
+        "laptop",
+        "windows"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Microsoft_Surface_Laptop_7.jpg/1280px-Microsoft_Surface_Laptop_7.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: StrangeApparition2011 · CC0 · Wikimedia Commons"
+    },
+    {
+      "id": "nintendo-switch-2",
+      "title": "Nintendo Switch 2",
+      "brand": "Nintendo",
+      "category": "gaming-consoles",
+      "description": "Nintendo's second hybrid console: a bigger 1080p screen, magnetic Joy-Con 2 controllers that work as a mouse, and 4K output when docked.",
+      "priceUsd": 449.99,
+      "stock": 40,
+      "releaseDate": "2025-06-05",
+      "highlights": [
+        "7.9\" 1080p LCD, up to 120Hz, HDR",
+        "Up to 4K when docked",
+        "Magnetic Joy-Con 2 with mouse controls",
+        "256GB storage",
+        "GameChat with the C button"
+      ],
+      "tags": [
+        "nintendo",
+        "switch",
+        "console"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Nintendo_Switch_2_in_Docking_Console.jpg/1280px-Nintendo_Switch_2_in_Docking_Console.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Crisco 1492 · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "nintendo-joy-con-2",
+      "title": "Joy-Con 2 Controller Pair",
+      "brand": "Nintendo",
+      "category": "gaming-consoles",
+      "description": "A spare pair of Joy-Con 2 controllers for Nintendo Switch 2. They snap on magnetically and can be used as a mouse on any flat surface.",
+      "priceUsd": 94.99,
+      "stock": 60,
+      "releaseDate": "2025-06-05",
+      "highlights": [
+        "Magnetic connection",
+        "Mouse controls",
+        "C button for GameChat",
+        "HD Rumble",
+        "Wrist straps included"
+      ],
+      "tags": [
+        "nintendo",
+        "controller"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Nintendo_Switch_2_Joy-Con_2_Blue_and_Orange.jpg/1280px-Nintendo_Switch_2_Joy-Con_2_Blue_and_Orange.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Crisco 1492 · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "nintendo-switch-pro-controller",
+      "title": "Nintendo Switch Pro Controller",
+      "brand": "Nintendo",
+      "category": "gaming-consoles",
+      "description": "A traditional full-size controller for Nintendo Switch and Switch 2, with motion controls, HD Rumble and a long-lasting battery.",
+      "priceUsd": 69.99,
+      "stock": 50,
+      "releaseDate": "2017-03-03",
+      "highlights": [
+        "Motion controls",
+        "HD Rumble",
+        "Built-in amiibo reader",
+        "Up to 40 hrs battery",
+        "USB-C charging"
+      ],
+      "tags": [
+        "nintendo",
+        "controller"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Nintendo-Switch-Pro-Controller-FL.jpg/1280px-Nintendo-Switch-Pro-Controller-FL.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Evan-Amos · Public domain · Wikimedia Commons"
+    },
+    {
+      "id": "xiaomi-15-ultra",
+      "title": "Xiaomi 15 Ultra 512GB",
+      "brand": "Xiaomi",
+      "category": "smartphones",
+      "description": "Xiaomi's camera flagship, co-engineered with Leica: a 1-inch main sensor plus a 200MP periscope telephoto.",
+      "priceUsd": 1499,
+      "stock": 20,
+      "releaseDate": "2025-03-02",
+      "highlights": [
+        "Snapdragon 8 Elite",
+        "Leica 1-inch 50MP main camera",
+        "200MP periscope telephoto (4.3x)",
+        "6.73\" WQHD+ AMOLED",
+        "5410mAh · 90W wired / 80W wireless"
+      ],
+      "tags": [
+        "xiaomi",
+        "leica",
+        "android"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Xiaomi_15_Ultra.jpg/1280px-Xiaomi_15_Ultra.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Andreas Fuchs/Weber Shandwick · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "redmi-note-14-pro-plus",
+      "title": "Redmi Note 14 Pro+ 5G 256GB",
+      "brand": "Xiaomi",
+      "category": "smartphones",
+      "description": "A mid-range phone with flagship touches: a 200MP camera, a curved 120Hz AMOLED and 120W HyperCharge.",
+      "priceUsd": 449,
+      "stock": 45,
+      "releaseDate": "2025-01-15",
+      "highlights": [
+        "200MP main camera with OIS",
+        "6.67\" 1.5K curved AMOLED, 120Hz",
+        "5110mAh · 120W HyperCharge",
+        "IP68",
+        "Snapdragon 7s Gen 3"
+      ],
+      "tags": [
+        "redmi",
+        "xiaomi",
+        "android"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Redmi_Note_14_Pro%2B_%282%29.jpg/1280px-Redmi_Note_14_Pro%2B_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: 茅野ふたば · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "xiaomi-smart-band-8",
+      "title": "Xiaomi Smart Band 8",
+      "brand": "Xiaomi",
+      "category": "wearables",
+      "description": "A light fitness band with an AMOLED screen, 150+ workout modes and up to two weeks of battery life.",
+      "priceUsd": 39.99,
+      "originalPriceUsd": 49.99,
+      "stock": 120,
+      "highlights": [
+        "1.62\" AMOLED, 60Hz",
+        "150+ sport modes",
+        "Heart rate, SpO₂ and sleep tracking",
+        "Up to 16 days battery",
+        "5ATM water resistance"
+      ],
+      "tags": [
+        "fitness",
+        "band"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Xiaomi_Mi_Band_8.jpg/1280px-Xiaomi_Mi_Band_8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: DeadJacb · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "oneplus-13",
+      "title": "OnePlus 13 256GB",
+      "brand": "OnePlus",
+      "category": "smartphones",
+      "description": "A fast, long-lasting flagship with Hasselblad-tuned cameras, a 6000mAh battery and very quick charging.",
+      "priceUsd": 899.99,
+      "stock": 30,
+      "releaseDate": "2025-01-07",
+      "highlights": [
+        "Snapdragon 8 Elite",
+        "Hasselblad triple 50MP cameras",
+        "6.82\" 2K ProXDR display, 120Hz",
+        "6000mAh · 100W wired / 50W wireless",
+        "IP68 + IP69"
+      ],
+      "tags": [
+        "oneplus",
+        "android"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/OnePlus_13_back.jpg/1280px-OnePlus_13_back.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Maksdroider · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "nothing-phone-3a-pro",
+      "title": "Nothing Phone (3a) Pro 256GB",
+      "brand": "Nothing",
+      "category": "smartphones",
+      "description": "Nothing's transparent design with a Glyph light interface, and a 3x periscope camera at a mid-range price.",
+      "priceUsd": 459,
+      "stock": 35,
+      "releaseDate": "2025-03-04",
+      "highlights": [
+        "50MP periscope with 3x optical zoom",
+        "6.77\" flexible AMOLED, 120Hz",
+        "Snapdragon 7s Gen 3",
+        "5000mAh · 50W charging",
+        "Glyph Interface + Essential Key"
+      ],
+      "tags": [
+        "nothing",
+        "android"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Nothing_Phone_%283a%29_Pro_20250628.jpg/1280px-Nothing_Phone_%283a%29_Pro_20250628.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Steven Sun · Public domain · Wikimedia Commons"
+    },
+    {
+      "id": "nothing-phone-2",
+      "title": "Nothing Phone (2) 256GB",
+      "brand": "Nothing",
+      "category": "smartphones",
+      "description": "Nothing's first flagship: the see-through design with a programmable Glyph light interface on the back.",
+      "priceUsd": 499,
+      "originalPriceUsd": 699,
+      "stock": 15,
+      "releaseDate": "2023-07-17",
+      "highlights": [
+        "Snapdragon 8+ Gen 1",
+        "6.7\" LTPO OLED, 120Hz",
+        "Dual 50MP cameras",
+        "4700mAh · wireless charging",
+        "Glyph Interface"
+      ],
+      "tags": [
+        "nothing",
+        "android"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Nothing_phone_%282%29_%28Booredatwork.com%29_001.png/1280px-Nothing_phone_%282%29_%28Booredatwork.com%29_001.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Booredatwork.com · CC BY 3.0 · Wikimedia Commons"
+    },
+    {
+      "id": "bose-qc-ultra-earbuds",
+      "title": "Bose QuietComfort Ultra Earbuds",
+      "brand": "Bose",
+      "category": "audio",
+      "description": "Bose's best noise cancelling in an earbud, with Immersive Audio that places sound around you.",
+      "priceUsd": 299,
+      "stock": 40,
+      "releaseDate": "2023-10-05",
+      "highlights": [
+        "World-class noise cancelling",
+        "Bose Immersive Audio",
+        "CustomTune sound calibration",
+        "Up to 6 hrs (24 hrs with case)",
+        "IPX4"
+      ],
+      "tags": [
+        "earbuds",
+        "anc"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Bose_QuietComfort_Ultra_Earbuds_-_2.jpg/1280px-Bose_QuietComfort_Ultra_Earbuds_-_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Kyu3 · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "bose-qc-earbuds-ii",
+      "title": "Bose QuietComfort Earbuds II",
+      "brand": "Bose",
+      "category": "audio",
+      "description": "Noise cancelling earbuds that tune themselves to your ears, with a compact charging case.",
+      "priceUsd": 199,
+      "originalPriceUsd": 279,
+      "stock": 30,
+      "releaseDate": "2022-09-29",
+      "highlights": [
+        "CustomTune technology",
+        "Aware Mode with ActiveSense",
+        "Up to 6 hrs (24 hrs with case)",
+        "IPX4",
+        "Interchangeable ear tips + stability bands"
+      ],
+      "tags": [
+        "earbuds",
+        "anc"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Bose_QuietComfort_Earbuds_II.jpg/1280px-Bose_QuietComfort_Earbuds_II.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: KKPCW（Kyu3） · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "bose-soundlink-flex",
+      "title": "Bose SoundLink Flex Bluetooth Speaker",
+      "brand": "Bose",
+      "category": "audio",
+      "description": "A rugged, waterproof speaker that floats, with clear sound that adjusts to how it's placed.",
+      "priceUsd": 149,
+      "stock": 55,
+      "releaseDate": "2021-10-14",
+      "highlights": [
+        "IP67 dustproof and waterproof",
+        "PositionIQ tunes sound to orientation",
+        "Up to 12 hrs battery",
+        "Shock-resistant silicone",
+        "Built-in mic for calls"
+      ],
+      "tags": [
+        "speaker",
+        "bluetooth"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Bose_SoundLink_Flex_Speaker.jpg/1280px-Bose_SoundLink_Flex_Speaker.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: TaurusEmerald · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "jbl-charge-4",
+      "title": "JBL Charge 4 Portable Speaker",
+      "brand": "JBL",
+      "category": "audio",
+      "description": "A waterproof party speaker with a big battery that can also charge your phone.",
+      "priceUsd": 119.95,
+      "originalPriceUsd": 149.95,
+      "stock": 60,
+      "highlights": [
+        "IPX7 waterproof",
+        "Up to 20 hrs playtime",
+        "Built-in power bank (USB-A out)",
+        "JBL Connect+ for 100+ speakers",
+        "USB-C charging"
+      ],
+      "tags": [
+        "speaker",
+        "bluetooth"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/JBL_Charge_4_1v2.jpg/1280px-JBL_Charge_4_1v2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Singlespeedfahrer · CC0 · Wikimedia Commons"
+    },
+    {
+      "id": "jbl-flip-4",
+      "title": "JBL Flip 4 Portable Speaker",
+      "brand": "JBL",
+      "category": "audio",
+      "description": "A compact, waterproof speaker with punchy JBL sound and a built-in speakerphone.",
+      "priceUsd": 79.95,
+      "originalPriceUsd": 99.95,
+      "stock": 70,
+      "highlights": [
+        "IPX7 waterproof",
+        "Up to 12 hrs playtime",
+        "JBL Connect+",
+        "Noise-cancelling speakerphone",
+        "Voice assistant button"
+      ],
+      "tags": [
+        "speaker",
+        "bluetooth"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/JBL_Flip_4.jpg/1280px-JBL_Flip_4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Freekhou5 · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "adidas-samba-og",
+      "title": "adidas Samba OG Shoes",
+      "brand": "adidas",
+      "category": "mens-shoes",
+      "description": "The indoor football shoe from 1950 that became a street classic: soft leather upper, suede T-toe and gum rubber sole.",
+      "priceUsd": 100,
+      "stock": 90,
+      "highlights": [
+        "Leather upper with suede overlays",
+        "Gum rubber outsole",
+        "Synthetic lining",
+        "Low-profile silhouette",
+        "Iconic 3-Stripes"
+      ],
+      "tags": [
+        "sneakers",
+        "originals"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "No warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Adidas_Samba.jpg/1280px-Adidas_Samba.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Pangalau · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "adidas-gazelle-indoor",
+      "title": "adidas Gazelle Indoor Shoes",
+      "brand": "adidas",
+      "category": "womens-shoes",
+      "description": "The 1979 indoor training shoe, back in soft suede with a translucent gum sole.",
+      "priceUsd": 120,
+      "stock": 75,
+      "highlights": [
+        "Suede upper",
+        "Translucent gum rubber outsole",
+        "Leather lining",
+        "Contrast 3-Stripes",
+        "Regular fit"
+      ],
+      "tags": [
+        "sneakers",
+        "originals"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "No warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Adidas_Gazelle_Indoor.jpg/1280px-Adidas_Gazelle_Indoor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: LeDroider · CC0 · Wikimedia Commons"
+    },
+    {
+      "id": "dyson-supersonic",
+      "title": "Dyson Supersonic Hair Dryer",
+      "brand": "Dyson",
+      "category": "beauty",
+      "description": "A fast, quiet hair dryer with the motor in the handle and intelligent heat control that measures air temperature 40 times a second.",
+      "priceUsd": 429.99,
+      "stock": 25,
+      "highlights": [
+        "Dyson V9 digital motor in the handle",
+        "Intelligent heat control",
+        "Magnetic styling attachments",
+        "3 speed + 4 heat settings",
+        "Cold shot"
+      ],
+      "tags": [
+        "hair",
+        "dyson"
+      ],
+      "shipping": "Ships in 3-5 days",
+      "warranty": "2 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Dyson_Supersonic_Hair_Dryer_1_2017-01-28.jpg/1280px-Dyson_Supersonic_Hair_Dryer_1_2017-01-28.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: FASTILY · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "dyson-v10-absolute",
+      "title": "Dyson Cyclone V10 Absolute Cordless Vacuum",
+      "brand": "Dyson",
+      "category": "home-appliances",
+      "description": "A powerful cordless stick vacuum that converts to a handheld, with up to an hour of fade-free suction.",
+      "priceUsd": 399.99,
+      "originalPriceUsd": 549.99,
+      "stock": 20,
+      "highlights": [
+        "Dyson digital motor V10",
+        "Up to 60 min run time",
+        "Point-and-shoot hygienic bin emptying",
+        "Whole-machine filtration",
+        "Converts to handheld"
+      ],
+      "tags": [
+        "vacuum",
+        "cordless"
+      ],
+      "shipping": "Ships in 3-5 days",
+      "warranty": "2 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Dyson_Cyclone_V10_Absolute_cordless_stick_vacuum.jpg/1280px-Dyson_Cyclone_V10_Absolute_cordless_stick_vacuum.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: MattClayt · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "canon-eos-r6-mark-ii",
+      "title": "Canon EOS R6 Mark II Mirrorless Camera (Body)",
+      "brand": "Canon",
+      "category": "cameras",
+      "description": "A full-frame hybrid camera that's fast enough for sport and wildlife, with excellent low-light performance and 6K-oversampled 4K video.",
+      "priceUsd": 2499,
+      "stock": 10,
+      "releaseDate": "2022-12-01",
+      "highlights": [
+        "24.2MP full-frame CMOS",
+        "Up to 40 fps electronic shutter",
+        "Up to 8 stops in-body stabilisation",
+        "4K 60p oversampled from 6K",
+        "Dual Pixel CMOS AF II"
+      ],
+      "tags": [
+        "camera",
+        "mirrorless",
+        "full-frame"
+      ],
+      "shipping": "Ships in 3-5 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Canon_EOS_R6_Mark_II_-_by_Henry_S%C3%B6derlund_%2852546794891%29.jpg/1280px-Canon_EOS_R6_Mark_II_-_by_Henry_S%C3%B6derlund_%2852546794891%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Henry Söderlund · CC BY 2.0 · Wikimedia Commons"
+    },
+    {
+      "id": "canon-eos-r50",
+      "title": "Canon EOS R50 Mirrorless Camera with RF-S 18-45mm (White)",
+      "brand": "Canon",
+      "category": "cameras",
+      "description": "Canon's smallest, lightest EOS R camera: easy auto modes for beginners and uncropped 4K video for creators.",
+      "priceUsd": 799.99,
+      "stock": 25,
+      "releaseDate": "2023-03-28",
+      "highlights": [
+        "24.2MP APS-C sensor",
+        "4K 30p uncropped (from 6K)",
+        "Vari-angle touchscreen",
+        "Dual Pixel CMOS AF II with subject detection",
+        "RF-S 18-45mm lens included"
+      ],
+      "tags": [
+        "camera",
+        "mirrorless"
+      ],
+      "shipping": "Ships in 3-5 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/Canon_EOS_R50%2C_White%2C_3.jpg/1280px-Canon_EOS_R50%2C_White%2C_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Kent Madsen · CC BY-SA 2.0 · Wikimedia Commons"
+    },
+    {
+      "id": "logitech-mx-master-3s",
+      "title": "Logitech MX Master 3S Wireless Mouse",
+      "brand": "Logitech",
+      "category": "computer-accessories",
+      "description": "An ergonomic performance mouse with quiet clicks, an 8K DPI sensor that tracks on glass, and MagSpeed scrolling.",
+      "priceUsd": 99.99,
+      "stock": 100,
+      "releaseDate": "2022-05-24",
+      "highlights": [
+        "8000 DPI track-on-glass sensor",
+        "Quiet Clicks",
+        "MagSpeed electromagnetic scrolling",
+        "Up to 70 days per charge",
+        "Works on 3 devices (Bluetooth / Logi Bolt)"
+      ],
+      "tags": [
+        "mouse",
+        "productivity"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/Logitech_MX_Master_3S_HS05.jpg/1280px-Logitech_MX_Master_3S_HS05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Hayden Schiff · CC BY 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "logitech-mx-keys",
+      "title": "Logitech MX Keys Wireless Keyboard",
+      "brand": "Logitech",
+      "category": "computer-accessories",
+      "description": "A full-size illuminated keyboard with spherically-dished keys for comfortable, precise typing across three devices.",
+      "priceUsd": 109.99,
+      "stock": 80,
+      "highlights": [
+        "Spherically-dished keys",
+        "Smart backlighting",
+        "Up to 10 days (5 months without backlight)",
+        "Switch between 3 devices",
+        "USB-C rechargeable"
+      ],
+      "tags": [
+        "keyboard",
+        "productivity"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Logitech_MX_Keys_YR0073_Wireless_Keyboard.jpg/1280px-Logitech_MX_Keys_YR0073_Wireless_Keyboard.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: TaurusEmerald · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "logitech-g-pro-x-superlight-2",
+      "title": "Logitech G PRO X SUPERLIGHT 2 Gaming Mouse",
+      "brand": "Logitech",
+      "category": "computer-accessories",
+      "description": "An ultra-light esports mouse with hybrid optical-mechanical switches and a HERO 2 sensor.",
+      "priceUsd": 159.99,
+      "stock": 40,
+      "releaseDate": "2023-09-12",
+      "highlights": [
+        "60 g",
+        "HERO 2 sensor, up to 32K DPI",
+        "LIGHTFORCE hybrid switches",
+        "LIGHTSPEED wireless, up to 95 hrs",
+        "USB-C charging"
+      ],
+      "tags": [
+        "mouse",
+        "gaming"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/Logitech_Pro_X_Superlight_2_sample_20231216.jpg/1280px-Logitech_Pro_X_Superlight_2_sample_20231216.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Solomon203 · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "dji-mini-4-pro",
+      "title": "DJI Mini 4 Pro Drone",
+      "brand": "DJI",
+      "category": "cameras",
+      "description": "A drone under 249 g with omnidirectional obstacle sensing and 4K/60fps HDR video.",
+      "priceUsd": 759,
+      "stock": 15,
+      "releaseDate": "2023-09-25",
+      "highlights": [
+        "Under 249 g",
+        "4K/60fps HDR, true vertical shooting",
+        "Omnidirectional obstacle sensing",
+        "Up to 34 min flight",
+        "20 km FHD video transmission (O4)"
+      ],
+      "tags": [
+        "drone",
+        "dji"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/2024_Dron_DJI_Mini_4_Pro_%2801%29.jpg/1280px-2024_Dron_DJI_Mini_4_Pro_%2801%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Jacek Halicki · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "dji-osmo-pocket-3",
+      "title": "DJI Osmo Pocket 3",
+      "brand": "DJI",
+      "category": "cameras",
+      "description": "A pocket gimbal camera with a 1-inch sensor and a rotating 2-inch screen, made for vlogging.",
+      "priceUsd": 519,
+      "stock": 30,
+      "releaseDate": "2023-10-25",
+      "highlights": [
+        "1-inch CMOS",
+        "4K/120fps",
+        "3-axis mechanical stabilisation",
+        "2\" rotatable OLED touchscreen",
+        "ActiveTrack 6.0"
+      ],
+      "tags": [
+        "vlog",
+        "gimbal",
+        "dji"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/DJI_Osmo_Pocket_3_-_3.jpg/1280px-DJI_Osmo_Pocket_3_-_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Kyu3a · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "dji-osmo-action-5-pro",
+      "title": "DJI Osmo Action 5 Pro",
+      "brand": "DJI",
+      "category": "cameras",
+      "description": "A rugged action camera with a larger sensor for better low light, and waterproof to 20 m without a case.",
+      "priceUsd": 349,
+      "stock": 35,
+      "releaseDate": "2024-09-19",
+      "highlights": [
+        "1/1.3-inch sensor, 13.5 stops dynamic range",
+        "4K/120fps",
+        "Waterproof to 20 m",
+        "Up to 4 hrs battery",
+        "Dual OLED touchscreens"
+      ],
+      "tags": [
+        "action-camera",
+        "dji"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/DJI_Osmo_Action_5_Pro_01.jpg/1280px-DJI_Osmo_Action_5_Pro_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Gannu03 · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "garmin-forerunner-965",
+      "title": "Garmin Forerunner 965 Running Smartwatch",
+      "brand": "Garmin",
+      "category": "wearables",
+      "description": "A premium triathlon and running watch with a bright AMOLED screen, maps and training readiness insights.",
+      "priceUsd": 599.99,
+      "stock": 20,
+      "releaseDate": "2023-03-01",
+      "highlights": [
+        "1.4\" AMOLED display",
+        "Full-colour maps",
+        "Training readiness + HRV status",
+        "Up to 23 days battery",
+        "Multi-band GPS"
+      ],
+      "tags": [
+        "running",
+        "gps",
+        "smartwatch"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Garmin_Forerunner_965.jpeg/1280px-Garmin_Forerunner_965.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: SUNSmania41 · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "garmin-venu-3",
+      "title": "Garmin Venu 3 Smartwatch",
+      "brand": "Garmin",
+      "category": "wearables",
+      "description": "A health-focused smartwatch with sleep coaching, a body battery energy score and a built-in speaker for calls.",
+      "priceUsd": 449.99,
+      "stock": 25,
+      "releaseDate": "2023-08-30",
+      "highlights": [
+        "1.4\" AMOLED",
+        "Sleep coach + nap detection",
+        "Body Battery energy monitoring",
+        "Up to 14 days battery",
+        "Calls via built-in speaker/mic"
+      ],
+      "tags": [
+        "smartwatch",
+        "health"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Garmin_Venu_3_%28a%29.JPG/1280px-Garmin_Venu_3_%28a%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: C.Stadler/Bwag · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "airpods-pro-2",
+      "title": "AirPods Pro 2 with MagSafe Case (USB-C)",
+      "brand": "Apple",
+      "category": "audio",
+      "description": "Apple's noise-cancelling earbuds with Adaptive Audio, Conversation Awareness and a hearing health feature set.",
+      "priceUsd": 199,
+      "originalPriceUsd": 249,
+      "stock": 60,
+      "releaseDate": "2023-09-22",
+      "highlights": [
+        "H2 chip",
+        "Active Noise Cancellation + Adaptive Audio",
+        "Personalized Spatial Audio",
+        "Up to 6 hrs (30 hrs with case)",
+        "IP54 · USB-C MagSafe case"
+      ],
+      "tags": [
+        "airpods",
+        "apple",
+        "earbuds"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/AirPods_Pro_%282nd_generation%29.jpg/1280px-AirPods_Pro_%282nd_generation%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Hajoon0102 · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "apple-watch-series-10",
+      "title": "Apple Watch Series 10 GPS 46mm",
+      "brand": "Apple",
+      "category": "wearables",
+      "description": "The thinnest Apple Watch yet, with the biggest display, faster charging and sleep apnea notifications.",
+      "priceUsd": 429,
+      "stock": 35,
+      "releaseDate": "2024-09-20",
+      "highlights": [
+        "Wide-angle OLED display",
+        "S10 SiP",
+        "Sleep apnea notifications",
+        "Charges to 80% in about 30 min",
+        "Water resistant to 50 m, depth + water temp"
+      ],
+      "tags": [
+        "apple-watch",
+        "apple",
+        "smartwatch"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Apple_Watch_Series_10.png/1280px-Apple_Watch_Series_10.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: KK IN HK · Public domain · Wikimedia Commons"
+    },
+    {
+      "id": "galaxy-z-fold7",
+      "title": "Samsung Galaxy Z Fold7 256GB",
+      "brand": "Samsung",
+      "category": "smartphones",
+      "description": "Samsung's thinnest, lightest Fold: 8.9 mm folded, with a 200MP main camera and an 8-inch inner screen.",
+      "priceUsd": 1999.99,
+      "stock": 15,
+      "releaseDate": "2025-07-25",
+      "highlights": [
+        "8.9 mm folded · 215 g",
+        "8\" inner + 6.5\" cover display",
+        "200MP main camera",
+        "Snapdragon 8 Elite for Galaxy",
+        "Galaxy AI"
+      ],
+      "tags": [
+        "galaxy",
+        "samsung",
+        "foldable"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Samsung_Galaxy_Z_Fold_7_Unfolded.jpg/1280px-Samsung_Galaxy_Z_Fold_7_Unfolded.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Matabalt · CC0 · Wikimedia Commons"
+    },
+    {
+      "id": "galaxy-z-flip7",
+      "title": "Samsung Galaxy Z Flip7 256GB",
+      "brand": "Samsung",
+      "category": "smartphones",
+      "description": "The compact flip phone with an edge-to-edge 4.1-inch FlexWindow you can use without opening it.",
+      "priceUsd": 1099.99,
+      "stock": 25,
+      "releaseDate": "2025-07-25",
+      "highlights": [
+        "4.1\" edge-to-edge FlexWindow",
+        "6.9\" main display, 120Hz",
+        "Exynos 2500",
+        "50MP main camera",
+        "4300mAh battery"
+      ],
+      "tags": [
+        "galaxy",
+        "samsung",
+        "foldable"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/Samsung_Galaxy_Z_Flip_7_Unfolded.jpg/1280px-Samsung_Galaxy_Z_Flip_7_Unfolded.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Matabalt · CC0 · Wikimedia Commons"
+    },
+    {
+      "id": "galaxy-watch7",
+      "title": "Samsung Galaxy Watch7 44mm",
+      "brand": "Samsung",
+      "category": "wearables",
+      "description": "Samsung's everyday smartwatch with dual-frequency GPS, energy score and Galaxy AI health insights.",
+      "priceUsd": 329.99,
+      "stock": 30,
+      "releaseDate": "2024-07-24",
+      "highlights": [
+        "1.5\" Super AMOLED",
+        "Dual-frequency GPS",
+        "BioActive sensor",
+        "Energy Score",
+        "Wear OS with One UI Watch"
+      ],
+      "tags": [
+        "galaxy",
+        "samsung",
+        "smartwatch"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/Galaxy_Watch_7.jpg/1280px-Galaxy_Watch_7.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Kyu3a · CC BY-SA 4.0 · Wikimedia Commons"
+    },
+    {
+      "id": "pixel-buds-pro",
+      "title": "Google Pixel Buds Pro (Coral)",
+      "brand": "Google",
+      "category": "audio",
+      "description": "Google's noise-cancelling earbuds with a custom 6-core audio chip and multipoint connection.",
+      "priceUsd": 149,
+      "originalPriceUsd": 199,
+      "stock": 40,
+      "releaseDate": "2022-07-28",
+      "highlights": [
+        "Active Noise Cancellation with Silent Seal",
+        "Custom 6-core audio chip",
+        "Up to 11 hrs (31 hrs with case)",
+        "Multipoint Bluetooth",
+        "IPX4"
+      ],
+      "tags": [
+        "pixel",
+        "google",
+        "earbuds"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "1 year warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Pixel_Buds_Pro%2C_orange.jpg/1280px-Pixel_Buds_Pro%2C_orange.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Mliu92 · CC BY-SA 3.0 · Wikimedia Commons"
+    },
+    {
+      "id": "nike-air-force-1-07",
+      "title": "Nike Air Force 1 '07 (White)",
+      "brand": "Nike",
+      "category": "mens-shoes",
+      "description": "The 1982 basketball original: crisp leather, bold details and Nike Air cushioning in the sole.",
+      "priceUsd": 115,
+      "stock": 120,
+      "highlights": [
+        "Full-grain leather upper",
+        "Nike Air cushioning",
+        "Rubber cupsole with pivot circle",
+        "Padded low-cut collar",
+        "Style: CW2288-111"
+      ],
+      "tags": [
+        "sneakers",
+        "nike"
+      ],
+      "shipping": "Ships in 1-2 days",
+      "warranty": "No warranty",
+      "returnPolicy": "30 days return policy",
+      "images": [
+        "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/Air_Force_1.JPG/1280px-Air_Force_1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "imageCredit": "Photo: Xanor · CC0 · Wikimedia Commons"
     }
   ]
 }

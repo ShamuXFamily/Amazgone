@@ -24,6 +24,8 @@ LOGOS = {
     "official-vivo": "vivo", "official-huawei": "huawei", "official-asus": "asus", "official-lenovo": "lenovo",
     "official-dell": "dell", "official-beats": "beats", "official-nike": "nike", "official-puma": "puma",
     "official-dior": "dior", "official-chrysler": "chrysler",
+    "official-sony": "sony", "official-xiaomi": "xiaomi", "official-oneplus": "oneplus", "official-bose": "bose",
+    "official-jbl": "jbl", "official-adidas": "adidas", "official-dji": "dji", "official-garmin": "garmin",
     "digital-1": "steam", "digital-7": "gogdotcom", "digital-11": "humblebundle", "digital-13": "ubisoft", "digital-25": "epicgames",
 }
 
@@ -36,7 +38,12 @@ FALLBACK_COLORS = {
     "official-annibale-colombo": "6B4E31", "official-dodge": "C8102E", "official-kawasaki": "66CC33",
     "digital-2": "1F2A44", "digital-3": "00A651", "digital-15": "FF6A00", "digital-21": "0072BC", "digital-23": "E4002B",
     "digital-27": "E30613", "digital-28": "E2001A", "digital-30": "D32E2E", "digital-35": "6C2BD9",
+    "official-microsoft": "0078D4", "official-nintendo": "E60012", "official-nothing": "000000", "official-dyson": "1A1A1A",
+    "official-canon": "CC0000", "official-logitech": "00B8FC",
 }
+
+# Simple Icons colours that don't work behind a white glyph (e.g. Sony's is white).
+COLOR_OVERRIDES = {"official-sony": "000000"}
 
 
 def fetch(url):
@@ -62,7 +69,7 @@ def main():
                 f'    <path android:fillColor="#FFFFFFFF" android:pathData="{path}"/>\n'
                 "</vector>\n"
             )
-        entries.append((store_id, f"Res.drawable.{name}", colors.get(slug, "000000")))
+        entries.append((store_id, f"Res.drawable.{name}", COLOR_OVERRIDES.get(store_id, colors.get(slug, "000000"))))
     for store_id, hex_color in sorted(FALLBACK_COLORS.items()):
         entries.append((store_id, "null", hex_color))
     write_kotlin(entries)

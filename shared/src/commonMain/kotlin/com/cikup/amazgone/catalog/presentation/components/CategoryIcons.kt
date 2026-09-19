@@ -22,6 +22,12 @@ import androidx.compose.material.icons.outlined.Tablet
 import androidx.compose.material.icons.outlined.TwoWheeler
 import androidx.compose.material.icons.outlined.Watch
 import androidx.compose.material.icons.outlined.WbSunny
+import androidx.compose.material.icons.outlined.CleaningServices
+import androidx.compose.material.icons.outlined.MonitorHeart
+import androidx.compose.material.icons.outlined.Mouse
+import androidx.compose.material.icons.outlined.PhotoCamera
+import androidx.compose.material.icons.outlined.Speaker
+import androidx.compose.material.icons.outlined.VideogameAsset
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /** Icon for a catalog category slug (DummyJSON + CheapShark), with a generic fallback. */
@@ -41,6 +47,12 @@ fun categoryIcon(slug: String): ImageVector = when {
     slug == "vehicle" -> Icons.Outlined.DirectionsCar
     slug == "sports-accessories" -> Icons.Outlined.SportsBasketball
     slug == "sunglasses" -> Icons.Outlined.WbSunny
+    slug == "gaming-consoles" -> Icons.Outlined.VideogameAsset
+    slug == "audio" -> Icons.Outlined.Speaker
+    slug == "cameras" -> Icons.Outlined.PhotoCamera
+    slug == "wearables" -> Icons.Outlined.MonitorHeart
+    slug == "computer-accessories" -> Icons.Outlined.Mouse
+    slug == "home-appliances" -> Icons.Outlined.CleaningServices
     slug.endsWith("watches") -> Icons.Outlined.Watch
     slug.endsWith("shoes") -> Icons.Outlined.DirectionsRun
     slug.endsWith("jewellery") -> Icons.Outlined.Diamond

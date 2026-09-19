@@ -41,12 +41,29 @@ object Origins {
         "dodge" to Origin("Auburn Hills", "USA", GeoPoint(42.6875, -83.2341)),
         "chrysler" to Origin("Auburn Hills", "USA", GeoPoint(42.6875, -83.2341)),
         "kawasaki" to Origin("Kobe", "Japan", GeoPoint(34.6901, 135.1955)),
+        "sony" to Origin("Tokyo", "Japan", GeoPoint(35.6307, 139.7431)),
+        "microsoft" to Origin("Redmond", "USA", GeoPoint(47.6397, -122.1285)),
+        "nintendo" to Origin("Kyoto", "Japan", GeoPoint(34.9697, 135.7561)),
+        "xiaomi" to Origin("Beijing", "China", GeoPoint(40.0295, 116.3042)),
+        "oneplus" to Origin("Shenzhen", "China", GeoPoint(22.5381, 113.9532)),
+        "nothing" to Origin("London", "UK", GeoPoint(51.5246, -0.0784)),
+        "bose" to Origin("Framingham", "USA", GeoPoint(42.3029, -71.4385)),
+        "jbl" to Origin("Northridge", "USA", GeoPoint(34.2381, -118.5301)),
+        "adidas" to Origin("Herzogenaurach", "Germany", GeoPoint(49.5751, 10.9108)),
+        "dyson" to Origin("Singapore", "Singapore", GeoPoint(1.2653, 103.8216)),
+        "canon" to Origin("Tokyo", "Japan", GeoPoint(35.5716, 139.6860)),
+        "logitech" to Origin("Lausanne", "Switzerland", GeoPoint(46.5197, 6.6323)),
+        "dji" to Origin("Shenzhen", "China", GeoPoint(22.5405, 113.9536)),
+        "garmin" to Origin("Olathe", "USA", GeoPoint(38.8547, -94.7985)),
     )
+
+    /** The brand's own headquarters for an official store id; null when we don't know it (hub fallback). */
+    fun headquarters(storeId: String): Origin? = BRAND_HQ[storeId.removePrefix("official-")]
 
     /** Null for digital stores: a game code doesn't travel. */
     fun forStore(storeId: String): Origin? = when {
         storeId.startsWith("digital-") -> null
-        storeId.startsWith("official-") -> BRAND_HQ[storeId.removePrefix("official-")] ?: SHENZHEN_HUB
+        storeId.startsWith("official-") -> headquarters(storeId) ?: SHENZHEN_HUB
         storeId.startsWith("brand-") -> SHENZHEN_HUB // made-up marketplace brands ship from the hub
         else -> JAKARTA // Amazgone and Amazgone Fresh warehouses
     }

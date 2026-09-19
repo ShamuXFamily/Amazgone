@@ -2,25 +2,33 @@
 package com.cikup.amazgone.stores.presentation
 
 import amazgone.shared.generated.resources.Res
+import amazgone.shared.generated.resources.logo_adidas
 import amazgone.shared.generated.resources.logo_apple
 import amazgone.shared.generated.resources.logo_asus
 import amazgone.shared.generated.resources.logo_beats
+import amazgone.shared.generated.resources.logo_bose
 import amazgone.shared.generated.resources.logo_chrysler
 import amazgone.shared.generated.resources.logo_dell
 import amazgone.shared.generated.resources.logo_dior
+import amazgone.shared.generated.resources.logo_dji
 import amazgone.shared.generated.resources.logo_epicgames
+import amazgone.shared.generated.resources.logo_garmin
 import amazgone.shared.generated.resources.logo_gogdotcom
 import amazgone.shared.generated.resources.logo_google
 import amazgone.shared.generated.resources.logo_huawei
 import amazgone.shared.generated.resources.logo_humblebundle
+import amazgone.shared.generated.resources.logo_jbl
 import amazgone.shared.generated.resources.logo_lenovo
 import amazgone.shared.generated.resources.logo_nike
+import amazgone.shared.generated.resources.logo_oneplus
 import amazgone.shared.generated.resources.logo_oppo
 import amazgone.shared.generated.resources.logo_puma
 import amazgone.shared.generated.resources.logo_samsung
+import amazgone.shared.generated.resources.logo_sony
 import amazgone.shared.generated.resources.logo_steam
 import amazgone.shared.generated.resources.logo_ubisoft
 import amazgone.shared.generated.resources.logo_vivo
+import amazgone.shared.generated.resources.logo_xiaomi
 import androidx.compose.ui.graphics.Color
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -34,20 +42,28 @@ internal val BRAND_LOGOS: Map<String, BrandLogo> = mapOf(
     "digital-13" to BrandLogo(Res.drawable.logo_ubisoft, Color(0xFF000000)),
     "digital-25" to BrandLogo(Res.drawable.logo_epicgames, Color(0xFF313131)),
     "digital-7" to BrandLogo(Res.drawable.logo_gogdotcom, Color(0xFF86328A)),
+    "official-adidas" to BrandLogo(Res.drawable.logo_adidas, Color(0xFF000000)),
     "official-apple" to BrandLogo(Res.drawable.logo_apple, Color(0xFF000000)),
     "official-asus" to BrandLogo(Res.drawable.logo_asus, Color(0xFF000000)),
     "official-beats" to BrandLogo(Res.drawable.logo_beats, Color(0xFF005571)),
+    "official-bose" to BrandLogo(Res.drawable.logo_bose, Color(0xFF000000)),
     "official-chrysler" to BrandLogo(Res.drawable.logo_chrysler, Color(0xFF000000)),
     "official-dell" to BrandLogo(Res.drawable.logo_dell, Color(0xFF007DB8)),
     "official-dior" to BrandLogo(Res.drawable.logo_dior, Color(0xFF000000)),
+    "official-dji" to BrandLogo(Res.drawable.logo_dji, Color(0xFF000000)),
+    "official-garmin" to BrandLogo(Res.drawable.logo_garmin, Color(0xFF000000)),
     "official-google" to BrandLogo(Res.drawable.logo_google, Color(0xFF4285F4)),
     "official-huawei" to BrandLogo(Res.drawable.logo_huawei, Color(0xFFFF0000)),
+    "official-jbl" to BrandLogo(Res.drawable.logo_jbl, Color(0xFFFF3300)),
     "official-lenovo" to BrandLogo(Res.drawable.logo_lenovo, Color(0xFFE2231A)),
     "official-nike" to BrandLogo(Res.drawable.logo_nike, Color(0xFF111111)),
+    "official-oneplus" to BrandLogo(Res.drawable.logo_oneplus, Color(0xFFF5010C)),
     "official-oppo" to BrandLogo(Res.drawable.logo_oppo, Color(0xFF2D683D)),
     "official-puma" to BrandLogo(Res.drawable.logo_puma, Color(0xFF242B2F)),
     "official-samsung" to BrandLogo(Res.drawable.logo_samsung, Color(0xFF1428A0)),
+    "official-sony" to BrandLogo(Res.drawable.logo_sony, Color(0xFF000000)),
     "official-vivo" to BrandLogo(Res.drawable.logo_vivo, Color(0xFF415FFF)),
+    "official-xiaomi" to BrandLogo(Res.drawable.logo_xiaomi, Color(0xFFFF6900)),
     "digital-15" to BrandLogo(null, Color(0xFFFF6A00)),
     "digital-2" to BrandLogo(null, Color(0xFF1F2A44)),
     "digital-21" to BrandLogo(null, Color(0xFF0072BC)),
@@ -60,16 +76,22 @@ internal val BRAND_LOGOS: Map<String, BrandLogo> = mapOf(
     "official-amazon" to BrandLogo(null, Color(0xFFFF9900)),
     "official-annibale-colombo" to BrandLogo(null, Color(0xFF6B4E31)),
     "official-calvin-klein" to BrandLogo(null, Color(0xFF000000)),
+    "official-canon" to BrandLogo(null, Color(0xFFCC0000)),
     "official-chanel" to BrandLogo(null, Color(0xFF000000)),
     "official-dodge" to BrandLogo(null, Color(0xFFC8102E)),
     "official-dolce-gabbana" to BrandLogo(null, Color(0xFF000000)),
+    "official-dyson" to BrandLogo(null, Color(0xFF1A1A1A)),
     "official-essence" to BrandLogo(null, Color(0xFFE4007C)),
     "official-gigabyte" to BrandLogo(null, Color(0xFF003A70)),
     "official-gucci" to BrandLogo(null, Color(0xFF1B4332)),
     "official-iwc" to BrandLogo(null, Color(0xFF1B1B1B)),
     "official-kawasaki" to BrandLogo(null, Color(0xFF66CC33)),
     "official-knoll" to BrandLogo(null, Color(0xFFC8102E)),
+    "official-logitech" to BrandLogo(null, Color(0xFF00B8FC)),
     "official-longines" to BrandLogo(null, Color(0xFF1D3E6B)),
+    "official-microsoft" to BrandLogo(null, Color(0xFF0078D4)),
+    "official-nintendo" to BrandLogo(null, Color(0xFFE60012)),
+    "official-nothing" to BrandLogo(null, Color(0xFF000000)),
     "official-off-white" to BrandLogo(null, Color(0xFF1A1A1A)),
     "official-olay" to BrandLogo(null, Color(0xFF8B1538)),
     "official-prada" to BrandLogo(null, Color(0xFF000000)),
