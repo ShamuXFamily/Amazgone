@@ -40,27 +40,40 @@ import com.cikup.amazgone.core.designsystem.motion.MotionTokens
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
 import com.cikup.amazgone.core.presentation.format.Formatters
+import com.cikup.amazgone.stores.domain.model.Store
 import com.cikup.amazgone.stores.domain.model.StoreKind
 import com.cikup.amazgone.stores.domain.model.StoreSummary
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 /** Gradient banner with a giant faint monogram; the logo pops in and the info card overlaps the banner. */
 @Composable
 fun StoreHero(summary: StoreSummary, modifier: Modifier = Modifier) {
     val store = summary.store
-    val (top, bottom) = bannerColors(store.kind, store.id)
+    val (top, bottom) = bannerColors(store)
     Box(modifier.fillMaxWidth()) {
         Box(
             Modifier.fillMaxWidth().height(BANNER_HEIGHT)
                 .background(Brush.linearGradient(listOf(top, bottom)), RoundedCornerShape(bottomStart = AmazgoneDimens.spaceXl, bottomEnd = AmazgoneDimens.spaceXl)),
         ) {
-            Text(
-                monogram(store.name),
-                style = MaterialTheme.typography.displayLarge.copy(fontSize = MaterialTheme.typography.displayLarge.fontSize * WATERMARK_SCALE),
-                fontWeight = FontWeight.Black,
-                color = AmazgoneTheme.extended.onBrandNavy.copy(alpha = WATERMARK_ALPHA),
-                modifier = Modifier.align(Alignment.CenterEnd).padding(end = AmazgoneDimens.spaceLg),
-            )
+            val watermark = AmazgoneTheme.extended.onBrandNavy.copy(alpha = WATERMARK_ALPHA)
+            val glyph = BRAND_LOGOS[store.id]?.glyph
+            if (glyph != null) {
+                Icon(
+                    painterResource(glyph),
+                    contentDescription = null,
+                    tint = watermark,
+                    modifier = Modifier.align(Alignment.CenterEnd).padding(end = AmazgoneDimens.spaceLg).size(BANNER_HEIGHT * WATERMARK_GLYPH),
+                )
+            } else {
+                Text(
+                    monogram(store.name),
+                    style = MaterialTheme.typography.displayLarge.copy(fontSize = MaterialTheme.typography.displayLarge.fontSize * WATERMARK_SCALE),
+                    fontWeight = FontWeight.Black,
+                    color = watermark,
+                    modifier = Modifier.align(Alignment.CenterEnd).padding(end = AmazgoneDimens.spaceLg),
+                )
+            }
         }
         InfoCard(summary, Modifier.padding(start = AmazgoneDimens.spaceLg, end = AmazgoneDimens.spaceLg, top = BANNER_HEIGHT - CARD_OVERLAP))
     }
@@ -103,14 +116,11 @@ private fun Stat(icon: ImageVector, text: String, tint: Color = AmazgoneTheme.ex
     }
 }
 
+/** The banner fades from the store's own colour into navy. */
 @Composable
-private fun bannerColors(kind: StoreKind, id: String): Pair<Color, Color> {
-    val ext = AmazgoneTheme.extended
-    val index = id.sumOf { it.code } % ext.tileIcons.size
-    return when (kind) {
-        StoreKind.AMAZGONE -> ext.cta to lerp(ext.cta, ext.brandNavy, ACCENT_MIX)
-        else -> ext.tileIcons[index] to lerp(ext.tileIcons[index], ext.brandNavy, ACCENT_MIX)
-    }
+private fun bannerColors(store: Store): Pair<Color, Color> {
+    val base = logoColors(store).first.takeIf { store.kind != StoreKind.BRAND } ?: AmazgoneTheme.extended.tileIcons[store.id.sumOf { it.code } % AmazgoneTheme.extended.tileIcons.size]
+    return base to lerp(base, AmazgoneTheme.extended.brandNavy, ACCENT_MIX)
 }
 
 private val BANNER_HEIGHT = AmazgoneDimens.iconXl * 2.3f
@@ -118,4 +128,5 @@ private val CARD_OVERLAP = AmazgoneDimens.iconXl * 0.45f
 private val LOGO_SIZE = AmazgoneDimens.iconLg * 1.35f
 private const val WATERMARK_ALPHA = 0.10f
 private const val WATERMARK_SCALE = 2.2f
+private const val WATERMARK_GLYPH = 0.6f
 private const val ACCENT_MIX = 0.35f

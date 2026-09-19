@@ -13,6 +13,7 @@ import com.cikup.amazgone.orders.domain.model.OrderItem
 import com.cikup.amazgone.orders.domain.model.ShippingAddress
 import com.cikup.amazgone.orders.domain.repository.OrderRepository
 import com.cikup.amazgone.progress.domain.model.XpRules
+import com.cikup.amazgone.stores.domain.model.StoreKind
 import com.cikup.amazgone.wallet.domain.model.Currency
 import com.cikup.amazgone.wallet.domain.repository.WalletRepository
 
@@ -38,7 +39,15 @@ class PlaceOrderUseCase(
         }
         val draft = OrderDraft(
             items = summary.lines.map {
-                OrderItem(it.product.id, it.product.title, it.product.thumbnailUrl, it.quantity, it.product.priceCoins, it.product.store.name)
+                OrderItem(
+                    productId = it.product.id,
+                    title = it.product.title,
+                    thumbnailUrl = it.product.thumbnailUrl,
+                    quantity = it.quantity,
+                    unitPriceCoins = it.product.priceCoins,
+                    storeName = it.product.store.name,
+                    digital = it.product.store.kind == StoreKind.DIGITAL,
+                )
             },
             subtotalCoins = summary.subtotalCoins,
             discountCoins = summary.couponDiscountCoins,

@@ -85,6 +85,7 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 
 - `tools/seed/build_seed.py` — regenerates the bundled offline catalog (`composeResources/files/seed`: raw API JSON + thumbnails)
 - `tools/catalog/push_catalog.py` — uploads curated products (same JSON as `files/seed/new_arrivals.json`) to Firestore `catalog/{id}` using your own `gcloud` login; clients can only read that collection. Product images are CC BY-SA (Wikimedia Commons) and are credited on the detail page.
+- `tools/stores/build_logos.py` — regenerates store logos (`composeResources/drawable/logo_*.xml` + `BrandLogos.kt`) from [Simple Icons](https://simpleicons.org) (CC0). Brands not in Simple Icons get a monogram in their real brand colour. Logos are the brands' trademarks and only identify the seller; the app is a demo, not affiliated with any brand.
 - `tools/theme/generate_colors.py` — regenerates the M3 light/dark palettes from the brand seeds (navy `#131921`, orange `#FF9900`)
 
 ## Known limitations

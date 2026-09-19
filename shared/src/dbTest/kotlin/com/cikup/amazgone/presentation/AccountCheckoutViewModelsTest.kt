@@ -14,7 +14,10 @@ import com.cikup.amazgone.orders.domain.model.OrderStatus
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutEffect
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutIntent
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutStep
+import com.cikup.amazgone.orders.domain.model.CheckoutPlanner
 import com.cikup.amazgone.orders.domain.model.DeliveryOption
+import com.cikup.amazgone.orders.domain.model.arrival
+import com.cikup.amazgone.orders.domain.model.shipments
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutViewModel
 import com.cikup.amazgone.orders.presentation.list.OrdersViewModel
 import com.cikup.amazgone.remote.ok
@@ -119,6 +122,8 @@ class AccountCheckoutViewModelsTest {
         assertEquals(OrderStatus.PENDING_SYNC, order.status)
         assertEquals(DeliveryOption.EXPRESS, order.delivery)
         assertEquals(phone.store.name, order.items.single().storeName)
+        assertEquals(listOf(phone.store.name), order.shipments().map { it.storeName })
+        assertEquals(CheckoutPlanner.arrival(order.createdAt, DeliveryOption.EXPRESS), order.arrival())
         vm.onIntent(CheckoutIntent.ViewOrder)
         assertEquals(CheckoutEffect.OpenOrder(order.id), vm.effects.first())
 

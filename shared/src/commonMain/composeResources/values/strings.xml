@@ -168,8 +168,6 @@
     <string name="checkout_ship_to">Ship to</string>
     <string name="checkout_hold_to_pay">Hold to pay %1$s coins</string>
     <string name="checkout_insufficient">You need %1$s more coins. Play games to earn more!</string>
-    <string name="checkout_success_title">Order placed!</string>
-    <string name="checkout_success_body">You earned %1$s XP. We'll confirm it with the server as soon as you're online.</string>
     <string name="checkout_view_order">View order</string>
     <string name="checkout_keep_shopping">Keep shopping</string>
     <string name="checkout_invalid_postal">Enter a valid postal code</string>
@@ -382,4 +380,19 @@
     <string name="checkout_items_count">Items (%1$d)</string>
     <string name="checkout_xp_reward">You'll earn %1$s XP</string>
     <string name="checkout_qty">Qty %1$d</string>
+
+    <!-- Order placed -->
+    <string name="order_placed_title">Order placed, thank you!</string>
+    <string name="order_placed_number">Order #%1$s</string>
+    <string name="order_placed_arriving_on">Arriving %1$s</string>
+    <string name="order_placed_arriving_between">Arriving %1$s – %2$s</string>
+    <string name="order_placed_ship_to">Shipping to %1$s, %2$s</string>
+    <string name="order_placed_rewards">Your rewards</string>
+    <string name="order_placed_spent">Coins spent</string>
+    <string name="order_placed_xp">XP earned</string>
+    <string name="order_placed_sync">We'll confirm it with the server as soon as you're online.</string>
+    <plurals name="order_placed_items">
+        <item quantity="one">%1$d item</item>
+        <item quantity="other">%1$d items</item>
+    </plurals>
 </resources>

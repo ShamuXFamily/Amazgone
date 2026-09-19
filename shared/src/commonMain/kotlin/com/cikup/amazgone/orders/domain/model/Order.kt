@@ -20,6 +20,8 @@ data class OrderItem(
     val unitPriceCoins: Long,
     /** Seller shown on the receipt; null for orders placed before stores existed. */
     val storeName: String? = null,
+    /** Delivered as a code (digital store), so no parcel and no arrival date. */
+    val digital: Boolean = false,
 )
 
 /** PENDING_SYNC: paid locally, waiting for the server to confirm the coins. */

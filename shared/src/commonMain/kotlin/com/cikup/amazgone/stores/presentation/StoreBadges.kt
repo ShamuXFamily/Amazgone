@@ -25,6 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.font.FontWeight
@@ -35,21 +37,17 @@ import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
 import com.cikup.amazgone.stores.domain.model.Store
 import com.cikup.amazgone.stores.domain.model.StoreKind
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 /**
- * Monogram "logo" (real logos are trademarks): a solid colour per official store, brand orange for
- * Amazgone, a stable pastel per name for everyone else.
+ * The store's mark: the real brand logo (Simple Icons, white on the brand colour) when we have it,
+ * otherwise a monogram in the brand's colour; Amazgone is orange, made-up brands get a stable pastel.
  */
 @Composable
 fun StoreLogo(store: Store, size: Dp, modifier: Modifier = Modifier, ring: Boolean = false) {
-    val ext = AmazgoneTheme.extended
-    val index = store.id.sumOf { it.code } % ext.tileTints.size
-    val (background, content) = when (store.kind) {
-        StoreKind.OFFICIAL -> ext.tileIcons[index] to ext.tileTints[index]
-        StoreKind.AMAZGONE -> ext.cta to ext.onCta
-        else -> ext.tileTints[index] to ext.tileIcons[index]
-    }
+    val (background, content) = logoColors(store)
+    val glyph = BRAND_LOGOS[store.id]?.glyph
     Surface(
         color = background,
         contentColor = content,
@@ -58,8 +56,26 @@ fun StoreLogo(store: Store, size: Dp, modifier: Modifier = Modifier, ring: Boole
         modifier = modifier.size(size),
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Text(monogram(store.name), fontWeight = FontWeight.Bold, fontSize = fontSizeFor(size))
+            if (glyph != null) {
+                Icon(painterResource(glyph), contentDescription = store.name, tint = content, modifier = Modifier.size(size * GLYPH_FRACTION))
+            } else {
+                Text(monogram(store.name), fontWeight = FontWeight.Bold, fontSize = fontSizeFor(size))
+            }
         }
+    }
+}
+
+/** Brand colour + a readable foreground; also used for store banners. */
+@Composable
+internal fun logoColors(store: Store): Pair<Color, Color> {
+    val ext = AmazgoneTheme.extended
+    val index = store.id.sumOf { it.code } % ext.tileTints.size
+    val brand = BRAND_LOGOS[store.id]?.color
+    return when {
+        store.kind == StoreKind.AMAZGONE -> ext.cta to ext.onCta
+        brand != null -> brand to if (brand.luminance() > LIGHT_BRAND) ext.brandNavy else ext.onBrandNavy
+        store.kind == StoreKind.BRAND -> ext.tileTints[index] to ext.tileIcons[index]
+        else -> ext.tileIcons[index] to ext.tileTints[index]
     }
 }
 
@@ -103,6 +119,8 @@ fun StoreKindChip(store: Store, modifier: Modifier = Modifier) {
 }
 
 private const val RING_FRACTION = 16
+private const val GLYPH_FRACTION = 0.6f
+private const val LIGHT_BRAND = 0.6f
 private const val CHIP_ALPHA = 0.12f
 
 /** Amazon's "Visit the Apple Store" link above a product title. */

@@ -38,3 +38,13 @@ object CheckoutPlanner {
     fun arrival(nowMillis: Long, option: DeliveryOption): LongRange =
         nowMillis + option.minDays * DAY_MILLIS..nowMillis + option.maxDays * DAY_MILLIS
 }
+
+/** A placed order's items per seller, for the confirmation and order pages. */
+data class PlacedShipment(val storeName: String?, val digital: Boolean, val items: List<OrderItem>)
+
+fun Order.shipments(): List<PlacedShipment> =
+    items.groupBy { it.storeName to it.digital }.map { (key, grouped) -> PlacedShipment(key.first, key.second, grouped) }
+
+/** Arrival window for the parcels of this order; null when everything is digital. */
+fun Order.arrival(): LongRange? =
+    if (items.all { it.digital }) null else CheckoutPlanner.arrival(createdAt, delivery)
