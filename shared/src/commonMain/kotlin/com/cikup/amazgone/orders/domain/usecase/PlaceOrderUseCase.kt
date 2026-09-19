@@ -47,6 +47,7 @@ class PlaceOrderUseCase(
                     unitPriceCoins = it.product.priceCoins,
                     storeName = it.product.store.name,
                     digital = it.product.store.kind == StoreKind.DIGITAL,
+                    storeId = it.product.store.id,
                 )
             },
             subtotalCoins = summary.subtotalCoins,

@@ -27,6 +27,10 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 
 const val OUTBOX_ORDER_PLACE = "order.place"
+const val OUTBOX_ORDER_RECEIVED = "order.received"
+
+@Serializable
+data class OrderReceivedPayload(val orderId: String, val deliveredAt: Long)
 
 /** Outbox payload; also the shape stored remotely under users/{uid}/orders/{orderId}. */
 @Serializable
@@ -89,6 +93,18 @@ class OrderRepositoryImpl(
         DomainResult.Success(entity.toDomain())
     }
 
+    override suspend fun markReceived(orderId: String, atMillis: Long) = transactions.inTransaction {
+        if (dao.markDelivered(orderId, atMillis) > 0) {
+            val payload = OrderReceivedPayload(orderId, atMillis)
+            outbox.enqueue("$orderId-received", OUTBOX_ORDER_RECEIVED, AppJson.encodeToString(OrderReceivedPayload.serializer(), payload))
+        }
+    }
+
+    /** Receipt confirmed on another device. */
+    suspend fun applyRemoteDelivered(orderId: String, atMillis: Long) {
+        dao.markDelivered(orderId, atMillis)
+    }
+
     suspend fun markConfirmed(orderId: String) = transactions.inTransaction {
         dao.updateStatus(orderId, OrderStatus.CONFIRMED.name, null)
         wallet.confirm(orderId)
@@ -145,4 +161,5 @@ private fun OrderEntity.toDomain() = Order(
     xpEarned = xpEarned,
     createdAt = createdAt,
     rejectionReason = rejectionReason,
+    deliveredAt = deliveredAt,
 )

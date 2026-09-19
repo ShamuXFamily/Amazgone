@@ -13,4 +13,7 @@ interface OrderRepository {
      * debits coins and credits XP as pending ledger rows, empties the cart and queues the server push.
      */
     suspend fun placeOrder(draft: OrderDraft, usedCouponCode: String?): DomainResult<Order>
+
+    /** Records that the customer received the parcel (locally now, on the server via the outbox). */
+    suspend fun markReceived(orderId: String, atMillis: Long)
 }

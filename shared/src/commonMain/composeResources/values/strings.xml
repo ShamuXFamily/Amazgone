@@ -176,16 +176,14 @@
     <string name="orders_title">Your orders</string>
     <string name="orders_empty_title">No orders yet</string>
     <string name="orders_empty_body">Orders you place will show up here.</string>
-    <string name="order_status_PENDING_SYNC">Waiting to sync</string>
-    <string name="order_status_CONFIRMED">Confirmed</string>
     <string name="order_status_REJECTED">Cancelled · coins refunded</string>
     <string name="order_placed_on">Order #%1$s</string>
-    <string name="order_items_count">%1$d items</string>
+    <plurals name="order_items_count">
+        <item quantity="one">%1$d item</item>
+        <item quantity="other">%1$d items</item>
+    </plurals>
     <string name="order_detail_title">Order details</string>
     <string name="order_rejected_reason">The server couldn't confirm this order (%1$s). Your coins were refunded and the items are back in your cart.</string>
-    <string name="order_timeline_placed">Placed on this device</string>
-    <string name="order_timeline_synced">Confirmed by the server</string>
-    <string name="order_timeline_shipping">Preparing to ship</string>
 
     <!-- Wishlist -->
     <string name="wishlist_title">Your wishlist</string>
@@ -395,4 +393,41 @@
         <item quantity="one">%1$d item</item>
         <item quantity="other">%1$d items</item>
     </plurals>
+
+    <!-- Order detail v2 -->
+    <string name="order_stage_placed">Waiting to sync</string>
+    <string name="order_stage_confirmed">Preparing your order</string>
+    <string name="order_stage_shipped">On the way</string>
+    <string name="order_stage_delivered">Delivered</string>
+    <string name="order_stage_rejected">Cancelled · coins refunded</string>
+    <string name="order_step_placed">Placed</string>
+    <string name="order_step_confirmed">Confirmed</string>
+    <string name="order_step_shipped">Shipped</string>
+    <string name="order_step_delivered">Delivered</string>
+    <string name="order_placed_date">Placed %1$s</string>
+    <string name="order_received">Order received</string>
+    <string name="order_received_hint">Got your parcel? Confirm it to unlock reviews.</string>
+    <string name="order_received_done">Thanks! You can now review your items.</string>
+    <string name="order_write_review">Write a review</string>
+    <string name="order_edit_review">Edit</string>
+    <string name="order_buy_again">Buy again</string>
+    <string name="order_added_to_cart">Added to cart</string>
+    <string name="order_payment">Payment</string>
+    <string name="order_paid_with">Paid with Amazgone Coins</string>
+    <string name="order_xp_earned">+%1$s XP earned</string>
+    <string name="order_review_pending">Syncing…</string>
+    <!-- Review sheet -->
+    <string name="review_title">How was it?</string>
+    <string name="review_rating_1">Hated it</string>
+    <string name="review_rating_2">Didn't like it</string>
+    <string name="review_rating_3">It's OK</string>
+    <string name="review_rating_4">Liked it</string>
+    <string name="review_rating_5">Loved it!</string>
+    <string name="review_tap_to_rate">Tap a star to rate</string>
+    <string name="review_comment">Tell other shoppers about it</string>
+    <string name="review_comment_short">Write at least 3 characters</string>
+    <string name="review_submit">Post review</string>
+    <string name="review_posted">Thanks for your review!</string>
+    <string name="review_yours">Your review</string>
+    <string name="review_star">%1$d star</string>
 </resources>

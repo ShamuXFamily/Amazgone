@@ -44,6 +44,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -55,6 +56,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cikup.amazgone.catalog.domain.model.SortOrder
+import com.cikup.amazgone.core.designsystem.component.rememberFieldText
 import com.cikup.amazgone.core.designsystem.component.MessageState
 import com.cikup.amazgone.core.designsystem.component.ProductCard
 import com.cikup.amazgone.core.designsystem.component.ProductCardSkeleton
@@ -127,14 +129,18 @@ fun SearchScreen(state: SearchState, onIntent: (SearchIntent) -> Unit) {
 private fun SearchField(query: String, onIntent: (SearchIntent) -> Unit, autoFocus: Boolean) {
     val focus = remember { FocusRequester() }
     LaunchedEffect(Unit) { if (autoFocus) focus.requestFocus() }
+    var text by rememberFieldText(query)
     TextField(
-        value = query,
-        onValueChange = { onIntent(SearchIntent.QueryChanged(it)) },
+        value = text,
+        onValueChange = {
+            text = it
+            onIntent(SearchIntent.QueryChanged(it))
+        },
         placeholder = { Text(stringResource(Res.string.search_hint), maxLines = 1) },
         singleLine = true,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         trailingIcon = {
-            AnimatedVisibility(query.isNotEmpty(), enter = fadeIn(), exit = fadeOut()) {
+            AnimatedVisibility(text.isNotEmpty(), enter = fadeIn(), exit = fadeOut()) {
                 IconButton(onClick = { onIntent(SearchIntent.ClearQuery) }) {
                     Icon(Icons.Rounded.Close, stringResource(Res.string.action_clear))
                 }

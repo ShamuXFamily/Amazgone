@@ -76,6 +76,11 @@ service cloud.firestore {
       // Orders, rewards and achievements are append-only records owned by the user.
       match /orders/{orderId} {
         allow read: if isOwner(uid);
+        // "Order received": deliveredAt may be set once, nothing else may change.
+        allow update: if isOwner(uid)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['deliveredAt'])
+          && resource.data.get('deliveredAt', null) == null
+          && request.resource.data.deliveredAt is int;
         // Only together with the matching debit in the same commit (the app's checkout transaction).
         allow create: if isOwner(uid)
           && request.resource.data.totalCoins is int && request.resource.data.totalCoins > 0
@@ -97,6 +102,19 @@ service cloud.firestore {
       match /wishlist/{productId} {
         allow read, write: if isOwner(uid);
       }
+    }
+
+    // Shopper reviews: anyone can read; you write only your own entry, for an order on your account.
+    match /reviews/{productId}/entries/{uid} {
+      allow read: if true;
+      allow create, update: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['username', 'rating', 'comment', 'orderId', 'createdAt'])
+        && request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+        && request.resource.data.comment is string && request.resource.data.comment.size() >= 3
+        && request.resource.data.comment.size() <= 1000
+        && request.resource.data.username == get(userPath(uid)).data.username
+        && exists(/databases/$(database)/documents/users/$(uid)/orders/$(request.resource.data.orderId));
+      allow delete: if isOwner(uid);
     }
 
     // Curated "New arrivals": public read (guests too), edited only in the console / with admin credentials.

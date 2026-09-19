@@ -36,6 +36,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cikup.amazgone.catalog.domain.model.Product
+import com.cikup.amazgone.catalog.domain.model.Review
 import com.cikup.amazgone.core.designsystem.component.CompactProductCard
 import com.cikup.amazgone.core.designsystem.component.MessageState
 import com.cikup.amazgone.core.designsystem.component.SectionHeader
@@ -133,11 +134,14 @@ private fun DetailContent(
         item(key = "facts") { KeyFacts(product) }
         if (product.details.imageCredit != null) item(key = "credit") { ImageCredit(product) }
         item(key = "reviews-title") { SectionHeader(stringResource(Res.string.detail_reviews)) }
-        if (state.reviews.isEmpty() && product.rating == null) {
+        if (state.allReviews.isEmpty() && product.rating == null) {
             item(key = "no-reviews") { NoReviews() }
         } else {
-            item(key = "rating-summary") { RatingSummary(product.rating, state.reviews, Modifier.staggeredEnter(0)) }
-            itemsIndexed(state.reviews, key = { index, _ -> "review-$index" }) { index, review -> ReviewCard(review, Modifier.staggeredEnter(index)) }
+            item(key = "rating-summary") { RatingSummary(product.rating, state.allReviews, Modifier.staggeredEnter(0)) }
+            itemsIndexed(state.shopperReviews, key = { _, review -> "shopper-${review.productId}-${review.authorName}-${review.createdAt}" }) { index, review ->
+                ReviewCard(Review(review.productId, review.authorName, review.rating, review.comment, review.createdAt), Modifier.staggeredEnter(index), mine = review.isMine)
+            }
+            itemsIndexed(state.reviews, key = { index, _ -> "review-$index" }) { index, review -> ReviewCard(review, Modifier.staggeredEnter(index + state.shopperReviews.size)) }
         }
         if (state.recommendations.isNotEmpty()) {
             item(key = "also-title") { SectionHeader(stringResource(Res.string.detail_also_bought)) }

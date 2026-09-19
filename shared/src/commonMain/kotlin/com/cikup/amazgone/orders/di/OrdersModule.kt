@@ -5,9 +5,11 @@ import com.cikup.amazgone.core.domain.UserScopedStore
 import com.cikup.amazgone.core.sync.domain.OutboxHandler
 import com.cikup.amazgone.core.sync.domain.RemotePuller
 import com.cikup.amazgone.orders.data.OrderPlaceHandler
+import com.cikup.amazgone.orders.data.OrderReceivedHandler
 import com.cikup.amazgone.orders.data.OrderRepositoryImpl
 import com.cikup.amazgone.orders.data.OrdersPuller
 import com.cikup.amazgone.orders.domain.repository.OrderRepository
+import com.cikup.amazgone.orders.domain.usecase.ConfirmReceivedUseCase
 import com.cikup.amazgone.orders.domain.usecase.ObserveOrderUseCase
 import com.cikup.amazgone.orders.domain.usecase.ObserveOrdersUseCase
 import com.cikup.amazgone.orders.domain.usecase.PlaceOrderUseCase
@@ -21,6 +23,8 @@ val ordersModule = module {
     single { get<AppDatabase>().orderDao() }
     singleOf(::OrderRepositoryImpl) binds arrayOf(OrderRepository::class, UserScopedStore::class)
     singleOf(::OrderPlaceHandler) bind OutboxHandler::class
+    singleOf(::OrderReceivedHandler) bind OutboxHandler::class
+    factoryOf(::ConfirmReceivedUseCase)
     singleOf(::OrdersPuller) bind RemotePuller::class
     factoryOf(::PlaceOrderUseCase)
     factoryOf(::ObserveOrdersUseCase)

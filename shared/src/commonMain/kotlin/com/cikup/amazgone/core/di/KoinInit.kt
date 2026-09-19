@@ -8,6 +8,7 @@ import com.cikup.amazgone.games.di.gamesModule
 import com.cikup.amazgone.orders.di.ordersModule
 import com.cikup.amazgone.progress.di.progressModule
 import com.cikup.amazgone.wallet.di.walletModule
+import com.cikup.amazgone.reviews.di.reviewsModule
 import com.cikup.amazgone.settings.di.settingsModule
 import com.cikup.amazgone.stores.di.storesModule
 import com.cikup.amazgone.wishlist.di.wishlistModule
@@ -32,6 +33,7 @@ internal val featureModules: List<Module> = listOf(
     progressModule,
     settingsModule,
     storesModule,
+    reviewsModule,
     presentationModule,
 )
 

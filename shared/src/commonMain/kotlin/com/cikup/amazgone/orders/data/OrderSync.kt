@@ -19,6 +19,7 @@ import com.cikup.amazgone.progress.domain.model.LevelCurve
 
 const val REJECT_INSUFFICIENT_COINS = "INSUFFICIENT_COINS"
 private const val FIELD_PAYLOAD = "payload"
+private const val FIELD_DELIVERED_AT = "deliveredAt"
 
 /**
  * Server-side checkout in one Firestore transaction: re-validates the balance, debits coins,
@@ -107,7 +108,43 @@ class OrdersPuller(
         firebase.requireFirestore().list(UserDocuments.orders(session.uid)).forEach { doc ->
             val json = doc.fields.string(FIELD_PAYLOAD) ?: return@forEach
             runCatching { AppJson.decodeFromString(OrderPayload.serializer(), json) }
-                .onSuccess { orders.upsertRemote(it) }
+                .onSuccess { payload ->
+                    orders.upsertRemote(payload)
+                    (doc.fields[FIELD_DELIVERED_AT] as? Number)?.let { orders.applyRemoteDelivered(payload.orderId, it.toLong()) }
+                }
         }
     }
+}
+
+/** Pushes "Order received"; firestore.rules only allow setting deliveredAt once on your own order. */
+class OrderReceivedHandler(
+    private val auth: AuthRepository,
+    private val firebase: FirebaseServices,
+) : OutboxHandler {
+    override val type = OUTBOX_ORDER_RECEIVED
+
+    override suspend fun push(entry: OutboxEntry): PushResult {
+        val session = auth.session.value ?: return PushResult.Retry("signed out")
+        val payload = AppJson.decodeFromString(OrderReceivedPayload.serializer(), entry.payload)
+        return try {
+            firebase.requireFirestore().commit(
+                listOf(
+                    FirestoreWrite.Set(
+                        path = UserDocuments.order(session.uid, payload.orderId),
+                        fields = mapOf(FIELD_DELIVERED_AT to payload.deliveredAt),
+                        mask = listOf(FIELD_DELIVERED_AT),
+                        precondition = Precondition.Exists(true),
+                    ),
+                ),
+            )
+            PushResult.Success
+        } catch (e: FirestoreException.PermissionDenied) {
+            PushResult.Rejected(e.message ?: "denied") // already set on another device, or not our order
+        } catch (e: FirestoreException) {
+            PushResult.Retry(e.message ?: "firestore error")
+        }
+    }
+
+    /** Nothing to undo: the local "received" mark is harmless even if the server already had one. */
+    override suspend fun onRejected(entry: OutboxEntry, reason: String) = Unit
 }

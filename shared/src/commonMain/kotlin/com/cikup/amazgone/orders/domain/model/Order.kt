@@ -22,6 +22,8 @@ data class OrderItem(
     val storeName: String? = null,
     /** Delivered as a code (digital store), so no parcel and no arrival date. */
     val digital: Boolean = false,
+    /** Store id for the seller's logo; null for older orders. */
+    val storeId: String? = null,
 )
 
 /** PENDING_SYNC: paid locally, waiting for the server to confirm the coins. */
@@ -41,6 +43,8 @@ data class Order(
     val xpEarned: Long,
     val createdAt: Long,
     val rejectionReason: String?,
+    /** When the customer tapped "Order received" (null = not confirmed by hand). */
+    val deliveredAt: Long? = null,
 ) {
     val itemCount: Int get() = items.sumOf { it.quantity }
 }

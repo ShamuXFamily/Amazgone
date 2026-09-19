@@ -60,6 +60,17 @@ object StoreDirectory {
         }
     }
 
+    /** Rebuilds a store from a stored id + name (e.g. on an order line). */
+    fun fromIdAndName(id: String, name: String): Store {
+        val kind = when {
+            id.startsWith(OFFICIAL_PREFIX) -> StoreKind.OFFICIAL
+            id.startsWith(BRAND_PREFIX) -> StoreKind.BRAND
+            id.startsWith(DIGITAL_PREFIX) -> StoreKind.DIGITAL
+            else -> StoreKind.AMAZGONE
+        }
+        return Store(id, name, kind)
+    }
+
     private fun digital(sellerId: String): Store? =
         DIGITAL_STORES[sellerId]?.let { Store(DIGITAL_PREFIX + sellerId, it, StoreKind.DIGITAL) }
 

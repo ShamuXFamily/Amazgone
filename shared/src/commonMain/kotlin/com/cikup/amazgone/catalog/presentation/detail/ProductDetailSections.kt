@@ -16,7 +16,9 @@ import amazgone.shared.generated.resources.detail_reviews_count
 import amazgone.shared.generated.resources.detail_sku
 import amazgone.shared.generated.resources.detail_steam_rating
 import amazgone.shared.generated.resources.detail_verified
+import amazgone.shared.generated.resources.review_yours
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -214,13 +216,18 @@ private fun DistributionBar(star: Int, fraction: Float, index: Int) {
 }
 
 @Composable
-fun ReviewCard(review: Review, modifier: Modifier = Modifier) {
-    Surface(color = MaterialTheme.colorScheme.surfaceContainerLowest, shape = MaterialTheme.shapes.large, modifier = modifier.fillMaxWidth().padding(horizontal = AmazgoneDimens.spaceLg)) {
+fun ReviewCard(review: Review, modifier: Modifier = Modifier, mine: Boolean = false) {
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceContainerLowest,
+        shape = MaterialTheme.shapes.large,
+        border = if (mine) BorderStroke(AmazgoneDimens.spaceXs / 2, AmazgoneTheme.extended.cta) else null,
+        modifier = modifier.fillMaxWidth().padding(horizontal = AmazgoneDimens.spaceLg),
+    ) {
         Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
                 Avatar(review.reviewerName)
                 Column(Modifier.weight(1f)) {
-                    Text(review.reviewerName, style = MaterialTheme.typography.titleSmall)
+                    Text(if (mine) stringResource(Res.string.review_yours) else review.reviewerName, style = MaterialTheme.typography.titleSmall, color = if (mine) AmazgoneTheme.extended.cta else MaterialTheme.colorScheme.onSurface)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Outlined.Verified, contentDescription = null, tint = AmazgoneTheme.extended.success, modifier = Modifier.size(AmazgoneDimens.iconSm * 0.8f))
                         Text(stringResource(Res.string.detail_verified), style = MaterialTheme.typography.labelSmall, color = AmazgoneTheme.extended.success, modifier = Modifier.padding(start = AmazgoneDimens.spaceXs))

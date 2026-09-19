@@ -1,5 +1,6 @@
 package com.cikup.amazgone.account.presentation
 
+import com.cikup.amazgone.core.designsystem.component.rememberFieldText
 import com.cikup.amazgone.core.designsystem.component.appCardColors
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.account_confirm_password
@@ -68,9 +69,13 @@ fun AuthFormCard(form: AuthForm, remoteAvailable: Boolean, onIntent: (AccountInt
             }
         }
         Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceMd)) {
+            var username by rememberFieldText(form.username)
             OutlinedTextField(
-                value = form.username,
-                onValueChange = { onIntent(AccountIntent.UsernameChanged(it)) },
+                value = username,
+                onValueChange = {
+                    username = it
+                    onIntent(AccountIntent.UsernameChanged(it))
+                },
                 label = { Text(stringResource(Res.string.account_username)) },
                 singleLine = true,
                 isError = "username" in form.fieldErrors,
@@ -109,9 +114,13 @@ private fun PasswordField(
     onChange: (String) -> Unit,
 ) {
     var visible by remember { mutableStateOf(false) }
+    var text by rememberFieldText(value)
     OutlinedTextField(
-        value = value,
-        onValueChange = onChange,
+        value = text,
+        onValueChange = {
+            text = it
+            onChange(it)
+        },
         label = { Text(stringResource(label)) },
         singleLine = true,
         isError = error != null,

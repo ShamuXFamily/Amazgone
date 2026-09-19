@@ -5,7 +5,12 @@ import com.cikup.amazgone.core.presentation.mvi.UiIntent
 import com.cikup.amazgone.core.presentation.mvi.UiState
 import com.cikup.amazgone.orders.domain.model.Order
 
-data class OrdersState(val orders: List<Order> = emptyList(), val isLoading: Boolean = true) : UiState
+data class OrdersState(
+    val orders: List<Order> = emptyList(),
+    val isLoading: Boolean = true,
+    /** Clock for each order's stage chip; 0 until read. */
+    val now: Long = 0,
+) : UiState
 
 sealed interface OrdersIntent : UiIntent {
     data class OpenOrder(val orderId: String) : OrdersIntent

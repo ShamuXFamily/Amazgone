@@ -23,6 +23,7 @@ data class OrderEntity(
     val xpEarned: Long,
     val createdAt: Long,
     val rejectionReason: String?,
+    val deliveredAt: Long? = null,
 )
 
 @Dao
@@ -41,6 +42,9 @@ interface OrderDao {
 
     @Query("UPDATE orders SET status = :status, rejectionReason = :reason WHERE id = :id")
     suspend fun updateStatus(id: String, status: String, reason: String?)
+
+    @Query("UPDATE orders SET deliveredAt = :at WHERE id = :id AND deliveredAt IS NULL")
+    suspend fun markDelivered(id: String, at: Long): Int
 
     @Query("SELECT COUNT(*) FROM orders WHERE status != 'REJECTED'")
     fun observeActiveCount(): Flow<Int>

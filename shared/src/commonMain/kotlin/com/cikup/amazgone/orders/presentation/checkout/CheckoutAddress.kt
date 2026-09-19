@@ -24,10 +24,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import com.cikup.amazgone.core.designsystem.component.rememberFieldText
 import com.cikup.amazgone.core.designsystem.motion.staggeredEnter
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
@@ -62,9 +67,13 @@ fun AddressStep(state: CheckoutState, onIntent: (CheckoutIntent) -> Unit) {
 
 @Composable
 private fun AddressField(field: String, value: String, label: StringResource, invalid: Boolean, modifier: Modifier, onChange: (String) -> Unit) {
+    var text by rememberFieldText(value, field)
     OutlinedTextField(
-        value = value,
-        onValueChange = onChange,
+        value = text,
+        onValueChange = {
+            text = it
+            onChange(it)
+        },
         label = { Text(stringResource(label)) },
         singleLine = true,
         isError = invalid,

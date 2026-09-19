@@ -7,6 +7,8 @@ import com.cikup.amazgone.catalog.domain.usecase.ObserveProductDetailUseCase
 import com.cikup.amazgone.catalog.domain.usecase.ObserveRecommendationsUseCase
 import com.cikup.amazgone.core.common.TimeProvider
 import com.cikup.amazgone.core.domain.DomainResult
+import com.cikup.amazgone.reviews.domain.usecase.ObserveProductReviewsUseCase
+import com.cikup.amazgone.reviews.domain.usecase.RefreshProductReviewsUseCase
 import com.cikup.amazgone.core.presentation.mvi.MviViewModel
 import com.cikup.amazgone.wishlist.domain.usecase.ObserveIsSavedUseCase
 import com.cikup.amazgone.wishlist.domain.usecase.ToggleWishlistUseCase
@@ -27,6 +29,8 @@ class ProductDetailViewModel(
     observeIsSaved: ObserveIsSavedUseCase,
     private val toggleWishlist: ToggleWishlistUseCase,
     time: TimeProvider,
+    observeShopperReviews: ObserveProductReviewsUseCase,
+    refreshShopperReviews: RefreshProductReviewsUseCase,
 ) : MviViewModel<ProductDetailState, ProductDetailIntent, ProductDetailEffect>(ProductDetailState(productId, origin)) {
 
     init {
@@ -44,6 +48,8 @@ class ProductDetailViewModel(
         observeQuantityInCart(productId)
             .observe { setState { copy(quantityInCart = it) } }
         observeIsSaved(productId).observe { setState { copy(isSaved = it) } }
+        observeShopperReviews(productId).observe { setState { copy(shopperReviews = it) } }
+        launchSafely { refreshShopperReviews(productId) }
     }
 
     override fun handleIntent(intent: ProductDetailIntent) {

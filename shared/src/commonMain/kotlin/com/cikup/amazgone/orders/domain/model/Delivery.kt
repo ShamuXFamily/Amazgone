@@ -48,3 +48,33 @@ fun Order.shipments(): List<PlacedShipment> =
 /** Arrival window for the parcels of this order; null when everything is digital. */
 fun Order.arrival(): LongRange? =
     if (items.all { it.digital }) null else CheckoutPlanner.arrival(createdAt, delivery)
+
+/** Where an order is in its journey (what the tracker shows). */
+enum class OrderStage { PLACED, CONFIRMED, SHIPPED, DELIVERED, REJECTED }
+
+/** Parcels leave the warehouse this long after the order is placed. */
+const val SHIP_AFTER_MILLIS = 12 * 60 * 60 * 1_000L
+
+/**
+ * Derived from time, never stored: unsynced orders stay PLACED, digital-only orders are delivered as soon as
+ * the server confirms them, parcels are delivered on the first arrival day or when the customer confirms receipt.
+ */
+fun Order.stageAt(nowMillis: Long): OrderStage {
+    val arrival = arrival()
+    return when {
+        status == OrderStatus.REJECTED -> OrderStage.REJECTED
+        status == OrderStatus.PENDING_SYNC -> OrderStage.PLACED
+        deliveredAt != null || arrival == null || nowMillis >= arrival.first -> OrderStage.DELIVERED
+        nowMillis >= createdAt + SHIP_AFTER_MILLIS -> OrderStage.SHIPPED
+        else -> OrderStage.CONFIRMED
+    }
+}
+
+/** Digital items arrive the moment the server confirms the order; parcels when the order is delivered. */
+fun Order.isItemDelivered(item: OrderItem, nowMillis: Long): Boolean {
+    val stage = stageAt(nowMillis)
+    return stage == OrderStage.DELIVERED || (item.digital && stage != OrderStage.PLACED && stage != OrderStage.REJECTED)
+}
+
+/** "Order received" is offered while a confirmed parcel is still on its way. */
+fun Order.canConfirmReceived(nowMillis: Long): Boolean = stageAt(nowMillis).let { it == OrderStage.CONFIRMED || it == OrderStage.SHIPPED }

@@ -2,6 +2,7 @@ package com.cikup.amazgone.catalog.presentation.detail
 
 import com.cikup.amazgone.catalog.domain.model.Product
 import com.cikup.amazgone.catalog.domain.model.Review
+import com.cikup.amazgone.reviews.domain.model.ProductReview
 import com.cikup.amazgone.core.presentation.mvi.UiEffect
 import com.cikup.amazgone.core.presentation.mvi.UiIntent
 import com.cikup.amazgone.core.presentation.mvi.UiState
@@ -11,6 +12,8 @@ data class ProductDetailState(
     val origin: String,
     val product: Product? = null,
     val reviews: List<Review> = emptyList(),
+    /** Reviews from Amazgone shoppers (yours first), shown above the catalog's. */
+    val shopperReviews: List<ProductReview> = emptyList(),
     val recommendations: List<Product> = emptyList(),
     val isLoading: Boolean = true,
     val quantityInCart: Int = 0,
@@ -22,6 +25,9 @@ data class ProductDetailState(
     /** Clock reading used for time-based labels (pre-order); 0 until read. */
     val now: Long = 0,
 ) : UiState {
+    /** Everything the rating summary counts: shopper reviews + catalog reviews. */
+    val allReviews: List<Review>
+        get() = shopperReviews.map { Review(it.productId, it.authorName, it.rating, it.comment, it.createdAt) } + reviews
     val notFound: Boolean get() = !isLoading && product == null
     val isPreorder: Boolean get() = now > 0 && product?.isPreorderAt(now) == true
 }

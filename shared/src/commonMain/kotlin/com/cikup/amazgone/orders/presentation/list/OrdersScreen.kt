@@ -37,7 +37,9 @@ import com.cikup.amazgone.core.designsystem.component.ProductImage
 import com.cikup.amazgone.core.designsystem.motion.staggeredEnter
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
 import com.cikup.amazgone.orders.domain.model.Order
-import com.cikup.amazgone.orders.presentation.OrderStatusChip
+import com.cikup.amazgone.orders.domain.model.stageAt
+import com.cikup.amazgone.orders.presentation.OrderStageChip
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -75,7 +77,7 @@ fun OrdersScreen(state: OrdersState, onIntent: (OrdersIntent) -> Unit) {
                 modifier = Modifier.fillMaxSize().padding(padding),
             ) {
                 itemsIndexed(state.orders, key = { _, o -> o.id }) { index, order ->
-                    OrderCard(order, { onIntent(OrdersIntent.OpenOrder(order.id)) }, Modifier.animateItem().staggeredEnter(index))
+                    OrderCard(order, state.now, { onIntent(OrdersIntent.OpenOrder(order.id)) }, Modifier.animateItem().staggeredEnter(index))
                 }
             }
         }
@@ -83,12 +85,12 @@ fun OrdersScreen(state: OrdersState, onIntent: (OrdersIntent) -> Unit) {
 }
 
 @Composable
-private fun OrderCard(order: Order, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun OrderCard(order: Order, now: Long, onClick: () -> Unit, modifier: Modifier = Modifier) {
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth(), colors = appCardColors()) {
         Column(Modifier.padding(AmazgoneDimens.spaceLg), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Text(stringResource(Res.string.order_placed_on, order.id.take(SHORT_ID).uppercase()), style = MaterialTheme.typography.titleSmall)
-                OrderStatusChip(order.status)
+                if (now > 0) OrderStageChip(order.stageAt(now))
             }
             Row(horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
                 order.items.take(PREVIEW_IMAGES).forEach { item ->
@@ -96,7 +98,7 @@ private fun OrderCard(order: Order, onClick: () -> Unit, modifier: Modifier = Mo
                 }
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(stringResource(Res.string.order_items_count, order.itemCount), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(pluralStringResource(Res.plurals.order_items_count, order.itemCount, order.itemCount), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 CoinAmount(order.totalCoins)
             }
         }

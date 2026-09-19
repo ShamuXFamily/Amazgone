@@ -36,6 +36,7 @@ import com.cikup.amazgone.core.designsystem.motion.staggeredEnter
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
 import com.cikup.amazgone.core.presentation.format.Formatters
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -75,7 +76,7 @@ fun CategoriesRoute(onBack: () -> Unit, onOpenCategory: (String) -> Unit, viewMo
                             Icon(categoryIcon(category.slug), contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(AmazgoneDimens.spaceMd).size(AmazgoneDimens.iconMd))
                         }
                         Text(Formatters.categoryLabel(category.slug), style = MaterialTheme.typography.labelLarge, textAlign = TextAlign.Center, maxLines = 2)
-                        Text(stringResource(Res.string.order_items_count, category.productCount), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(pluralStringResource(Res.plurals.order_items_count, category.productCount, category.productCount), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
