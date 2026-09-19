@@ -14,8 +14,8 @@ import com.cikup.amazgone.orders.domain.model.OrderStatus
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutEffect
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutIntent
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutStep
-import com.cikup.amazgone.orders.domain.model.CheckoutPlanner
-import com.cikup.amazgone.orders.domain.model.DeliveryOption
+import com.cikup.amazgone.delivery.domain.model.Courier
+import com.cikup.amazgone.orders.domain.model.parcels
 import com.cikup.amazgone.orders.domain.model.arrival
 import com.cikup.amazgone.orders.domain.model.shipments
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutViewModel
@@ -111,19 +111,22 @@ class AccountCheckoutViewModelsTest {
         vm.onIntent(CheckoutIntent.Back) // back from editing returns to the review page, not out of checkout
         vm.state.eventually { it.step == CheckoutStep.REVIEW }
 
-        vm.onIntent(CheckoutIntent.SelectDelivery(DeliveryOption.EXPRESS))
-        val review = vm.state.eventually { it.delivery == DeliveryOption.EXPRESS }
-        assertEquals(DeliveryOption.EXPRESS.feeCoins, review.deliveryFeeCoins)
-        assertEquals(1_000L + DeliveryOption.EXPRESS.feeCoins, review.totalCoins)
+        assertEquals(Courier.PIGEON, vm.state.value.courier) // fastest owned starter is picked for you
+        vm.onIntent(CheckoutIntent.SelectCourier(Courier.CARGO_JET)) // locked: goes to the Garage instead
+        assertEquals(CheckoutEffect.OpenGarage, vm.effects.first())
+        vm.onIntent(CheckoutIntent.SelectCourier(Courier.CAMEL))
+        val review = vm.state.eventually { it.courier == Courier.CAMEL }
+        assertEquals(0L, review.deliveryFeeCoins) // couriers are bought once, delivery is free
+        assertEquals(1_000L, review.totalCoins)
         assertEquals(listOf(phone.store.id), review.shipments.map { it.store.id })
 
         vm.onIntent(CheckoutIntent.Pay)
         val order = vm.state.eventually { it.placedOrder != null }.placedOrder!!
         assertEquals(OrderStatus.PENDING_SYNC, order.status)
-        assertEquals(DeliveryOption.EXPRESS, order.delivery)
+        assertEquals(Courier.CAMEL, order.courier)
         assertEquals(phone.store.name, order.items.single().storeName)
         assertEquals(listOf(phone.store.name), order.shipments().map { it.storeName })
-        assertEquals(CheckoutPlanner.arrival(order.createdAt, DeliveryOption.EXPRESS), order.arrival())
+        assertEquals(order.parcels().single().arrivalAt, order.arrival()?.last)
         vm.onIntent(CheckoutIntent.ViewOrder)
         assertEquals(CheckoutEffect.OpenOrder(order.id), vm.effects.first())
         val events = graph.analytics.events.map { it.first }
@@ -131,7 +134,7 @@ class AccountCheckoutViewModelsTest {
         assertEquals(order.id, graph.analytics.events.first { it.first == "purchase" }.second["transaction_id"])
 
         assertEquals(1, graph.get<OrdersViewModel>().state.eventually { it.orders.isNotEmpty() }.orders.size)
-        val expected = 5_000L - 1_000L - DeliveryOption.EXPRESS.feeCoins
+        val expected = 5_000L - 1_000L
         assertEquals(expected, graph.get<WalletViewModel>().state.eventually { it.summary.coins == expected }.summary.coins)
 
         // Next checkout reuses the last address and opens straight on the review page.

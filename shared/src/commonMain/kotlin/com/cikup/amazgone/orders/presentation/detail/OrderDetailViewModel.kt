@@ -82,7 +82,7 @@ class OrderDetailViewModel(
     override fun onError(throwable: Throwable) = updateDraft { copy(isSubmitting = false) }
 
     private companion object {
-        const val TICK_MS = 60_000L
+        const val TICK_MS = 5_000L // fast couriers (rocket, teleporter) visibly move
         val REVIEW_RATING_PROBLEMS = setOf(com.cikup.amazgone.reviews.domain.model.ReviewProblem.NO_RATING)
     }
 }

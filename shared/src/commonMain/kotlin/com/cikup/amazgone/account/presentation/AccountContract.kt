@@ -48,7 +48,7 @@ sealed interface AccountIntent : UiIntent {
     data class Open(val destination: AccountDestination) : AccountIntent
 }
 
-enum class AccountDestination { ORDERS, WISHLIST, WALLET, LEADERBOARD, ACHIEVEMENTS, SEARCH, GAMES, SPIN, CATEGORIES }
+enum class AccountDestination { ORDERS, WISHLIST, WALLET, LEADERBOARD, ACHIEVEMENTS, SEARCH, GAMES, SPIN, CATEGORIES, GARAGE }
 
 sealed interface AccountEffect : UiEffect {
     data class Navigate(val destination: AccountDestination) : AccountEffect

@@ -24,6 +24,7 @@ data class OrderEntity(
     val createdAt: Long,
     val rejectionReason: String?,
     val deliveredAt: Long? = null,
+    val courier: String? = null,
 )
 
 @Dao

@@ -85,6 +85,7 @@ import com.cikup.amazgone.orders.domain.model.Order
 import com.cikup.amazgone.orders.domain.model.OrderStatus
 import com.cikup.amazgone.orders.domain.model.arrival
 import com.cikup.amazgone.orders.domain.model.shipments
+import com.cikup.amazgone.orders.presentation.detail.ParcelTrackingCard
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -102,6 +103,7 @@ fun OrderPlacedScreen(order: Order, onIntent: (CheckoutIntent) -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceMd),
                 ) {
                     DeliveryCard(order, Modifier.staggeredEnter(1))
+                    ParcelTrackingCard(order, order.createdAt, Modifier.staggeredEnter(2), showRows = false)
                     ItemsStrip(order, Modifier.staggeredEnter(2))
                     RewardsCard(order, Modifier.staggeredEnter(3))
                     Button(

@@ -450,4 +450,85 @@
         <item quantity="one">Added %1$d item to your cart</item>
         <item quantity="other">Added %1$d items to your cart</item>
     </plurals>
+
+    <!-- Couriers -->
+    <string name="ledger_COURIER">Courier unlocked</string>
+    <string name="courier_CAMEL_name">Camel caravan</string>
+    <string name="courier_CAMEL_era">Silk Road · c. 1000 BCE</string>
+    <string name="courier_CAMEL_fact">Caravans carried silk and spices across Asia at walking pace, about 40 km a day.</string>
+    <string name="courier_PIGEON_name">Carrier pigeon</string>
+    <string name="courier_PIGEON_era">Ancient Persia · 776 BCE</string>
+    <string name="courier_PIGEON_fact">Pigeons carried Olympic results in ancient Greece and messages in both World Wars.</string>
+    <string name="courier_RELAY_RUNNER_name">Chasqui relay runners</string>
+    <string name="courier_RELAY_RUNNER_era">Inca Empire · 1450</string>
+    <string name="courier_RELAY_RUNNER_fact">Inca runners passed messages hand to hand along 40,000 km of mountain roads.</string>
+    <string name="courier_STEAM_TRAIN_name">Steam mail train</string>
+    <string name="courier_STEAM_TRAIN_era">Britain · 1830</string>
+    <string name="courier_STEAM_TRAIN_fact">The Liverpool–Manchester railway carried the first mail by steam in 1830.</string>
+    <string name="courier_CLIPPER_SHIP_name">Clipper ship</string>
+    <string name="courier_CLIPPER_SHIP_era">Tea races · 1845</string>
+    <string name="courier_CLIPPER_SHIP_fact">Clippers raced tea from China to London under full sail, up to 450 km a day.</string>
+    <string name="courier_PONY_EXPRESS_name">Pony Express</string>
+    <string name="courier_PONY_EXPRESS_era">USA · 1860</string>
+    <string name="courier_PONY_EXPRESS_fact">Riders swapped horses every 15 km and crossed America in about ten days.</string>
+    <string name="courier_MAIL_TRUCK_name">Mail truck</string>
+    <string name="courier_MAIL_TRUCK_era">Motor post · 1906</string>
+    <string name="courier_MAIL_TRUCK_fact">Motor vans replaced horse carts on postal rounds in the early 1900s.</string>
+    <string name="courier_AIRMAIL_BIPLANE_name">Airmail biplane</string>
+    <string name="courier_AIRMAIL_BIPLANE_era">First airmail · 1918</string>
+    <string name="courier_AIRMAIL_BIPLANE_fact">The first regular airmail flew between Washington and New York in 1918.</string>
+    <string name="courier_CARGO_JET_name">Cargo jet</string>
+    <string name="courier_CARGO_JET_era">Jet age · 1958</string>
+    <string name="courier_CARGO_JET_fact">Jet freighters made next-day delivery across oceans possible.</string>
+    <string name="courier_DRONE_name">Delivery drone</string>
+    <string name="courier_DRONE_era">Today · 2013</string>
+    <string name="courier_DRONE_fact">Fast, but only for short hops of up to 50 km from the warehouse.</string>
+    <string name="courier_ROCKET_name">Suborbital rocket</string>
+    <string name="courier_ROCKET_era">Near future · 2035</string>
+    <string name="courier_ROCKET_fact">Point-to-point rockets could reach anywhere on Earth in about an hour.</string>
+    <string name="courier_TELEPORTER_name">Teleporter</string>
+    <string name="courier_TELEPORTER_era">Far future · 2100</string>
+    <string name="courier_TELEPORTER_fact">Pure science fiction: your parcel arrives about a minute after you pay.</string>
+
+    <!-- Courier checkout -->
+    <string name="checkout_courier_title">Choose your courier</string>
+    <string name="checkout_courier_garage">Garage</string>
+    <string name="checkout_courier_cant">Can't make this trip</string>
+    <string name="checkout_courier_unlock">Unlock · %1$s</string>
+    <string name="checkout_courier_arrives">%1$s · in %2$s</string>
+    <string name="checkout_trip">Longest trip: %1$s → %2$s · %3$s km</string>
+    <string name="checkout_locating">Finding your address on the map…</string>
+    <plurals name="duration_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="duration_hours">%1$d h</string>
+    <string name="duration_minutes">%1$d min</string>
+
+    <!-- Garage -->
+    <string name="garage_title">Courier Garage</string>
+    <string name="garage_unlocked">%1$d of %2$d couriers unlocked</string>
+    <string name="garage_sample">Sample trip: %1$s → %2$s · %3$s km</string>
+    <string name="garage_speed_day">≈ %1$s km a day</string>
+    <string name="garage_speed_flat">%1$s to anywhere</string>
+    <string name="garage_range">Up to %1$s km</string>
+    <string name="garage_trip_time">%1$s → %2$s: %3$s</string>
+    <string name="garage_trip_cant">%1$s → %2$s: too far</string>
+    <string name="garage_owned">Owned</string>
+    <string name="garage_starter">Free starter</string>
+    <string name="garage_unlock">Unlock · %1$s</string>
+    <string name="garage_confirm_title">Unlock %1$s?</string>
+    <string name="garage_confirm_body">%1$s coins will be taken from your wallet. You keep this courier for every future order.</string>
+    <string name="garage_confirm_yes">Unlock</string>
+    <string name="garage_confirm_no">Not now</string>
+    <string name="garage_unlocked_toast">%1$s %2$s unlocked!</string>
+    <string name="garage_short">You need %1$s more coins. Play games to earn them!</string>
+    <string name="account_garage">Courier Garage</string>
+
+    <!-- Tracking -->
+    <string name="tracking_title">Track your parcels</string>
+    <string name="tracking_route">%1$s → %2$s · %3$s km</string>
+    <string name="tracking_packing">Packing at %1$s</string>
+    <string name="tracking_arrived">Arrived %1$s</string>
+    <string name="tracking_percent">%1$d% of the way</string>
 </resources>

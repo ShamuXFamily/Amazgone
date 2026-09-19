@@ -28,6 +28,7 @@ import com.cikup.amazgone.core.designsystem.motion.MotionTokens
 import com.cikup.amazgone.orders.presentation.checkout.CheckoutRoute
 import com.cikup.amazgone.orders.presentation.detail.OrderDetailRoute
 import com.cikup.amazgone.orders.presentation.list.OrdersRoute
+import com.cikup.amazgone.delivery.presentation.GarageRoute
 import com.cikup.amazgone.stores.presentation.StoreRoute
 import com.cikup.amazgone.stores.presentation.StoresRoute
 import com.cikup.amazgone.wallet.presentation.WalletRoute
@@ -88,6 +89,7 @@ private fun NavGraphBuilder.shopGraph(nav: NavHostController) {
         Animated { SearchRoute(onBack = { nav.popBackStack() }, onOpenProduct = nav::openProduct, category = route.category) }
     }
     composable<Route.FlashSale> { Animated { FlashSaleRoute(onBack = { nav.popBackStack() }, onOpenProduct = nav::openProduct) } }
+    composable<Route.Garage> { Animated { GarageRoute(onBack = { nav.popBackStack() }) } }
     composable<Route.Stores> { Animated { StoresRoute(onBack = { nav.popBackStack() }, onOpenStore = nav::openStore) } }
     composable<Route.Store> { entry ->
         val route = entry.toRoute<Route.Store>()
@@ -124,6 +126,7 @@ private fun NavGraphBuilder.shopGraph(nav: NavHostController) {
                 onClose = { nav.popBackStack() },
                 onOpenOrder = { id -> nav.navigate(Route.OrderDetail(id)) { popUpTo(Route.Cart) } },
                 onGoHome = { nav.navigateToTopLevel(TopLevelDestination.HOME) },
+                onOpenGarage = { nav.navigate(Route.Garage) },
             )
         }
     }
@@ -144,6 +147,7 @@ private fun NavGraphBuilder.accountGraph(nav: NavHostController) {
                             AccountDestination.SEARCH -> Route.Search()
                             AccountDestination.SPIN -> Route.SpinWheel
                             AccountDestination.CATEGORIES -> Route.Categories
+                            AccountDestination.GARAGE -> Route.Garage
                             AccountDestination.GAMES -> return@AccountRoute nav.navigateToTopLevel(TopLevelDestination.GAMES)
                         },
                     )

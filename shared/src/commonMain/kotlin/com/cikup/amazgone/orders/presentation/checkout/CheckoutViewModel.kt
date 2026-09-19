@@ -7,6 +7,9 @@ import com.cikup.amazgone.cart.domain.usecase.ObserveCouponsUseCase
 import com.cikup.amazgone.core.common.TimeProvider
 import com.cikup.amazgone.core.domain.DomainResult
 import com.cikup.amazgone.core.presentation.mvi.MviViewModel
+import com.cikup.amazgone.delivery.domain.model.Courier
+import com.cikup.amazgone.delivery.domain.usecase.LocateAddressUseCase
+import com.cikup.amazgone.delivery.domain.usecase.ObserveOwnedCouriersUseCase
 import com.cikup.amazgone.orders.domain.model.AddressValidator
 import com.cikup.amazgone.orders.domain.model.Order
 import com.cikup.amazgone.orders.domain.model.ShippingAddress
@@ -26,6 +29,8 @@ class CheckoutViewModel(
     observeOrders: ObserveOrdersUseCase,
     time: TimeProvider,
     private val analytics: Analytics,
+    observeOwnedCouriers: ObserveOwnedCouriersUseCase,
+    private val locateAddress: LocateAddressUseCase,
 ) : MviViewModel<CheckoutState, CheckoutIntent, CheckoutEffect>(CheckoutState()) {
 
     private val selectedCode = MutableStateFlow<String?>(null)
@@ -43,6 +48,7 @@ class CheckoutViewModel(
         }
         observeWallet().observe { setState { copy(balance = it.coins) } }
         setState { copy(now = time.nowMillis()) }
+        observeOwnedCouriers().observe { setState { copy(ownedCouriers = it) } }
         launchSafely { reuseLastAddress(observeOrders().first()) }
         observeSession().observe { session ->
             if (session != null && currentState.address.fullName.isEmpty()) {
@@ -54,7 +60,7 @@ class CheckoutViewModel(
     override fun handleIntent(intent: CheckoutIntent) {
         when (intent) {
             is CheckoutIntent.FieldChanged -> setState {
-                copy(address = address.with(intent.field, intent.value), invalidFields = invalidFields - intent.field)
+                copy(address = address.with(intent.field, intent.value).copy(lat = null, lon = null), invalidFields = invalidFields - intent.field)
             }
             CheckoutIntent.Next -> next()
             CheckoutIntent.Back -> back()
@@ -62,10 +68,8 @@ class CheckoutViewModel(
                 selectedCode.value = intent.code
                 setState { copy(selectedCouponCode = intent.code) }
             }
-            is CheckoutIntent.SelectDelivery -> {
-                if (intent.option != currentState.delivery) analytics.addShippingInfo(intent.option.name)
-                setState { copy(delivery = intent.option) }
-            }
+            is CheckoutIntent.SelectCourier -> selectCourier(intent.courier)
+            CheckoutIntent.OpenGarage -> sendEffect(CheckoutEffect.OpenGarage)
             CheckoutIntent.EditAddress -> setState { copy(step = CheckoutStep.ADDRESS) }
             CheckoutIntent.Pay -> pay()
             CheckoutIntent.ViewOrder -> currentState.placedOrder?.let { sendEffect(CheckoutEffect.OpenOrder(it.id)) }
@@ -79,6 +83,7 @@ class CheckoutViewModel(
                 val invalid = AddressValidator.invalidFields(currentState.address)
                 if (invalid.isEmpty()) {
                     setState { copy(step = CheckoutStep.REVIEW, hasSavedAddress = true) }
+                    locate()
                 } else {
                     setState { copy(invalidFields = invalid, errorPulse = errorPulse + 1) }
                 }
@@ -98,10 +103,10 @@ class CheckoutViewModel(
         if (currentState.isPlacing || currentState.placedOrder != null) return
         setState { copy(isPlacing = true, error = null) }
         launchSafely {
-            when (val result = placeOrder(currentState.summary, currentState.address, currentState.delivery)) {
+            when (val result = placeOrder(currentState.summary, currentState.address, currentState.courier)) {
                 is DomainResult.Success -> {
                     val order = result.value
-                    analytics.purchase(order.id, order.totalCoins, order.itemCount, order.delivery.name, order.couponCode, currentState.shipments.size)
+                    analytics.purchase(order.id, order.totalCoins, order.itemCount, order.courier?.name ?: order.delivery.name, order.couponCode, currentState.shipments.size)
                     setState { copy(isPlacing = false, placedOrder = order) }
                 }
                 is DomainResult.Failure -> setState { copy(isPlacing = false, error = result.error, errorPulse = errorPulse + 1) }
@@ -115,8 +120,32 @@ class CheckoutViewModel(
         val untouched = currentState.address.line1.isEmpty()
         if (last != null && untouched && AddressValidator.invalidFields(last).isEmpty()) {
             setState { copy(address = last, step = CheckoutStep.REVIEW, hasSavedAddress = true, addressLoaded = true) }
+            if (last.lat == null) locate()
         } else {
             setState { copy(addressLoaded = true) }
+        }
+    }
+
+    /** Owned couriers are picked; locked ones send the user to the Garage. */
+    private fun selectCourier(courier: Courier) {
+        if (courier !in currentState.ownedCouriers) return sendEffect(CheckoutEffect.OpenGarage)
+        if (courier != currentState.courier) analytics.addShippingInfo(courier.name)
+        setState { copy(pickedCourier = courier) }
+    }
+
+    /** Puts the address on the map (OpenStreetMap); estimates use the country centre until it answers. */
+    private fun locate() {
+        val address = currentState.address
+        setState { copy(isLocating = true) }
+        launchSafely {
+            val point = locateAddress(address)
+            setState {
+                if (this.address.line1 == address.line1 && this.address.city == address.city) {
+                    copy(address = this.address.copy(lat = point.lat, lon = point.lon), isLocating = false)
+                } else {
+                    copy(isLocating = false) // edited meanwhile; the next confirm looks it up again
+                }
+            }
         }
     }
 

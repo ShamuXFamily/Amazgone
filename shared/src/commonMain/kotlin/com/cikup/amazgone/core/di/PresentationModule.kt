@@ -20,6 +20,7 @@ import com.cikup.amazgone.progress.presentation.LeaderboardViewModel
 import com.cikup.amazgone.catalog.presentation.categories.CategoriesViewModel
 import com.cikup.amazgone.catalog.presentation.flash.FlashSaleViewModel
 import com.cikup.amazgone.settings.presentation.ThemeViewModel
+import com.cikup.amazgone.delivery.presentation.GarageViewModel
 import com.cikup.amazgone.stores.presentation.StoreViewModel
 import com.cikup.amazgone.stores.presentation.StoresViewModel
 import org.koin.core.module.dsl.viewModel
@@ -30,6 +31,7 @@ val presentationModule = module {
     viewModelOf(::ShellViewModel)
     viewModelOf(::ThemeViewModel)
     viewModelOf(::StoresViewModel)
+    viewModelOf(::GarageViewModel)
     viewModel { params -> StoreViewModel(params.get(), get(), get()) }
     viewModelOf(::HomeViewModel)
     viewModel { params -> SearchViewModel(params.getOrNull(), get(), get(), get(), get()) }

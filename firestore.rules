@@ -19,6 +19,8 @@ service cloud.firestore {
         || request.time > resource.data.get(field, timestamp.value(0)) + duration.value(minutes, 'm');
     }
     function userPath(uid) { return /databases/$(database)/documents/users/$(uid); }
+    // Mirrors Courier.priceCoins in the app (starters are free and never stored).
+    function courierPrices() { return {'RELAY_RUNNER': 100, 'STEAM_TRAIN': 600, 'CLIPPER_SHIP': 250, 'PONY_EXPRESS': 300, 'MAIL_TRUCK': 900, 'AIRMAIL_BIPLANE': 1500, 'CARGO_JET': 3500, 'DRONE': 2000, 'ROCKET': 8000, 'TELEPORTER': 20000}; }
 
     match /users/{uid} {
       allow read: if isOwner(uid);
@@ -38,7 +40,7 @@ service cloud.firestore {
         && unchanged('username') && unchanged('createdAt') && unchanged('starterGranted')
         && request.resource.data.coins >= 0
         && levelMatchesXp(request.resource.data)
-        && (isPurchase() || isSpinReward() || isScratchReward() || isDailyVisit());
+        && (isPurchase() || isSpinReward() || isScratchReward() || isDailyVisit() || isCourierPurchase());
 
       // Mirrors LevelCurve: level = floor(sqrt(xp / 100)) + 1, capped at 99.
       function levelMatchesXp(data) {
@@ -65,6 +67,11 @@ service cloud.firestore {
           && delta('xp') >= 0 && delta('xp') <= 65
           && unchanged('orderCount') && unchanged('lastSpinAt') && unchanged('lastDailyAt')
           && request.resource.data.lastScratchAt == request.time && cooledDownMinutes('lastScratchAt', 235);
+      }
+      // Garage: coins go down and nothing else changes; the couriers/{id} rule checks the exact price.
+      function isCourierPurchase() {
+        return delta('coins') < 0 && delta('xp') == 0 && unchanged('orderCount')
+          && unchanged('lastSpinAt') && unchanged('lastScratchAt') && unchanged('lastDailyAt');
       }
       // Daily visit: exactly +20 XP, no coins, at most every 20h.
       function isDailyVisit() {
@@ -94,6 +101,14 @@ service cloud.firestore {
       match /achievements/{achievementId} {
         allow read: if isOwner(uid);
         allow create: if isOwner(uid);
+      }
+      // Couriers unlocked in the Garage: only with the matching debit in the same commit, once each.
+      match /couriers/{courierId} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && courierId in courierPrices()
+          && request.resource.data.price == courierPrices()[courierId]
+          && getAfter(userPath(uid)).data.coins == get(userPath(uid)).data.coins - courierPrices()[courierId];
       }
       // Cart and wishlist mirror device state (last-write-wins); owner only.
       match /cart/{productId} {

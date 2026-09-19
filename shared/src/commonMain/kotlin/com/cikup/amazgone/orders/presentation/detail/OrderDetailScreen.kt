@@ -143,6 +143,7 @@ private fun OrderDetailContent(order: Order, stage: OrderStage, state: OrderDeta
         modifier = Modifier.fillMaxSize(),
     ) {
         item(key = "tracker") { OrderTrackerCard(order, stage, Modifier.staggeredEnter(0)) }
+        if (order.courier != null) item(key = "tracking") { ParcelTrackingCard(order, state.now, Modifier.staggeredEnter(1)) }
         order.rejectionReason?.let { reason ->
             item(key = "rejected") {
                 Surface(color = MaterialTheme.colorScheme.errorContainer, contentColor = MaterialTheme.colorScheme.onErrorContainer, shape = MaterialTheme.shapes.large) {

@@ -1,5 +1,6 @@
 package com.cikup.amazgone.orders
 
+import com.cikup.amazgone.delivery.data.CourierRepositoryImpl
 import com.cikup.amazgone.account.data.remote.AuthRepositoryImpl
 import com.cikup.amazgone.account.data.repository.ProfileRepositoryImpl
 import com.cikup.amazgone.account.data.sync.ProfilePuller
@@ -65,7 +66,8 @@ class CheckoutFlowTest {
     private val auth = AuthRepositoryImpl(FirebaseAuthApi(backend.client, TEST_CONFIG), InMemorySecureStore(), clock, PrintLogger)
     private val firebase = FirebaseServices(FirebaseAuthApi(backend.client, TEST_CONFIG), backend.firestore())
     private val handler = OrderPlaceHandler(auth, firebase, orders)
-    private val placeOrder = PlaceOrderUseCase(orders, wallet)
+    private val couriers = CourierRepositoryImpl(db.ownedCourierDao(), wallet, outbox, tx, clock, ids)
+    private val placeOrder = PlaceOrderUseCase(orders, wallet, couriers)
     private val phone = product("1", price = 100.0) // 1,000 coins
 
     @AfterTest

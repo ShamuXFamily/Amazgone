@@ -5,6 +5,8 @@ enum class Currency { COINS, XP }
 
 enum class LedgerReason {
     STARTER, BASELINE, PURCHASE, SPIN_REWARD, SCRATCH_REWARD, ORDER_XP, GAME_XP, DAILY_XP,
+    /** Unlocking a courier in the Garage. */
+    COURIER,
 }
 
 /** PENDING = applied locally, awaiting the server; REJECTED entries no longer count. */

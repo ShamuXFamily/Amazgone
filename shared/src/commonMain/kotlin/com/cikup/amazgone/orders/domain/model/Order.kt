@@ -1,5 +1,6 @@
 package com.cikup.amazgone.orders.domain.model
 
+import com.cikup.amazgone.delivery.domain.model.Courier
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -9,6 +10,9 @@ data class ShippingAddress(
     val city: String,
     val postalCode: String,
     val country: String,
+    /** Map position from OpenStreetMap geocoding (null = not looked up; estimates fall back to the country). */
+    val lat: Double? = null,
+    val lon: Double? = null,
 )
 
 @Serializable
@@ -45,6 +49,8 @@ data class Order(
     val rejectionReason: String?,
     /** When the customer tapped "Order received" (null = not confirmed by hand). */
     val deliveredAt: Long? = null,
+    /** Who carries the parcels; null for orders placed before couriers (Standard/Express timing). */
+    val courier: Courier? = null,
 ) {
     val itemCount: Int get() = items.sumOf { it.quantity }
 }
@@ -60,6 +66,7 @@ data class OrderDraft(
     val delivery: DeliveryOption,
     val deliveryFeeCoins: Long,
     val xpEarned: Long,
+    val courier: Courier? = null,
 )
 
 object AddressValidator {

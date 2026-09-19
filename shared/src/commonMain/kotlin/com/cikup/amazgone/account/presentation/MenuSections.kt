@@ -2,6 +2,7 @@ package com.cikup.amazgone.account.presentation
 
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.account_achievements
+import amazgone.shared.generated.resources.account_garage
 import amazgone.shared.generated.resources.account_leaderboard
 import amazgone.shared.generated.resources.account_orders
 import amazgone.shared.generated.resources.account_wallet
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Leaderboard
+import androidx.compose.material.icons.outlined.LocalShipping
 import androidx.compose.material.icons.outlined.Receipt
 import androidx.compose.material.icons.outlined.Replay
 import androidx.compose.material.icons.outlined.SportsEsports
@@ -115,6 +117,7 @@ private val MENU = listOf(
     MenuEntry(Icons.Outlined.Category, Res.string.menu_shop_by_category, AccountDestination.CATEGORIES),
     MenuEntry(Icons.Outlined.EmojiEvents, Res.string.account_achievements, AccountDestination.ACHIEVEMENTS),
     MenuEntry(Icons.Outlined.Leaderboard, Res.string.account_leaderboard, AccountDestination.LEADERBOARD),
+    MenuEntry(Icons.Outlined.LocalShipping, Res.string.account_garage, AccountDestination.GARAGE),
 )
 
 @Composable

@@ -2,6 +2,7 @@ package com.cikup.amazgone.wallet.presentation
 
 import amazgone.shared.generated.resources.Res
 import amazgone.shared.generated.resources.ledger_BASELINE
+import amazgone.shared.generated.resources.ledger_COURIER
 import amazgone.shared.generated.resources.ledger_DAILY_XP
 import amazgone.shared.generated.resources.ledger_GAME_XP
 import amazgone.shared.generated.resources.ledger_ORDER_XP
@@ -24,5 +25,6 @@ fun ledgerLabel(reason: LedgerReason): String = stringResource(
         LedgerReason.ORDER_XP -> Res.string.ledger_ORDER_XP
         LedgerReason.GAME_XP -> Res.string.ledger_GAME_XP
         LedgerReason.DAILY_XP -> Res.string.ledger_DAILY_XP
+        LedgerReason.COURIER -> Res.string.ledger_COURIER
     },
 )

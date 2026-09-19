@@ -60,6 +60,7 @@ fun CheckoutRoute(
     onClose: () -> Unit,
     onOpenOrder: (String) -> Unit,
     onGoHome: () -> Unit,
+    onOpenGarage: () -> Unit,
     viewModel: CheckoutViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -69,6 +70,7 @@ fun CheckoutRoute(
                 CheckoutEffect.Close -> onClose()
                 is CheckoutEffect.OpenOrder -> onOpenOrder(effect.orderId)
                 CheckoutEffect.GoHome -> onGoHome()
+                CheckoutEffect.OpenGarage -> onOpenGarage()
             }
         }
     }

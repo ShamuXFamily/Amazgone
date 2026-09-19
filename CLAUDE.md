@@ -50,6 +50,12 @@ Coins are virtual: send them as `value`/`price_coins` WITHOUT a `currency`, so F
 Never log PII (username, address, review text); `identify()` takes the Firebase uid only. Analytics must never throw.
 Platform sinks: `FirebaseAnalyticsSink` in androidMain (needs google-services.json values) and iosApp/FirebaseAnalyticsSink.swift.
 
+## Delivery
+Couriers live in `delivery/domain/model/Courier.kt`; their unlock prices are mirrored in `firestore.rules` (`courierPrices()`),
+and `FirestoreRulesSyncTest` fails if they drift. Store origins: `Origins.kt`. Addresses are geocoded with OpenStreetMap
+Nominatim (≤1 request/s, identifying User-Agent) with country-centre fallback. Maps use tile.openstreetmap.org: keep the
+"© OpenStreetMap contributors" credit visible, the app User-Agent on image requests, and never prefetch tiles in bulk.
+
 ## Auth
 Firebase Auth uses email only, so a username maps to `"{username}@amazgone.local"`. Uniqueness is enforced by `usernames/{username}` in Firestore.
 Register and first login need a network connection. A guest (local) account works offline.

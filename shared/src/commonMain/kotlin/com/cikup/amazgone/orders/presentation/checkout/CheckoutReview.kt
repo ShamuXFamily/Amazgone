@@ -1,17 +1,12 @@
 package com.cikup.amazgone.orders.presentation.checkout
 
 import amazgone.shared.generated.resources.Res
-import amazgone.shared.generated.resources.checkout_arrives_between
 import amazgone.shared.generated.resources.checkout_arrives_on
 import amazgone.shared.generated.resources.checkout_change
 import amazgone.shared.generated.resources.checkout_deliver_to
-import amazgone.shared.generated.resources.checkout_delivery_speed
-import amazgone.shared.generated.resources.checkout_express
-import amazgone.shared.generated.resources.checkout_free
 import amazgone.shared.generated.resources.checkout_instant
 import amazgone.shared.generated.resources.checkout_qty
 import amazgone.shared.generated.resources.checkout_shipment
-import amazgone.shared.generated.resources.checkout_standard
 import amazgone.shared.generated.resources.store_sold_by
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -53,8 +48,9 @@ import com.cikup.amazgone.core.designsystem.motion.staggeredEnter
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneDimens
 import com.cikup.amazgone.core.designsystem.theme.AmazgoneTheme
 import com.cikup.amazgone.core.presentation.format.Formatters
+import com.cikup.amazgone.core.presentation.format.durationText
+import amazgone.shared.generated.resources.checkout_courier_arrives
 import com.cikup.amazgone.orders.domain.model.CheckoutPlanner
-import com.cikup.amazgone.orders.domain.model.DeliveryOption
 import com.cikup.amazgone.orders.domain.model.Shipment
 import com.cikup.amazgone.stores.presentation.StoreLogo
 import com.cikup.amazgone.stores.presentation.VerifiedIcon
@@ -68,10 +64,10 @@ fun ReviewStep(state: CheckoutState, onIntent: (CheckoutIntent) -> Unit) {
         verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceLg),
     ) {
         DeliverToCard(state) { onIntent(CheckoutIntent.EditAddress) }
-        if (state.needsDelivery) DeliverySpeed(state.delivery, state.now, { onIntent(CheckoutIntent.SelectDelivery(it)) }, Modifier.staggeredEnter(1))
+        if (state.needsDelivery) CourierPicker(state, onIntent, Modifier.staggeredEnter(1))
         PaymentSection(state, onIntent, Modifier.staggeredEnter(2))
         state.shipments.forEachIndexed { index, shipment ->
-            ShipmentCard(shipment, index, state.shipments.size, state.delivery, state.now, Modifier.staggeredEnter(index + 3))
+            ShipmentCard(shipment, index, state.shipments.size, state, Modifier.staggeredEnter(index + 3))
         }
         OrderSummary(state, Modifier.staggeredEnter(state.shipments.size + 3))
         ErrorBanner(state)
@@ -94,60 +90,19 @@ private fun DeliverToCard(state: CheckoutState, onChange: () -> Unit) {
     }
 }
 
+/** "Arrives Fri, 25 Sep · in 6 days" for one shipment with the chosen courier. */
 @Composable
-private fun DeliverySpeed(selected: DeliveryOption, now: Long, onSelect: (DeliveryOption) -> Unit, modifier: Modifier) {
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
-        Text(stringResource(Res.string.checkout_delivery_speed), style = MaterialTheme.typography.titleMedium)
-        Row(Modifier.selectableGroup(), horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceSm)) {
-            DeliveryOption.entries.forEach { option ->
-                SpeedCard(option, option == selected, now, { onSelect(option) }, Modifier.weight(1f))
-            }
-        }
-    }
+private fun shipmentArrival(shipment: Shipment, state: CheckoutState): String? {
+    val window = CheckoutPlanner.courierArrival(listOf(shipment), state.destination, state.courier, state.now) ?: return null
+    return stringResource(Res.string.checkout_arrives_on, stringResource(Res.string.checkout_courier_arrives, Formatters.weekdayDate(window.last), durationText(window.last - state.now)))
 }
 
 @Composable
-private fun SpeedCard(option: DeliveryOption, selected: Boolean, now: Long, onClick: () -> Unit, modifier: Modifier) {
-    val cta = AmazgoneTheme.extended.cta
-    val border by animateColorAsState(if (selected) cta else MaterialTheme.colorScheme.outlineVariant, label = "speedBorder")
-    val width by animateDpAsState(if (selected) AmazgoneDimens.spaceXs / 2 else AmazgoneDimens.spaceXs / 4, MotionTokens.bouncy(), label = "speedWidth")
-    Surface(
-        color = MaterialTheme.colorScheme.surfaceContainerLowest,
-        shape = MaterialTheme.shapes.large,
-        border = BorderStroke(width, border),
-        modifier = modifier.clip(MaterialTheme.shapes.large).selectable(selected, role = Role.RadioButton, onClick = onClick),
-    ) {
-        Column(Modifier.padding(AmazgoneDimens.spaceMd), verticalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceXs)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(AmazgoneDimens.spaceXs)) {
-                Icon(if (option == DeliveryOption.EXPRESS) Icons.Rounded.Bolt else Icons.Rounded.LocalShipping, contentDescription = null, tint = if (selected) cta else MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(AmazgoneDimens.iconSm + AmazgoneDimens.spaceXs))
-                Text(stringResource(if (option == DeliveryOption.EXPRESS) Res.string.checkout_express else Res.string.checkout_standard), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
-            }
-            if (option.feeCoins == 0L) {
-                Text(stringResource(Res.string.checkout_free), style = MaterialTheme.typography.labelLarge, color = AmazgoneTheme.extended.success, fontWeight = FontWeight.Bold)
-            } else {
-                CoinAmount(option.feeCoins, style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold))
-            }
-            Text(arrivalLabel(option, now), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2)
-        }
-    }
-}
-
-@Composable
-private fun arrivalLabel(option: DeliveryOption, now: Long): String {
-    val window = CheckoutPlanner.arrival(now, option)
-    return if (window.first == window.last) {
-        stringResource(Res.string.checkout_arrives_on, Formatters.weekdayDate(window.first))
-    } else {
-        stringResource(Res.string.checkout_arrives_between, Formatters.weekdayDate(window.first), Formatters.weekdayDate(window.last))
-    }
-}
-
-@Composable
-private fun ShipmentCard(shipment: Shipment, index: Int, count: Int, delivery: DeliveryOption, now: Long, modifier: Modifier) {
+private fun ShipmentCard(shipment: Shipment, index: Int, count: Int, state: CheckoutState, modifier: Modifier) {
     Section(modifier) {
         Text(stringResource(Res.string.checkout_shipment, index + 1, count), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(
-            if (shipment.isDigital) stringResource(Res.string.checkout_instant) else arrivalLabel(delivery, now),
+            if (shipment.isDigital) stringResource(Res.string.checkout_instant) else shipmentArrival(shipment, state).orEmpty(),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
             color = AmazgoneTheme.extended.success,

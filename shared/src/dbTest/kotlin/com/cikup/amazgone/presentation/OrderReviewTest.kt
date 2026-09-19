@@ -6,6 +6,7 @@ import com.cikup.amazgone.catalog.data.mapper.CatalogBatch
 import com.cikup.amazgone.catalog.data.repository.CatalogRepositoryImpl
 import com.cikup.amazgone.orders.data.OrderRepositoryImpl
 import com.cikup.amazgone.orders.domain.model.OrderStage
+import com.cikup.amazgone.orders.domain.model.parcels
 import com.cikup.amazgone.orders.domain.model.ShippingAddress
 import com.cikup.amazgone.orders.domain.usecase.PlaceOrderUseCase
 import com.cikup.amazgone.orders.presentation.detail.OrderDetailIntent
@@ -27,6 +28,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -56,19 +58,20 @@ class OrderReviewTest {
     }
 
     @Test
-    fun reviewUnlocksOnlyAfterTheParcelIsReceived() = runTest {
+    fun reviewUnlocksOnlyOnceTheCourierHasLanded() = runTest {
         val orderId = placeOrder()
-        val vm = graph.koin.get<OrderDetailViewModel> { parametersOf(orderId) }
-        assertEquals(OrderStage.PLACED, vm.state.eventually { it.stage != null }.stage)
-
-        vm.onIntent(OrderDetailIntent.WriteReview(charger.id))
-        assertNull(vm.state.value.reviewDraft) // not delivered yet: no review sheet
+        val early = graph.koin.get<OrderDetailViewModel> { parametersOf(orderId) }
+        assertEquals(OrderStage.PLACED, early.state.eventually { it.stage != null }.stage)
+        early.onIntent(OrderDetailIntent.WriteReview(charger.id))
+        assertNull(early.state.value.reviewDraft) // still travelling: no review sheet
 
         graph.get<OrderRepositoryImpl>().markConfirmed(orderId) // server accepted it
-        assertTrue(vm.state.eventually { it.stage == OrderStage.CONFIRMED }.canConfirmReceived)
-        vm.onIntent(OrderDetailIntent.ConfirmReceived)
-        vm.state.eventually { it.stage == OrderStage.DELIVERED }
+        val order = early.state.eventually { it.stage == OrderStage.CONFIRMED }.order!!
+        assertFalse(early.state.value.canConfirmReceived) // real couriers can't be "received" early
+        graph.clock.now = order.parcels().maxOf { it.arrivalAt } // …the pigeon lands
 
+        val vm = graph.koin.get<OrderDetailViewModel> { parametersOf(orderId) }
+        vm.state.eventually { it.stage == OrderStage.DELIVERED }
         vm.onIntent(OrderDetailIntent.WriteReview(charger.id))
         vm.state.eventually { it.reviewDraft != null }
         vm.onIntent(OrderDetailIntent.SubmitReview)
@@ -80,8 +83,6 @@ class OrderReviewTest {
         val mine = vm.state.eventually { it.reviewDraft == null && charger.id in it.myReviews }.myReviews.getValue(charger.id)
         assertEquals(5, mine.rating)
         assertTrue(mine.isPending)
-
-        val shown = graph.get<ObserveProductReviewsUseCase>()(charger.id).first()
-        assertEquals(listOf("Charges fast"), shown.map { it.comment })
+        assertEquals(listOf("Charges fast"), graph.get<ObserveProductReviewsUseCase>()(charger.id).first().map { it.comment })
     }
 }

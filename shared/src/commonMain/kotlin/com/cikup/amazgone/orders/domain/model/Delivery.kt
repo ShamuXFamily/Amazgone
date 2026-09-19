@@ -1,6 +1,13 @@
 package com.cikup.amazgone.orders.domain.model
 
 import com.cikup.amazgone.cart.domain.model.CartLine
+import com.cikup.amazgone.delivery.domain.model.Courier
+import com.cikup.amazgone.delivery.domain.model.CourierPlan
+import com.cikup.amazgone.delivery.domain.model.GeoMath
+import com.cikup.amazgone.delivery.domain.model.GeoPoint
+import com.cikup.amazgone.delivery.domain.model.Origin
+import com.cikup.amazgone.delivery.domain.model.Origins
+import com.cikup.amazgone.stores.domain.model.StoreDirectory
 import com.cikup.amazgone.stores.domain.model.Store
 import com.cikup.amazgone.stores.domain.model.StoreKind
 
@@ -34,6 +41,23 @@ object CheckoutPlanner {
     fun deliveryFee(shipments: List<Shipment>, option: DeliveryOption): Long =
         if (needsDelivery(shipments)) option.feeCoins else 0
 
+    /**
+     * Earliest..latest arrival of the parcels if [courier] carries them to [destination], or null when it
+     * can't (a drone can't cross an ocean). Digital-only orders need no courier: empty window at [nowMillis].
+     */
+    fun courierArrival(shipments: List<Shipment>, destination: GeoPoint, courier: Courier, nowMillis: Long): LongRange? {
+        val etas = shipments.filter { !it.isDigital }.map { shipment ->
+            val origin = Origins.forStore(shipment.store.id) ?: return@map nowMillis
+            CourierPlan.arrivalAt(nowMillis, courier, GeoMath.distanceKm(origin.point, destination)) ?: return null
+        }
+        return if (etas.isEmpty()) nowMillis..nowMillis else etas.min()..etas.max()
+    }
+
+    /** Longest single trip, e.g. "Cupertino → Jakarta · 13,900 km". */
+    fun longestTrip(shipments: List<Shipment>, destination: GeoPoint): Pair<Origin, Double>? =
+        shipments.filter { !it.isDigital }.mapNotNull { s -> Origins.forStore(s.store.id)?.let { it to GeoMath.distanceKm(it.point, destination) } }
+            .maxByOrNull { it.second }
+
     /** Earliest..latest arrival (epoch millis) for parcels ordered at [nowMillis]. */
     fun arrival(nowMillis: Long, option: DeliveryOption): LongRange =
         nowMillis + option.minDays * DAY_MILLIS..nowMillis + option.maxDays * DAY_MILLIS
@@ -46,8 +70,45 @@ fun Order.shipments(): List<PlacedShipment> =
     items.groupBy { it.storeName to it.digital }.map { (key, grouped) -> PlacedShipment(key.first, key.second, grouped) }
 
 /** Arrival window for the parcels of this order; null when everything is digital. */
-fun Order.arrival(): LongRange? =
-    if (items.all { it.digital }) null else CheckoutPlanner.arrival(createdAt, delivery)
+fun Order.arrival(): LongRange? {
+    if (courier != null) {
+        val parcels = parcels()
+        return if (parcels.isEmpty()) null else parcels.minOf { it.arrivalAt }..parcels.maxOf { it.arrivalAt }
+    }
+    return if (items.all { it.digital }) null else CheckoutPlanner.arrival(createdAt, delivery)
+}
+
+/** One store's parcel on its way: where from, where to, and when it lands. */
+data class Parcel(
+    val storeName: String?,
+    val origin: Origin,
+    val destination: GeoPoint,
+    val items: List<OrderItem>,
+    val distanceKm: Double,
+    val departsAt: Long,
+    val arrivalAt: Long,
+)
+
+/** Map position of an address: geocoded point, else the country's centre, else the warehouse city. */
+fun ShippingAddress.point(): GeoPoint {
+    val latitude = lat
+    val longitude = lon
+    return if (latitude != null && longitude != null) GeoPoint(latitude, longitude)
+    else Origins.countryCentre(country) ?: Origins.DEFAULT_DESTINATION
+}
+
+/** Courier orders: one parcel per physical seller, each flying its own great-circle route. */
+fun Order.parcels(): List<Parcel> {
+    val carrier = courier ?: return emptyList()
+    val destination = address.point()
+    return items.filter { !it.digital }.groupBy { it.storeId ?: StoreDirectory.AMAZGONE.id }.mapNotNull { (storeId, lines) ->
+        val origin = Origins.forStore(storeId) ?: return@mapNotNull null
+        val km = GeoMath.distanceKm(origin.point, destination)
+        val departs = createdAt + carrier.handlingMillis
+        val eta = CourierPlan.arrivalAt(createdAt, carrier, km) ?: departs
+        Parcel(lines.first().storeName, origin, destination, lines, km, departs, eta)
+    }
+}
 
 /** Where an order is in its journey (what the tracker shows). */
 enum class OrderStage { PLACED, CONFIRMED, SHIPPED, DELIVERED, REJECTED }
@@ -64,17 +125,32 @@ fun Order.stageAt(nowMillis: Long): OrderStage {
     return when {
         status == OrderStatus.REJECTED -> OrderStage.REJECTED
         status == OrderStatus.PENDING_SYNC -> OrderStage.PLACED
+        courier != null -> courierStage(nowMillis)
         deliveredAt != null || arrival == null || nowMillis >= arrival.first -> OrderStage.DELIVERED
         nowMillis >= createdAt + SHIP_AFTER_MILLIS -> OrderStage.SHIPPED
         else -> OrderStage.CONFIRMED
     }
 }
 
-/** Digital items arrive the moment the server confirms the order; parcels when the order is delivered. */
+/** Packing, then in transit until the last parcel lands (there is no early "received" for real couriers). */
+private fun Order.courierStage(nowMillis: Long): OrderStage {
+    val parcels = parcels()
+    return when {
+        parcels.isEmpty() || nowMillis >= parcels.maxOf { it.arrivalAt } -> OrderStage.DELIVERED
+        nowMillis >= createdAt + (courier?.handlingMillis ?: CourierPlan.HANDLING_MILLIS) -> OrderStage.SHIPPED
+        else -> OrderStage.CONFIRMED
+    }
+}
+
+/** Digital items arrive the moment the server confirms the order; a parcel when its courier lands. */
 fun Order.isItemDelivered(item: OrderItem, nowMillis: Long): Boolean {
     val stage = stageAt(nowMillis)
-    return stage == OrderStage.DELIVERED || (item.digital && stage != OrderStage.PLACED && stage != OrderStage.REJECTED)
+    if (stage == OrderStage.PLACED || stage == OrderStage.REJECTED) return false
+    if (stage == OrderStage.DELIVERED || item.digital) return true
+    val parcel = parcels().firstOrNull { item in it.items } ?: return false
+    return nowMillis >= parcel.arrivalAt
 }
 
 /** "Order received" is offered while a confirmed parcel is still on its way. */
-fun Order.canConfirmReceived(nowMillis: Long): Boolean = stageAt(nowMillis).let { it == OrderStage.CONFIRMED || it == OrderStage.SHIPPED }
+fun Order.canConfirmReceived(nowMillis: Long): Boolean =
+    courier == null && stageAt(nowMillis).let { it == OrderStage.CONFIRMED || it == OrderStage.SHIPPED }

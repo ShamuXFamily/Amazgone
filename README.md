@@ -11,6 +11,10 @@ There is **no real money**: everything is paid in virtual coins that players ear
   real digital game shops (Steam, GOG, Epic…) and Amazgone itself; store pages, directory and "Visit the store" links
 - 🛒 Cart, wishlist, Amazon-style one-page checkout (saved address, Standard/Express delivery, one shipment per store,
   **hold-to-pay**), order history with sync status
+- 🕊️ **Couriers through history**: camel, pigeon, Inca runners, clipper, steam train, Pony Express, truck, biplane,
+  cargo jet, drone, rocket, teleporter. Delivery time = real great-circle distance from the store's home city
+  (Apple → Cupertino…) to your geocoded address ÷ the courier's speed; unlock faster couriers once with coins in the
+  **Courier Garage**; follow each parcel live on an **OpenStreetMap** map
 - 📦 Order tracker (Placed → Confirmed → Shipped → Delivered) with "Order received", and **verified-purchase reviews**
   (star rating + comment) that publish to everyone's product page
 - 🎰 Daily **spin wheel**, **scratch cards**, hourly **lightning deals**, coupons

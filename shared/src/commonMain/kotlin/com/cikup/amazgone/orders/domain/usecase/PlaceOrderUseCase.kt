@@ -5,7 +5,11 @@ import com.cikup.amazgone.core.domain.DomainError
 import com.cikup.amazgone.core.domain.DomainResult
 import com.cikup.amazgone.core.domain.ValidationReason
 import com.cikup.amazgone.orders.domain.model.AddressValidator
+import com.cikup.amazgone.delivery.domain.model.Courier
+import com.cikup.amazgone.delivery.domain.repository.CourierRepository
 import com.cikup.amazgone.orders.domain.model.CheckoutPlanner
+import com.cikup.amazgone.orders.domain.model.point
+import kotlinx.coroutines.flow.first
 import com.cikup.amazgone.orders.domain.model.DeliveryOption
 import com.cikup.amazgone.orders.domain.model.Order
 import com.cikup.amazgone.orders.domain.model.OrderDraft
@@ -21,18 +25,22 @@ import com.cikup.amazgone.wallet.domain.repository.WalletRepository
 class PlaceOrderUseCase(
     private val orders: OrderRepository,
     private val wallet: WalletRepository,
+    private val couriers: CourierRepository,
 ) {
     suspend operator fun invoke(
         summary: CartSummary,
         address: ShippingAddress,
-        delivery: DeliveryOption = DeliveryOption.STANDARD,
+        courier: Courier = Courier.PIGEON,
     ): DomainResult<Order> {
         if (summary.isEmpty) return DomainResult.Failure(DomainError.NotFound)
         AddressValidator.invalidFields(address).firstOrNull()?.let { field ->
             return DomainResult.Failure(DomainError.Validation(field, ValidationReason.EMPTY))
         }
-        val fee = CheckoutPlanner.deliveryFee(CheckoutPlanner.shipments(summary.lines), delivery)
-        val total = summary.totalCoins + fee
+        if (courier !in couriers.observeOwned().first()) return DomainResult.Failure(DomainError.NotFound)
+        if (CheckoutPlanner.courierArrival(CheckoutPlanner.shipments(summary.lines), address.point(), courier, 0) == null) {
+            return DomainResult.Failure(DomainError.Validation("courier", ValidationReason.TOO_LONG)) // e.g. drone out of range
+        }
+        val total = summary.totalCoins // couriers are unlocked once in the Garage, so delivery itself is free
         val balance = wallet.balance(Currency.COINS)
         if (balance < total) {
             return DomainResult.Failure(DomainError.InsufficientCoins(total, balance))
@@ -55,13 +63,14 @@ class PlaceOrderUseCase(
             totalCoins = total,
             couponCode = summary.appliedCoupon?.code,
             address = address.trimmed(),
-            delivery = delivery,
-            deliveryFeeCoins = fee,
+            delivery = DeliveryOption.STANDARD,
+            deliveryFeeCoins = 0,
+            courier = courier,
             xpEarned = XpRules.forOrder(summary.totalCoins),
         )
         return orders.placeOrder(draft, summary.appliedCoupon?.code)
     }
 
     private fun ShippingAddress.trimmed() =
-        ShippingAddress(fullName.trim(), line1.trim(), city.trim(), postalCode.trim(), country.trim())
+        copy(fullName = fullName.trim(), line1 = line1.trim(), city = city.trim(), postalCode = postalCode.trim(), country = country.trim())
 }
